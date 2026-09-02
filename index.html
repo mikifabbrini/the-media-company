@@ -980,13 +980,16 @@ input[type=range]:focus-visible::-moz-range-thumb{box-shadow:0 0 0 4px rgba(169,
 /* ── footer ───────────────────────────────────────────────── */
 .ft{background:var(--bg-2);border-top:1px solid var(--bordo);}
 .ft-g{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:clamp(26px,3vw,48px);
-  padding:clamp(44px,5.5vw,76px) 0;}
+  /* solo sopra e sotto: la scorciatoia "padding" cancellerebbe i margini
+     laterali di .wrap e il testo si incollerebbe al bordo dello schermo */
+  padding-top:clamp(44px,5.5vw,76px);padding-bottom:clamp(44px,5.5vw,76px);}
 .ft-g h5{margin:0 0 18px;font-size:14px;font-weight:700;letter-spacing:-.02em;}
 .ft-l{display:flex;flex-direction:column;align-items:flex-start;gap:2px;}
 .ft-l a,.ft-l span{font-size:15px;color:var(--ink-2);min-height:36px;display:flex;align-items:center;
   text-align:left;line-height:1.45;transition:color .2s,transform .22s var(--e);}
 .ft-l a:hover{color:var(--blu);transform:translateX(5px);}
-.ft-e{border-top:1px solid var(--bordo);padding:24px 0;display:flex;flex-wrap:wrap;gap:14px;
+.ft-e{border-top:1px solid var(--bordo);padding-top:24px;padding-bottom:24px;
+  display:flex;flex-wrap:wrap;gap:14px;
   justify-content:space-between;font-size:14px;color:var(--ink-2);}
 .ft-e a{min-height:36px;display:inline-flex;align-items:center;}
 .ft-e a:hover{color:var(--blu);}

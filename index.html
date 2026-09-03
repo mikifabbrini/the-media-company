@@ -1823,9 +1823,10 @@ input[type=range]:focus-visible::-moz-range-thumb{box-shadow:0 0 0 4px rgba(169,
             <input id="c-n" name="nome" type="text" autocomplete="name" placeholder="Mario Rossi" aria-describedby="e-n">
             <span class="err" id="e-n" role="alert"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 1 15 14H1L8 1Zm0 5v4m0 2v.5"stroke="#B3261E" stroke-width="1.6" fill="none" stroke-linecap="round"/></svg>Scrivi il tuo nome.</span>
           </div>
-          <div class="campo">
-            <label for="c-a">Cliente</label>
-            <input id="c-a" name="cliente" type="text" autocomplete="organization" placeholder="Nome del cliente">
+          <div class="campo" id="w-a">
+            <label for="c-a">Azienda o societ&agrave;</label>
+            <input id="c-a" name="azienda" type="text" autocomplete="organization" placeholder="Nome dell&#39;azienda" aria-describedby="e-a">
+            <span class="err" id="e-a" role="alert"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 1 15 14H1L8 1Zm0 5v4m0 2v.5"stroke="#B3261E" stroke-width="1.6" fill="none" stroke-linecap="round"/></svg>Dicci per chi lavori, prima di fissare.</span>
           </div>
         </div>
         <div class="f2">
@@ -2478,8 +2479,10 @@ input[type=range]:focus-visible::-moz-range-thumb{box-shadow:0 0 0 4px rgba(169,
       segna('w-e','c-e', /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(mail));
       if(cal.hidden){
         segna('w-m','c-m', document.getElementById('c-m').value.trim().length > 4);
+        document.getElementById('w-a').classList.remove('ko');
       }else{
         segna('w-m','c-d', !!campoData.value);
+        segna('w-a','c-a', document.getElementById('c-a').value.trim().length > 1);
       }
       return problemi;
     }

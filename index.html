@@ -132,6 +132,24 @@ a{color:inherit;text-decoration:none;}
   font-size:clamp(18px,1.9vw,25px);font-weight:500;line-height:1.35;letter-spacing:-.02em;}
 .notte .sotto-titolo{color:var(--blu-3);}
 
+/* ── testi legali ────────────────────────────────────────── */
+.legale{max-width:82ch;margin-top:28px;padding:clamp(24px,4vw,44px);
+  background:var(--bg-2);border:1px solid var(--bordo);border-radius:var(--r);}
+.legale h2{font-size:clamp(23px,2.6vw,32px);color:var(--viola);}
+.legale .legale-sottotitolo{margin-top:8px;font-size:14px;font-weight:700;
+  letter-spacing:.08em;text-transform:uppercase;color:var(--blu);}
+.legale h3{margin-top:32px;font-size:20px;line-height:1.25;color:var(--ink);}
+.legale p{margin-top:15px;color:var(--ink-2);font-size:15.5px;line-height:1.72;}
+.legale ol,.legale ul{margin:16px 0 0;padding-left:24px;color:var(--ink-2);
+  font-size:15.5px;line-height:1.72;}
+.legale li+li{margin-top:8px;}
+.legale a{color:var(--blu);font-weight:600;text-decoration:underline;
+  text-underline-offset:3px;}
+@media (max-width:520px){
+  .legale{margin-top:22px;padding:22px 18px;}
+  .legale h3{margin-top:26px;font-size:18px;}
+}
+
 .sr{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;
   clip:rect(0 0 0 0);white-space:nowrap;border:0;}
 .salta{position:absolute;left:12px;top:-70px;z-index:var(--z-salta);background:var(--blu);color:#fff;
@@ -670,6 +688,38 @@ body.menu-open #menu{opacity:1;visibility:visible;transform:none;transition-dela
   .cic-arco,.cic-eti{transition:none;}
 }
 
+/* ── richiamo al simulatore ────────────────────────────────
+   Riquadro piccolo in basso a destra: non copre la lettura, resta
+   finche' non lo chiudi, e aspetta che l'avviso cookie abbia finito
+   il suo giro invece di accavallarcisi. */
+.promo{position:fixed;right:16px;bottom:16px;z-index:290;
+  width:min(292px,calc(100vw - 32px));
+  background:#fff;border:1px solid var(--bordo);border-radius:18px;
+  box-shadow:0 18px 44px rgba(15,27,61,.22);padding:20px 20px 18px;
+  overflow:hidden;
+  transform:translateY(140%);opacity:0;
+  transition:transform .55s var(--spring),opacity .4s var(--e);}
+.promo::before{content:"";position:absolute;left:0;right:0;top:0;height:4px;
+  background:var(--grad);}
+.promo.su{transform:translateY(0);opacity:1;}
+.promo-x{position:absolute;left:8px;top:8px;width:40px;height:40px;border-radius:11px;
+  display:grid;place-items:center;cursor:pointer;background:none;color:var(--ink-3);
+  transition:background-color .2s var(--e),color .2s var(--e);}
+.promo-x:hover{background:var(--bg-2);color:var(--ink);}
+.promo-x svg{width:12px;height:12px;fill:none;stroke:currentColor;stroke-width:2;
+  stroke-linecap:round;}
+.promo-m{display:block;height:44px;width:auto;margin:6px auto 12px;}
+.promo b{display:block;font-size:16.5px;font-weight:800;letter-spacing:-.02em;
+  color:var(--ink);line-height:1.2;}
+.promo p{margin:7px 0 0;font-size:13px;line-height:1.5;color:var(--ink-2);}
+.promo .b{margin-top:15px;width:100%;min-height:44px;font-size:14px;}
+@media (max-width:520px){
+  .promo{right:12px;left:12px;bottom:max(12px,env(safe-area-inset-bottom));
+    width:auto;padding:16px 16px 14px;}
+  .promo-m{height:36px;margin-bottom:8px;}
+}
+@media (prefers-reduced-motion:reduce){ .promo{transition:opacity .2s linear;} }
+
 /* ── avviso cookie ─────────────────────────────────────────
    Sta in basso e non copre la pagina: il sito oggi non installa nulla
    che profili, quindi bloccare la lettura per chiedere il permesso
@@ -916,18 +966,93 @@ input[type=range]:focus-visible::-moz-range-thumb{box-shadow:0 0 0 4px rgba(169,
   white-space:nowrap;transition:color .3s var(--e);}
 .scorri-s span:hover{color:var(--blu);}
 
-/* ── galleria progetti ────────────────────────────────────── */
-.gal{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:clamp(16px,2vw,24px);}
-.lav{border-radius:var(--r);overflow:hidden;border:1px solid var(--bordo);background:#fff;
-  box-shadow:var(--sh-1);transition:transform .4s var(--e),box-shadow .4s var(--e);}
-.lav:hover{transform:translateY(-5px);box-shadow:var(--sh-2);}
-.lav-f{aspect-ratio:3/2;background-size:cover;background-position:center;
-  transition:transform .6s var(--e);}
-.lav:hover .lav-f{transform:scale(1.05);}
-.lav-w{overflow:hidden;}
-.lav-t{padding:20px 22px 22px;}
-.lav-t h3{font-size:18px;}
-.lav-t p{font-size:14px;color:var(--ink-2);margin-top:5px;}
+/* ── case study progetti ────────────────────────────────────
+   La pagina resta una galleria leggera; ogni foto apre la storia
+   completa in primo piano, con il video come contenuto principale. */
+.progetti-griglia{display:grid;grid-template-columns:repeat(auto-fit,minmax(330px,1fr));
+  gap:clamp(16px,2vw,24px);align-items:start;}
+.progetto-card{overflow:hidden;padding:0;border:1px solid var(--bordo);
+  border-radius:var(--r);background:#fff;box-shadow:var(--sh-1);cursor:pointer;
+  text-align:left;color:var(--ink);transition:transform .4s var(--e),box-shadow .4s var(--e),
+  border-color .3s var(--e);}
+.progetto-card:hover{transform:translateY(-5px);border-color:var(--bordo-hi);box-shadow:var(--sh-2);}
+.progetto-card-foto{position:relative;display:block;overflow:hidden;aspect-ratio:3/2;background:var(--bg-2);}
+.progetto-card-meta{position:absolute;top:12px;right:12px;z-index:2;display:inline-flex;
+  align-items:center;gap:6px;padding:6px 11px;border-radius:999px;
+  font-size:11.5px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;
+  color:#fff;background:rgba(6,14,38,.58);backdrop-filter:blur(6px);
+  -webkit-backdrop-filter:blur(6px);border:1px solid rgba(255,255,255,.22);}
+.progetto-card-foto img{display:block;width:100%;height:100%;object-fit:cover;
+  transition:transform .65s var(--e);}
+.progetto-card:hover .progetto-card-foto img{transform:scale(1.045);}
+.progetto-card-testo{display:grid;grid-template-columns:minmax(0,1fr) 38px;align-items:center;
+  gap:14px;padding:20px 22px 22px;}
+.progetto-card-testo strong{display:block;font-size:19px;font-weight:800;letter-spacing:-.025em;}
+.progetto-card-testo small{display:block;margin-top:5px;font-size:14px;color:var(--ink-2);}
+.progetto-card-freccia{grid-column:2;grid-row:1;width:38px;height:38px;border-radius:50%;
+  display:grid;place-items:center;background:var(--blu-tenue);color:var(--blu);}
+.progetto-card-freccia svg{width:17px;height:17px;fill:none;stroke:currentColor;stroke-width:1.8;
+  stroke-linecap:round;stroke-linejoin:round;transition:transform .3s var(--spring);}
+.progetto-card:hover .progetto-card-freccia svg{transform:translate(2px,-2px);}
+
+body.caso-aperto{overflow:hidden;}
+.caso-dialog{width:min(1100px,calc(100vw - 30px));max-height:calc(100dvh - 30px);
+  margin:auto;padding:0;border:0;border-radius:clamp(20px,2.5vw,30px);overflow:auto;
+  color:var(--ink);background:#fff;box-shadow:0 30px 90px rgba(6,14,38,.38);}
+.caso-dialog::backdrop{background:rgba(7,15,39,.72);backdrop-filter:blur(8px);}
+.caso-dialog[open]{animation:caso-apri .38s var(--spring) both;}
+@keyframes caso-apri{from{opacity:0;transform:translateY(22px) scale(.975);}}
+.caso{position:relative;padding:clamp(22px,3.5vw,46px);background:#fff;}
+.caso-x{position:absolute;z-index:3;right:18px;top:18px;width:44px;height:44px;
+  display:grid;place-items:center;border-radius:50%;cursor:pointer;color:var(--ink);
+  background:rgba(255,255,255,.94);border:1px solid var(--bordo);box-shadow:var(--sh-1);
+  transition:transform .25s var(--spring),background-color .2s var(--e);}
+.caso-x:hover{transform:rotate(6deg) scale(1.06);background:var(--blu-tenue);}
+.caso-x svg{width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:2;
+  stroke-linecap:round;}
+.caso-testa{display:flex;align-items:flex-end;justify-content:space-between;
+  gap:22px;margin-bottom:clamp(20px,2.6vw,30px);padding-right:58px;}
+.caso-testa h2{margin-top:9px;font-size:clamp(28px,4.1vw,52px);line-height:1;
+  letter-spacing:-.05em;max-width:17ch;text-wrap:balance;}
+.caso-tag{flex:none;display:inline-flex;align-items:center;min-height:38px;padding:0 14px;
+  border-radius:999px;background:var(--blu-tenue);color:var(--blu);font-size:12.5px;
+  font-weight:800;letter-spacing:.03em;}
+.caso-video{overflow:hidden;border-radius:clamp(16px,2vw,22px);background:#091334;}
+.caso-video{display:grid;place-items:center;min-width:0;}
+.caso-video video{display:block;width:100%;max-height:62vh;aspect-ratio:16/9;object-fit:contain;
+  background:#091334;}
+.caso-credito{margin:10px 2px 0;text-align:right;font-size:12px;line-height:1.45;
+  color:var(--ink-2);}
+.caso-scatti{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));
+  gap:clamp(10px,1.2vw,16px);margin-top:clamp(22px,3vw,34px);}
+.caso-scatti figure{position:relative;margin:0;overflow:hidden;aspect-ratio:3/2;
+  border-radius:clamp(12px,1.4vw,16px);background:var(--bg-2);}
+.caso-scatti img{display:block;width:100%;height:100%;object-fit:cover;
+  transition:transform .55s var(--e);}
+.caso-scatti figure:hover img{transform:scale(1.04);}
+.caso-scatti figcaption{position:absolute;left:10px;bottom:10px;padding:6px 10px;border-radius:999px;
+  background:rgba(15,27,61,.76);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+  color:#fff;font-size:11px;font-weight:650;}
+.caso-info{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(260px,.65fr);
+  gap:clamp(28px,5vw,72px);align-items:start;margin-top:clamp(26px,3.4vw,44px);}
+.caso-info>p{font-size:clamp(17px,1.65vw,21px);line-height:1.62;color:var(--ink-2);}
+.caso-dati{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px 22px;
+  margin:0;padding:0;}
+.caso-dati div{padding-top:12px;border-top:1px solid var(--bordo);}
+.caso-dati dt{font-size:10.5px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--ink-3);}
+.caso-dati dd{margin:5px 0 0;font-size:14px;font-weight:700;line-height:1.35;color:var(--ink);}
+@media (max-width:820px){
+  .caso-testa{align-items:flex-start;flex-direction:column;}
+  .caso-info{grid-template-columns:minmax(0,1fr);}
+}
+@media (max-width:470px){
+  .caso-dialog{width:calc(100vw - 16px);max-height:calc(100dvh - 16px);}
+  .caso{padding:18px 14px;}
+  .caso-testa{padding-right:48px;}
+  .caso-x{right:10px;top:10px;}
+  .caso-dati{grid-template-columns:minmax(0,1fr);}
+}
 
 /* ── form ─────────────────────────────────────────────────── */
 .form{display:flex;flex-direction:column;gap:20px;}
@@ -1022,6 +1147,70 @@ input[type=range]:focus-visible::-moz-range-thumb{box-shadow:0 0 0 4px rgba(169,
 .notte .riga-i .ic{background:rgba(255,255,255,.12);}
 .notte .riga-i .ic svg{stroke:var(--blu-3);}
 .notte .riga-i b{color:#B7C2E4;}
+
+/* ── CTA dedicate alle tre pagine servizi ─────────────────
+   Una sola riga, tutta cliccabile. Il marchio fa da punto magnetico e
+   la scia luminosa aggiunge energia senza rubare spazio ai contenuti. */
+.serv-cta-sec{padding:0 0 clamp(44px,5.6vw,88px);}
+.serv-cta{--cta-luce:#8EA2FF;position:relative;isolation:isolate;overflow:hidden;
+  min-height:126px;display:grid;grid-template-columns:76px minmax(0,1fr) auto;
+  align-items:center;gap:clamp(18px,2.4vw,34px);padding:22px clamp(22px,3vw,38px);
+  border-radius:24px;color:#fff;background:
+  radial-gradient(circle at 12% 20%,rgba(91,118,245,.4),transparent 34%),
+  linear-gradient(118deg,#101C46 0%,#1C2E70 62%,#263F99 100%);
+  box-shadow:0 22px 54px rgba(15,27,61,.2);text-decoration:none;
+  transition:transform .45s var(--spring),box-shadow .45s var(--e);}
+.serv-cta--taxi{--cta-luce:#A9B8F7;}
+.serv-cta--mix{--cta-luce:#AFC0FF;}
+.serv-cta::before{content:"";position:absolute;z-index:-1;inset:-80% -35%;
+  background:linear-gradient(105deg,transparent 39%,rgba(255,255,255,.18) 48%,
+  rgba(255,255,255,.04) 55%,transparent 64%);transform:translateX(-55%) rotate(7deg);
+  animation:serv-scia 5.4s var(--e) infinite;pointer-events:none;}
+.serv-cta::after{content:"";position:absolute;z-index:-1;right:-48px;bottom:-78px;
+  width:210px;height:210px;border-radius:50%;border:1px solid rgba(255,255,255,.14);
+  box-shadow:0 0 0 28px rgba(255,255,255,.035),0 0 0 58px rgba(255,255,255,.025);
+  transition:transform .55s var(--spring);pointer-events:none;}
+.serv-cta:hover{transform:translateY(-5px);box-shadow:0 30px 68px rgba(15,27,61,.28);}
+.serv-cta:hover::after{transform:scale(1.13) translate(-7px,-7px);}
+.serv-cta-m{position:relative;width:72px;height:72px;display:grid;place-items:center;
+  flex:none;border-radius:21px;background:#fff;box-shadow:0 12px 30px rgba(5,12,35,.25);
+  transform:rotate(-5deg);transition:transform .5s var(--spring);}
+.serv-cta-m::before{content:"";position:absolute;inset:-7px;border-radius:27px;
+  border:1px solid var(--cta-luce);opacity:.6;animation:serv-orbita 2.8s ease-in-out infinite;}
+.serv-cta-m img{display:block;width:auto;height:55px;}
+.serv-cta:hover .serv-cta-m{transform:rotate(4deg) scale(1.07);}
+.serv-cta-copy{display:flex;min-width:0;flex-direction:column;align-items:flex-start;}
+.serv-cta-k{font-size:11px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--cta-luce);}
+.serv-cta-copy strong{margin-top:5px;font-size:clamp(20px,2.35vw,30px);line-height:1.1;
+  letter-spacing:-.035em;text-wrap:balance;}
+.serv-cta-copy small{margin-top:7px;font-size:13.5px;line-height:1.45;color:#C9D3F0;}
+.serv-cta-azione{position:relative;z-index:1;display:inline-flex;align-items:center;gap:12px;
+  min-height:48px;padding:0 9px 0 19px;border-radius:999px;background:#fff;color:var(--placca);
+  font-size:14px;font-weight:800;white-space:nowrap;box-shadow:0 10px 24px rgba(5,12,35,.2);}
+.serv-cta-azione svg{width:32px;height:32px;padding:8px;border-radius:50%;
+  fill:none;stroke:#fff;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;
+  background:var(--blu-2);transition:transform .35s var(--spring);}
+.serv-cta:hover .serv-cta-azione svg{transform:translateX(4px) rotate(-8deg);}
+.campo.precompilato select{border-color:var(--blu);animation:campo-pronto 1.25s var(--e);}
+@keyframes serv-scia{
+  0%,22%{transform:translateX(-55%) rotate(7deg);}
+  62%,100%{transform:translateX(55%) rotate(7deg);}
+}
+@keyframes serv-orbita{50%{transform:scale(1.1);opacity:.18;}}
+@keyframes campo-pronto{
+  0%,100%{box-shadow:0 0 0 0 rgba(43,71,214,0);}
+  35%{box-shadow:0 0 0 6px rgba(43,71,214,.16);}
+}
+@media (max-width:760px){
+  .serv-cta{grid-template-columns:58px minmax(0,1fr);gap:15px;min-height:0;
+    padding:19px;border-radius:20px;}
+  .serv-cta-m{width:58px;height:58px;border-radius:17px;}
+  .serv-cta-m img{height:44px;}
+  .serv-cta-azione{grid-column:1/-1;width:100%;justify-content:space-between;margin-top:2px;}
+  .serv-cta-copy strong{font-size:20px;}
+  .serv-cta-copy small{font-size:12.5px;}
+}
 
 /* ── footer ───────────────────────────────────────────────── */
 .ft{background:var(--bg-2);border-top:1px solid var(--bordo);}
@@ -1156,12 +1345,22 @@ input[type=range]:focus-visible::-moz-range-thumb{box-shadow:0 0 0 4px rgba(169,
   <a href="#contattaci" data-go="contattaci">Contattaci</a>
 </nav>
 
+<aside class="promo" id="promo" aria-labelledby="promo-titolo" hidden>
+  <button class="promo-x" type="button" id="promo-x" aria-label="Chiudi il banner del simulatore">
+    <svg viewBox="0 0 12 12" aria-hidden="true"><path d="m1 1 10 10M11 1 1 11"/></svg>
+  </button>
+  <img class="promo-m" src="data:image/png;base64,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" alt="" width="240" height="281">
+  <b id="promo-titolo">Prova il simulatore TMC</b>
+  <p>Stima in pochi passaggi i contatti lordi raggiungibili dalla tua campagna.</p>
+  <a class="b b--pri" href="#simulatore" data-go="simulatore" id="promo-vai">Prova ora</a>
+</aside>
+
 <div class="ck" id="ck" role="dialog" aria-live="polite" aria-labelledby="ck-t" hidden>
   <p class="ck-t" id="ck-t">
     <b>Cookie e dati personali</b>
     Questo sito usa solo cookie tecnici, necessari a farlo funzionare. Non profiliamo,
     non usiamo strumenti di terze parti e non cediamo i tuoi dati.
-    <a href="#privacy" data-go="privacy">Leggi l&rsquo;informativa</a>.
+    <a href="#cookie" data-go="cookie">Leggi la Cookie Policy</a>.
   </p>
   <div class="ck-b">
     <button class="b b--gh" type="button" id="ck-no">Solo essenziali</button>
@@ -1178,12 +1377,12 @@ input[type=range]:focus-visible::-moz-range-thumb{box-shadow:0 0 0 4px rgba(169,
   <div class="hero">
     <!-- foto a tutta larghezza: fuori dal contenitore centrato -->
     <div class="foto" id="sfondo">
-      <img class="slide att" alt="" aria-hidden="true" style="object-position:50% 62%" data-src="thai-taxi-2000.jpg" data-srcset="thai-taxi-900.jpg 900w, thai-taxi-1600.jpg 1600w, thai-taxi-2000.jpg 2000w" sizes="100vw" fetchpriority="high">
-      <img class="slide" alt="" aria-hidden="true" style="object-position:44% 62%" data-src="radioitalia-tram-1920.jpg" data-srcset="radioitalia-tram-900.jpg 900w, radioitalia-tram-1600.jpg 1600w, radioitalia-tram-1920.jpg 1920w" sizes="100vw">
-      <img class="slide" alt="" aria-hidden="true" style="object-position:55% 62%" data-src="giubileo-taxi-2000.jpg" data-srcset="giubileo-taxi-900.jpg 900w, giubileo-taxi-1600.jpg 1600w, giubileo-taxi-2000.jpg 2000w" sizes="100vw">
-      <img class="slide" alt="" aria-hidden="true" style="object-position:46% 32%" data-src="baci-led-roma-1969.jpg" data-srcset="baci-led-roma-900.jpg 900w, baci-led-roma-1600.jpg 1600w, baci-led-roma-1969.jpg 1969w" sizes="100vw">
-      <img class="slide" alt="" aria-hidden="true" style="object-position:50% 55%" data-src="bancomat-metro-4000.jpg" data-srcset="bancomat-metro-900.jpg 900w, bancomat-metro-1600.jpg 1600w, bancomat-metro-4000.jpg 4000w" sizes="100vw">
-      <img class="slide" alt="" aria-hidden="true" style="object-position:46% 30%" data-src="cuba-led-1260.jpg" data-srcset="cuba-led-900.jpg 900w, cuba-led-1260.jpg 1260w" sizes="100vw">
+      <img class="slide att" alt="" aria-hidden="true" style="object-position:50% 62%" data-src="img/hero/thai-taxi-2000.jpg" data-srcset="img/hero/thai-taxi-900.jpg 900w, img/hero/thai-taxi-1600.jpg 1600w, img/hero/thai-taxi-2000.jpg 2000w" sizes="100vw" fetchpriority="high">
+      <img class="slide" alt="" aria-hidden="true" style="object-position:44% 62%" data-src="img/hero/radioitalia-tram-1920.jpg" data-srcset="img/hero/radioitalia-tram-900.jpg 900w, img/hero/radioitalia-tram-1600.jpg 1600w, img/hero/radioitalia-tram-1920.jpg 1920w" sizes="100vw">
+      <img class="slide" alt="" aria-hidden="true" style="object-position:55% 62%" data-src="img/hero/giubileo-taxi-2000.jpg" data-srcset="img/hero/giubileo-taxi-900.jpg 900w, img/hero/giubileo-taxi-1600.jpg 1600w, img/hero/giubileo-taxi-2000.jpg 2000w" sizes="100vw">
+      <img class="slide" alt="" aria-hidden="true" style="object-position:46% 32%" data-src="img/hero/baci-led-roma-1969.jpg" data-srcset="img/hero/baci-led-roma-900.jpg 900w, img/hero/baci-led-roma-1600.jpg 1600w, img/hero/baci-led-roma-1969.jpg 1969w" sizes="100vw">
+      <img class="slide" alt="" aria-hidden="true" style="object-position:50% 55%" data-src="img/hero/bancomat-metro-4000.jpg" data-srcset="img/hero/bancomat-metro-900.jpg 900w, img/hero/bancomat-metro-1600.jpg 1600w, img/hero/bancomat-metro-4000.jpg 4000w" sizes="100vw">
+      <img class="slide" alt="" aria-hidden="true" style="object-position:46% 30%" data-src="img/hero/cuba-led-1260.jpg" data-srcset="img/hero/cuba-led-900.jpg 900w, img/hero/cuba-led-1260.jpg 1260w" sizes="100vw">
 
       <div class="velo" aria-hidden="true"></div>
 
@@ -1269,7 +1468,7 @@ input[type=range]:focus-visible::-moz-range-thumb{box-shadow:0 0 0 4px rgba(169,
         </div>
         <div>
           <span class="occhiello">Chi siamo</span>
-          <h2 class="mid" style="margin-top:12px;max-width:20ch">Venticinque anni, sempre noi due.</h2>
+          <h2 class="mid" style="margin-top:12px;max-width:20ch">Venticinque anni, lo stesso modo di esserci.</h2>
           <p class="lead" style="margin-top:16px;max-width:52ch">
             Siamo cresciuti: l'ufficio, i clienti, le citt&agrave;. Non &egrave; cambiato chi vi
             risponde al telefono. Seguiamo ogni progetto in prima persona, costruendo campagne
@@ -1456,6 +1655,22 @@ input[type=range]:focus-visible::-moz-range-thumb{box-shadow:0 0 0 4px rgba(169,
     </div>
   </section>
 
+  <section class="serv-cta-sec" aria-label="Richiedi una campagna OOH e DOOH">
+    <div class="wrap">
+      <a class="serv-cta rv" href="#contattaci" data-go="contattaci"
+         data-motivo="Campagna out of home" aria-label="Parliamo della tua campagna OOH e DOOH">
+        <span class="serv-cta-m" aria-hidden="true"><img src="img/brand/M_tmc-01.svg" alt=""></span>
+        <span class="serv-cta-copy">
+          <span class="serv-cta-k">OOH e DOOH</span>
+          <strong>Richiedi una campagna OOH e DOOH.</strong>
+          <small>Indicaci citt&agrave;, formato e periodo.</small>
+        </span>
+        <span class="serv-cta-azione">Richiedi informazioni
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </span>
+      </a>
+    </div>
+  </section>
 
 </section>
 
@@ -1507,6 +1722,23 @@ input[type=range]:focus-visible::-moz-range-thumb{box-shadow:0 0 0 4px rgba(169,
         <div class="pg7" role="img" aria-label="Bus del city tour brandizzato davanti alla Puerta de Alcalá a Madrid"
              style="aspect-ratio:4/3;background-size:cover;background-position:center"></div>
       </div>
+    </div>
+  </section>
+
+  <section class="serv-cta-sec" aria-label="Richiedi una campagna Taxi Advertising">
+    <div class="wrap">
+      <a class="serv-cta serv-cta--taxi rv" href="#contattaci" data-go="contattaci"
+         data-motivo="Campagna taxi" aria-label="Parliamo della tua campagna Taxi Advertising">
+        <span class="serv-cta-m" aria-hidden="true"><img src="img/brand/M_tmc-01.svg" alt=""></span>
+        <span class="serv-cta-copy">
+          <span class="serv-cta-k">Taxi Advertising</span>
+          <strong>Richiedi una campagna pubblicitaria dinamica.</strong>
+          <small>Indicaci citt&agrave;, numero di taxi e durata.</small>
+        </span>
+        <span class="serv-cta-azione">Richiedi informazioni
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </span>
+      </a>
     </div>
   </section>
 </section>
@@ -1572,6 +1804,23 @@ input[type=range]:focus-visible::-moz-range-thumb{box-shadow:0 0 0 4px rgba(169,
           <p id="pila-desc">Affissioni, maxi affissioni e impianti digitali nei punti di maggior passaggio della città.</p>
         </div>
       </div>
+    </div>
+  </section>
+
+  <section class="serv-cta-sec" aria-label="Richiedi una campagna media integrata">
+    <div class="wrap">
+      <a class="serv-cta serv-cta--mix rv" href="#contattaci" data-go="contattaci"
+         data-motivo="Campagna media" aria-label="Parliamo della tua campagna media integrata">
+        <span class="serv-cta-m" aria-hidden="true"><img src="img/brand/M_tmc-01.svg" alt=""></span>
+        <span class="serv-cta-copy">
+          <span class="serv-cta-k">Campagne media integrate</span>
+          <strong>Richiedi una campagna su pi&ugrave; canali.</strong>
+          <small>Indicaci obiettivi, pubblico e budget.</small>
+        </span>
+        <span class="serv-cta-azione">Richiedi informazioni
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </span>
+      </a>
     </div>
   </section>
 
@@ -1658,54 +1907,142 @@ input[type=range]:focus-visible::-moz-range-thumb{box-shadow:0 0 0 4px rgba(169,
   <div class="hero hero--testo" style="padding-bottom:clamp(20px,2.6vw,36px)">
     <div class="aura aura-2" aria-hidden="true"></div>
     <div class="wrap">
-      <span class="occhiello">Progetti</span>
-      <h1 class="big" style="margin-top:16px;max-width:17ch">Le campagne che abbiamo portato in strada.</h1>
+      <span class="occhiello">Perch&eacute; sceglierci</span>
+      <h1 class="big" style="margin-top:16px;max-width:17ch">Campagne e progetti realizzati negli anni.</h1>
       <p class="lead" style="margin-top:20px;max-width:58ch">
-        Una selezione di allestimenti su taxi, bus, maxi affissioni e impianti digitali, tra Roma, Milano e l'estero.
+        Una selezione dei lavori creati per i brand che ci hanno scelto: taxi, bus, maxi affissioni e impianti digitali, in Italia e all'estero.
       </p>
     </div>
   </div>
 
   <section class="sec" style="padding-top:clamp(20px,2.6vw,36px)">
-    <div class="wrap gal">
-      <article class="lav rv">
-        <div class="lav-w"><div class="lav-f pg1" role="img" aria-label="Maxi affissione Il Sole 24 Ore su edificio a Roma"></div></div>
-        <div class="lav-t"><h3>Il Sole 24 Ore</h3><p>Maxi affissione · Roma</p></div>
-      </article>
-      <article class="lav rv d1">
-        <div class="lav-w"><div class="lav-f pg2" role="img" aria-label="Taxi brandizzato Acque Minerali d'Italia in piazza San Pietro"></div></div>
-        <div class="lav-t"><h3>Acque Minerali d'Italia</h3><p>Campagna taxi · Roma</p></div>
-      </article>
-      <article class="lav rv d2">
-        <div class="lav-w"><div class="lav-f pg3" role="img" aria-label="Maxi schermo LED con campagna RDS in piazza a Milano"></div></div>
-        <div class="lav-t"><h3>RDS</h3><p>Maxi LED · Milano</p></div>
-      </article>
-      <article class="lav rv">
-        <div class="lav-w"><div class="lav-f pg4" role="img" aria-label="Taxi brandizzato Visa davanti al Colosseo"></div></div>
-        <div class="lav-t"><h3>Visa</h3><p>Campagna taxi · Roma</p></div>
-      </article>
-      <article class="lav rv d1">
-        <div class="lav-w"><div class="lav-f pg5" role="img" aria-label="Minibus brandizzato Aeroitalia nel centro di Roma"></div></div>
-        <div class="lav-t"><h3>Aeroitalia</h3><p>Minibus brandizzato · Roma</p></div>
-      </article>
-      <article class="lav rv d2">
-        <div class="lav-w"><div class="lav-f pg6" role="img" aria-label="Maxi LED con campagna turistica Cuba"></div></div>
-        <div class="lav-t"><h3>Cuba</h3><p>Maxi LED</p></div>
-      </article>
-      <article class="lav rv">
-        <div class="lav-w"><div class="lav-f pg7" role="img" aria-label="Bus Madrid City Tour davanti alla Puerta de Alcalá"></div></div>
-        <div class="lav-t"><h3>Madrid City Tour</h3><p>City tour bus · Madrid</p></div>
-      </article>
-      <article class="lav rv d1">
-        <div class="lav-w"><div class="lav-f pg8" role="img" aria-label="Taxi brandizzato Seychelles nella Galleria Vittorio Emanuele a Milano"></div></div>
-        <div class="lav-t"><h3>Seychelles</h3><p>Campagna taxi · Milano</p></div>
-      </article>
+    <div class="wrap progetti-griglia">
+      <button class="progetto-card rv" type="button" data-caso-apri="caso-bancomat"
+              aria-haspopup="dialog" aria-controls="caso-bancomat">
+        <span class="progetto-card-foto">
+          <img src="img/progetti/bancomat/termini-maxi-led.jpg"
+               alt="Maxi schermo BANCOMAT nell'atrio della stazione di Roma Termini"
+               width="2200" height="1466">
+          <span class="progetto-card-meta">Roma e Milano &middot; Dic 2025</span>
+        </span>
+        <span class="progetto-card-testo">
+          <span><strong>Bancomat</strong><small>Campagna media integrata</small></span>
+          <span class="progetto-card-freccia" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M7 17 17 7M9 7h8v8"/></svg>
+          </span>
+        </span>
+      </button>
+      <button class="progetto-card rv" type="button" data-caso-apri="caso-cremonini"
+              aria-haspopup="dialog" aria-controls="caso-cremonini">
+        <span class="progetto-card-foto">
+          <img src="img/progetti/cesare-cremonini-milano.jpg"
+               alt="Affissione su parete dedicata a Cesare Cremonini in via Festa del Perdono a Milano"
+               width="800" height="534">
+          <span class="progetto-card-meta">Milano &middot; 2021</span>
+        </span>
+        <span class="progetto-card-testo">
+          <span><strong>Cesare Cremonini &middot; Radio Italia</strong><small>Campagna OOH</small></span>
+          <span class="progetto-card-freccia" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M7 17 17 7M9 7h8v8"/></svg>
+          </span>
+        </span>
+      </button>
     </div>
-    <div class="wrap">
-      <p class="dim tiny rv" style="margin-top:26px">
-        <strong style="color:var(--txt)">[Didascalie da confermare]</strong> — nome cliente, formato e città di ciascuna campagna.
-      </p>
-    </div>
+
+    <dialog class="caso-dialog" id="caso-cremonini" aria-labelledby="caso-cremonini-titolo">
+      <article class="caso">
+        <button class="caso-x" type="button" data-caso-chiudi aria-label="Chiudi il progetto">
+          <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M2 2l12 12M14 2 2 14"/></svg>
+        </button>
+        <header class="caso-testa">
+          <div>
+            <span class="occhiello">Radio Italia &middot; Milano, 2021</span>
+            <h2 id="caso-cremonini-titolo">Cesare Cremonini &mdash; Stadi 2022</h2>
+          </div>
+          <span class="caso-tag">Campagna OOH</span>
+        </header>
+
+        <div class="caso-media">
+          <div class="caso-video">
+            <video controls playsinline preload="metadata"
+                   poster="img/progetti/cesare-cremonini-milano.jpg"
+                   aria-label="Video dell'affissione su parete dedicata al tour Stadi 2022 di Cesare Cremonini">
+              <source src="img/progetti/cesare-cremonini-radio-italia.mp4" type="video/mp4">
+              Il tuo browser non supporta la riproduzione video.
+            </video>
+          </div>
+          <p class="caso-credito">Video e diritti: Radio Italia</p>
+        </div>
+
+        <div class="caso-info">
+          <p>
+            Per Radio Italia abbiamo pianificato a Milano una campagna OOH dedicata al Tour negli Stadi 2022 di Cesare Cremonini. L&rsquo;affissione su parete, realizzata dall&rsquo;artista ROSK! sul wall ONE di via Festa del Perdono, ha occupato una superficie di circa 130 m&sup2; in una posizione di grande passaggio davanti all&rsquo;Universit&agrave; Statale.
+          </p>
+          <dl class="caso-dati" aria-label="Dettagli del progetto">
+            <div><dt>Cliente</dt><dd>Radio Italia</dd></div>
+            <div><dt>Luogo</dt><dd>Milano</dd></div>
+            <div><dt>Formato</dt><dd>Affissione su parete, 130 m&sup2;</dd></div>
+            <div><dt>Artista</dt><dd>ROSK!</dd></div>
+          </dl>
+        </div>
+      </article>
+    </dialog>
+
+    <dialog class="caso-dialog" id="caso-bancomat" aria-labelledby="caso-bancomat-titolo">
+      <article class="caso">
+        <button class="caso-x" type="button" data-caso-chiudi aria-label="Chiudi il progetto">
+          <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M2 2l12 12M14 2 2 14"/></svg>
+        </button>
+        <header class="caso-testa">
+          <div>
+            <span class="occhiello">Bancomat &middot; Roma e Milano, dicembre 2025</span>
+            <h2 id="caso-bancomat-titolo">Bancomat &mdash; Dalla stazione allo smartphone</h2>
+          </div>
+          <span class="caso-tag">Campagna media integrata</span>
+        </header>
+
+        <div class="caso-media">
+          <div class="caso-video">
+            <video controls playsinline preload="metadata"
+                   poster="img/progetti/bancomat/flash-mob-poster.jpg"
+                   aria-label="Video del flash mob dei Babbi Natale BANCOMAT davanti alla stazione Roma Termini">
+              <source src="img/progetti/bancomat/flash-mob-termini.mp4" type="video/mp4">
+              Il tuo browser non supporta la riproduzione video.
+            </video>
+          </div>
+        </div>
+
+        <div class="caso-info">
+          <p>
+            Per Bancomat abbiamo pianificato una campagna integrata tra Roma e Milano con un obiettivo unico: far scaricare l&rsquo;app. Maxi affissioni negli spazi Grandi Stazioni di Roma Termini e Milano Centrale, domination delle metropolitane sugli spazi IGPDecaux &mdash; Barberini a Roma e Cadorna a Milano &mdash; e un&rsquo;attivazione dal vivo: un flash mob di Babbi Natale brandizzati Bancomat, con un balletto davanti a Termini.
+          </p>
+          <dl class="caso-dati" aria-label="Dettagli del progetto">
+            <div><dt>Cliente</dt><dd>Bancomat</dd></div>
+            <div><dt>Obiettivo</dt><dd>Download dell&rsquo;app</dd></div>
+            <div><dt>Mezzi</dt><dd>Maxi affissioni, domination metro, flash mob</dd></div>
+            <div><dt>Spazi</dt><dd>Grandi Stazioni, IGPDecaux</dd></div>
+          </dl>
+        </div>
+
+        <div class="caso-scatti">
+          <figure>
+            <img src="img/progetti/bancomat/barberini-ingresso.jpg" width="2200" height="1467" loading="lazy"
+                 alt="La stazione metro Barberini a Roma interamente brandizzata BANCOMAT">
+            <figcaption>Barberini &middot; Ingresso</figcaption>
+          </figure>
+          <figure>
+            <img src="img/progetti/bancomat/barberini-tornelli.jpg" width="2200" height="1467" loading="lazy"
+                 alt="Tornelli e pareti della metro Barberini brandizzati BANCOMAT">
+            <figcaption>Barberini &middot; Station domination</figcaption>
+          </figure>
+          <figure>
+            <img src="img/progetti/bancomat/barberini-domination.jpg" width="2200" height="1467" loading="lazy"
+                 alt="Domination azzurra BANCOMAT nella stazione Barberini">
+            <figcaption>Barberini &middot; IGPDecaux</figcaption>
+          </figure>
+        </div>
+      </article>
+    </dialog>
   </section>
 
   <section class="sec" style="padding-top:0">
@@ -1719,6 +2056,7 @@ input[type=range]:focus-visible::-moz-range-thumb{box-shadow:0 0 0 4px rgba(169,
     </div>
   </section>
 </section>
+
 
 <!-- ═══════════ SIMULATORE ═══════════ -->
 <section class="pg" id="pg-simulatore">
@@ -1953,11 +2291,205 @@ input[type=range]:focus-visible::-moz-range-thumb{box-shadow:0 0 0 4px rgba(169,
 <section class="pg" id="pg-privacy">
   <div class="wrap sec">
     <span class="occhiello">Info</span>
-    <h1 class="mid" style="margin-top:14px">Privacy &amp; Cookie Policy</h1>
-    <p class="lead" style="margin-top:18px;max-width:64ch">
-      In questa pagina vanno inseriti i testi legali definitivi: titolare del trattamento, base giuridica, finalità, tempi di conservazione, diritti dell'interessato e l'elenco dei cookie utilizzati.
-      <strong style="color:var(--txt)">[Testi legali da fornire]</strong>
-    </p>
+    <h1 class="mid" style="margin-top:14px">Privacy Policy</h1>
+    <article class="legale">
+      <p class="legale-sottotitolo">Informativa per il trattamento dei dati personali</p>
+
+      <p>Nel darLe il benvenuto nel nostro sito www.themediacompany.it (di seguito denominato “Sito”), La invitiamo a leggere con attenzione la seguente informativa, che sarà applicabile sia nel caso in cui Lei acceda al Sito e decida di acquistare uno o più prodotti offerti in vendita sul Sito stesso sia nel caso in cui Lei acceda al Sito solo per navigare al suo interno e decida di non acquistare alcun prodotto.</p>
+
+      <h3>1. Titolarità del trattamento dei dati, Responsabile del trattamento dei dati e Responsabile della protezione dei dati (DPO)</h3>
+
+      <p>The Media Company Store s.r.l., Viale di Villa Grazioli 1, 00198 – Roma, nel rispetto dei propri utenti ad essere informati circa la raccolta e le altre operazioni di trattamento dei dati personali che li riguardano, La informa ai sensi e per gli effetti degli art. 13 D.Lgs. 30.6.2003 n. 196 (in seguito, “Codice Privacy”) e degli artt. 13 e 14 Regolamento UE n. 2016/679 (in seguito, “GDPR”) di essere Titolare del trattamento dei dati personali raccolti attraverso questo sito, ossia di essere il soggetto che, da solo o unitamente ad altri esegue il trattamento, stabilendo in via autonoma le finalità e le modalità del trattamento, la tipologia di dati da sottoporre a trattamento e le operazioni da effettuare con i dati.</p>
+
+      <p>Le ricordiamo che i dati personali sono i dati che, singolarmente o unitamente ad ulteriori informazioni a nostra disposizione, possono essere utilizzati per identificarLa, quali nome, indirizzo di spedizione e fatturazione, indirizzo e-mail, numero di telefono, eventuale numero di identificazione e data di nascita, dati relativi a ora e posizione, informazioni relative al conto bancario, dati relativi a transazioni e pagamenti, consegne e altre informazioni associate al vostro account, da noi raccolte durante l’erogazione dei nostri servizi.</p>
+
+      <p>Il nominativo del responsabile del trattamento sarà fornito su richiesta degli utenti e degli interessati.<br>I dati del Responsabile della Protezione dei Dati, se designato, saranno pubblicati integrando la presente informativa.</p>
+
+      <h3>2. Raccolta dei dati e finalità del trattamento</h3>
+
+      <p>La informiamo che The Media Company Store s.r.l. non raccoglie alcun tipo di dati senza l’espresso consenso e/o senza un’esplicita richiesta da parte dell’utente e/o l’inserimento di credenziali direttamente scelte dallo stesso e non li utilizza in alcun modo per attività di profilazione e/o di analisi delle preferenze commerciali o di navigazione.</p>
+
+      <p>Alcuni dati vengono automaticamente raccolti dai vostri dispositivi o browser tramite l’interazione con il nostro Sito. Ulteriori informazioni su queste pratiche sono incluse nella sezione “Cookie” della presente informativa sulla privacy. Questi dati includono: Cookie, indirizzi IP, intestazioni dei referrer, dati che identificano il browser e la versione in uso, web beacons e tags.</p>
+
+      <p>Non consentiamo la registrazione presso il nostro Sito o App a coloro che non hanno raggiunto l’età minima stabilita dalla legge del proprio paese di residenza.</p>
+
+      <p>I dati vengono raccolti da The Media Company Store s.r.l. solo per finalità considerate lecite dalla normativa vigente ed essenzialmente per i seguenti servizi:</p>
+
+      <ol type="a">
+        <li>per consentirLe di navigare all’interno di questo sito;</li>
+        <li>per inviarLe via e-mail, newsletter, comunicazioni commerciali e/o promozionali su prodotti o servizi offerti dal Titolare e rilevazione della qualità del servizio e del grado di soddisfazione sulla qualità dei servizi stessi nonché comunicazioni commerciali e/o promozionali su prodotti o servizi offerti da soggetti terzi (ad esempio, business partner, compagnie assicurative, altre società del gruppo);</li>
+        <li>per gestire le nostre liste utenti;</li>
+        <li>per concludere ed eseguire i contratti di compravendita dei nostri prodotti e servizi nel rispetto della normativa vigente ed applicabile, per adempiere agli obblighi precontrattuali, contrattuali e fiscali derivanti da rapporti con Lei in essere, come previsti dalla legge, da un regolamento, dalla normativa comunitaria e/o da ordini dell’Autorità (come ad esempio in materia di antiriciclaggio);</li>
+        <li>per consentirLe di interagire sui blog ed inserirvi i Suoi commenti.</li>
+      </ol>
+
+      <p>Le illustriamo ora le finalità di trattamento relative a ciascun servizio.</p>
+
+      <p><strong>a. Navigazione:</strong> utilizziamo cookie esclusivamente per fornirLe un servizio di navigazione più agevole semplice e per estrapolare dati statistici anonimi sui flussi di navigazione e sugli accessi al sito e alle sue varie sezioni.</p>
+
+      <p><strong>b. Newsletter:</strong> l’indirizzo di posta elettronica fornito in occasione dell’accettazione di tale specifico servizio non verrà in alcun modo aggregato ad altro dato personale in grado di identificarLa direttamente ad eccezione del caso in cui l’indirizzo corrisponda al nome_cognome dell’intestatario. Qualora il Suo indirizzo sia già presente nei nostri database, il dato risulterà aggregato alle altre informazioni personali. In ogni caso Lei potrà in qualsiasi momento revocare l’iscrizione alla newsletter nonché richiedere la cancellazione, la correzione o la modifica dei dati.</p>
+
+      <p><strong>c. Liste utenti:</strong> questo è un sito chiuso, pertanto i dati inseriti in questa sezione non sono pubblicati ossia non sono accessibili liberamente. I Suoi dati vengono trattati per svolgere attività di fidelizzazione in senso stretto ossia connesse all’iscrizione del programma Community, non esercitabile in forma anonima, necessarie all’attribuzione dei vantaggi inerenti al suo utilizzo, tra cui, la fruizione e il riconoscimento di promozioni, l’offerta e l’invio di premi, la partecipazione a raccolte punti e ad eventi promozionali riservati alla clientela fidelizzata, ecc.</p>
+
+      <p>In ogni caso Lei potrà in qualsiasi momento richiedere la cancellazione, la correzione o la modifica dei dati.</p>
+
+      <p><strong>d. Contratti di compravendita:</strong> i dati raccolti per la conclusione e l’esecuzione dei contratti di compravendita dei nostri prodotti o servizi vengono da Lei conferiti per lo svolgimento di tutte le attività connesse ai contratti in essere con The Media Company Store s.r.l. Le ricordiamo che il conferimento dei Suoi dati personali è indispensabile per l’adempimento degli obblighi contrattuali da parte della ns. società e tali dati potranno essere trasferiti a soggetti terzi ns. collaboratori nelle varie fasi del contratto o per il rispetto della normativa anche fiscale vigente.</p>
+
+      <p><strong>e. Blog:</strong> l’indirizzo di posta elettronica fornito insieme alla password in occasione dell’accettazione di tale specifico servizio non verrà in alcun modo aggregato ad altro dato personale in grado di identificarLa direttamente, ad eccezione del caso in cui l’indirizzo corrisponda al nome_cognome dell’intestatario. Qualora il Suo indirizzo sia già presente nei nostri database, il dato risulterà aggregato alle altre informazioni personali. In ogni caso Lei potrà in qualsiasi momento revocare l’iscrizione al blog nonché richiedere la cancellazione, la correzione o la modifica dei dati.</p>
+
+      <p>L’utente potrà in ogni momento esercitare tutti i diritti previsti dal GDPR e dalla normativa italiana vigente in materia facendone richiesta all’indirizzo: <a href="mailto:segreteria@themediacompany.it">segreteria@themediacompany.it</a>.</p>
+
+      <p>Ti informiamo che sono osservate idonee misure di sicurezza anche ai sensi degli artt. 5 e 32 del GDPR per prevenire la perdita dei dati, usi illeciti o non corretti ed accessi non autorizzati.</p>
+
+      <h3>3. Modalità di trattamento</h3>
+
+      <p>Il trattamento dei Suoi dati personali è realizzato per mezzo delle operazioni o complesso di operazioni indicate all’art. 4 Codice Privacy e all’art. 4 n. 2) GDPR e precisamente: la raccolta, la registrazione, l’organizzazione, la conservazione, la consultazione, l’elaborazione, la modificazione, la selezione, l’estrazione, il raffronto, l’utilizzo, l’interconnessione, il blocco, la comunicazione, la diffusione, la cancellazione e la distruzione di dati, effettuati anche senza l’ausilio di strumenti elettronici e/o non registrati in banca dati. Il trattamento dei dati avverrà mediante strumenti cartacei e informatici.</p>
+
+      <h3>4. Durata del trattamento</h3>
+
+      <p>Il Sito è configurato in modo tale che l’uso dei Suoi dati personali sia ridotto al minimo indispensabile ed in modo tale da escludere il trattamento dei Suoi dati personali quando le finalità perseguite in singoli casi specifici possano essere realizzate mediante l’uso di dati anonimi (come, ad esempio, per le ricerche di mercato finalizzate al miglioramento dei servizi) o mediante altre modalità che consentano di identificare l’interessato solo in caso di necessità o su richiesta delle Autorità competenti (come, ad esempio, per i dati relativi al traffico ed alla Sua permanenza nel Sito o al Suo indirizzo IP).</p>
+
+      <p>Pertanto, fatti salvi gli obblighi di legge, il Titolare tratterà i Suoi dati personali per il tempo strettamente necessario ad adempiere alle finalità indicate nel precedente art. 2 (Finalità del trattamento) e comunque per i dati personali conferiti in occasione della registrazione alla Community, per tutta la durata della Sua partecipazione alla Community mentre i dati relativi agli acquisti potranno essere conservati per le finalità di marketing per non oltre 5 anni dalla raccolta dei dati.</p>
+
+      <h3>5. Comunicazione dei dati</h3>
+
+      <p>Senza la necessità di un espresso consenso (ex art. 24 lett. a), b), d) Codice Privacy e art. 6 lett. b) e c) GDPR), il Titolare potrà comunicare i Suoi dati ad Organismi di vigilanza, Autorità giudiziarie, Amministrativa a società di assicurazione per la prestazione di servizi assicurativi, nonché a quei soggetti ai quali la comunicazione sia obbligatoria per legge per l’espletamento delle finalità dette o ad altro soggetto pubblico legittimato a richiederli nei casi previsti dalla legge.</p>
+
+      <p>Inoltre la Società potrebbe avere la necessità di comunicare i Suoi dati personali alle categorie di soggetti di seguito elencate a titolo indicativo: istituti bancari; uffici fiscali; professionisti, corrispondenti, consulenti, ed ausiliari di varia natura; compagnie di assicurazione; soggetti che svolgono attività di imbustamento, trasporto e smistamento; consulenti informatici, ecc.</p>
+
+      <p>Infine alcuni dati potranno essere comunicati o comunque messi a disposizione di società terze incaricate della gestione tecnica di alcuni aspetti del Servizio.</p>
+
+      <p>Detti soggetti tratteranno i dati nella loro qualità di autonomi titolari del trattamento.</p>
+
+      <p>I Suoi dati personali non saranno in alcun altro modo diffusi.</p>
+
+      <h3>6. Trasferimento dati verso Paesi Terzi</h3>
+
+      <p>I dati personali sono conservati su server ubicati a Milano, all’interno dell’Unione Europea. Resta inteso in ogni caso che il Titolare, ove si rendesse necessario, avrà facoltà di trasferire i dati verso Paesi terzi o Organismi internazionali, spostando i server anche extra-UE. In tal caso, il Titolare assicura sin d’ora che il trasferimento dei dati extra-UE avverrà verso Paesi Terzi adeguati o comunque in conformità alle disposizioni di legge applicabili, previa stipula delle clausole contrattuali standard previste dalla Commissione Europea (art. 45 par. 1 e art. 46 par. 2 GDPR).</p>
+
+      <h3>7. Natura obbligatoria o facoltativa del conferimento dei dati e conseguenze del rifiuto di rispondere</h3>
+
+      <p>Il conferimento dei dati ha natura facoltativa. Pertanto Lei è libero di decidere la natura e la quantità di informazioni che intende fornirci.</p>
+
+      <p>Tuttavia il conferimento dei dati anagrafici e di indirizzo, anche di posta elettronica, è obbligatorio ai fini dell’adempimento del Contratto e della fornitura dei Servizi. Pertanto, a titolo esemplificativo, in assenza di conferimento i contratti non potrebbero essere eseguiti né potrebbero essere adempiute nel rispetto della legge le obbligazioni relative alla gestione contabile o fiscale.</p>
+
+      <p>In ogni caso il conferimento è indispensabile per l’iscrizione e l’attivazione del programma di fidelizzazione alla Community e per poter usufruire dei vantaggi connessi al programma stesso, come il riconoscimento e la fruizione di promozioni, l’offerta e l’invio di premi, la partecipazione a raccolte punti e ad eventi promozionali riservati alla clientela fidelizzata, ecc.</p>
+
+      <p>Il conferimento dei dati per le finalità di marketing è invece facoltativo. Lei può quindi decidere di non conferire alcun dato o di negare successivamente la possibilità di trattare dati già forniti: in tal caso, non potrà ricevere newsletter, comunicazioni commerciali e materiale pubblicitario inerenti ai Servizi di marketing offerti dal Titolare, pur continuando comunque a poter usufruire dei servizi per cui il conferimento dei dati è indispensabile.</p>
+
+      <p>La informiamo infine che il Titolare non effettua alcun tipo di trattamento o profilazione che possa, anche solo indirettamente, essere ricollegato ad uno specifico Utente.</p>
+
+      <p>Ulteriori informazioni e richieste, compresa la cancellazione dei dati personali dal Sito, potranno essere rivolte direttamente al responsabile del trattamento The Media Company Store s.r.l., Viale di Villa Grazioli 1, 00198 – Roma.</p>
+
+      <p><a href="mailto:segreteria@themediacompany.it">segreteria@themediacompany.it</a></p>
+
+    </article>
+    <a class="b b--gh" href="#home" data-go="home" style="margin-top:28px">Torna alla home</a>
+  </div>
+</section>
+
+<!-- ═══════════ COOKIE POLICY ═══════════ -->
+<section class="pg" id="pg-cookie">
+  <div class="wrap sec">
+    <span class="occhiello">Info</span>
+    <h1 class="mid" style="margin-top:14px">Cookie Policy</h1>
+    <article class="legale">
+        <h2>Utilizzo dei cookie</h2>
+
+        <p>Ti informiamo che il nostro sito internet fa uso di cookie al fine di rendere i propri servizi efficienti e semplici da utilizzare.</p>
+
+        <p>Quando visiti il nostro sito, viene inserita una quantità minima di informazioni nel dispositivo dell’utente sotto forma di piccoli file di testo. Queste informazioni sono chiamate “cookie” e vengono salvate nella directory del browser Web dell’utente.</p>
+
+        <p>Esistono diverse tipologie di cookie, ma sostanzialmente lo scopo principale di un cookie è quello di far funzionare più efficacemente il sito e di abilitarne determinate funzionalità. I cookie sono quindi maggiormente utilizzati per migliorare la navigazione globale dell’utente.</p>
+
+        <p>I cookie presenti sul nostro sito servono per:</p>
+
+        <ul>
+          <li>navigare il nostro sito in modo efficiente;</li>
+          <li>misurare l’utilizzo dei servizi da parte degli utenti, per ottimizzare l’esperienza di navigazione e i servizi stessi;</li>
+          <li>memorizzare il nome utente e le preferenze inserite;</li>
+          <li>consentire di evitare di inserire le stesse informazioni (come nome utente e password) più volte durante la visita.</li>
+        </ul>
+
+        <h3>Tipologia di cookie presenti nel nostro sito</h3>
+
+        <p>Esistono vari tipi di cookie. Qui di seguito sono riportati i tipi di cookie che possono essere utilizzati nel nostro sito con una descrizione della finalità legata all’uso.</p>
+
+        <h3>Cookie tecnici</h3>
+
+        <p>I cookie di questo tipo sono necessari per il corretto funzionamento di alcune aree del sito; senza questi cookie il nostro sito non sarebbe correttamente navigabile.</p>
+
+        <p>I cookie di questa categoria comprendono sia cookie persistenti che cookie di sessione. Questa tipologia di cookie viene sempre utilizzata indipendentemente dalle preferenze dell’utente. I cookie di questa tipologia vengono sempre inviati dal nostro dominio al dispositivo del visitatore del sito web.</p>
+
+        <h3>Cookie analitici</h3>
+
+        <p>Questa tipologia di cookie viene utilizzata per raccogliere informazioni sull’utilizzo del sito.</p>
+
+        <p>Utilizziamo queste informazioni per:</p>
+
+        <ul>
+          <li>analisi statistiche;</li>
+          <li>migliorare il sito, semplificarne l’utilizzo e migliorare i nostri servizi;</li>
+          <li>tenere monitorato il corretto funzionamento del sito.</li>
+        </ul>
+
+        <p>Questa tipologia di cookie raccoglie informazioni in forma anonima sull’attività degli utenti nel sito e sul modo in cui sono arrivati al sito e alle pagine visitate.</p>
+
+        <p>I cookie di questa tipologia vengono inviati dal nostro sito o da domini di terze parti.</p>
+
+        <h3>Cookie di rilevamento di terze parti</h3>
+
+        <p>I cookie di questo tipo vengono utilizzati per raccogliere informazioni sull’utilizzo del sito Web da parte dei visitatori, le parole chiave usate per raggiungere il sito, i siti Web visitati e le origini del traffico da cui provengono i visitatori per le campagne di marketing.</p>
+
+        <p>Possiamo utilizzare queste informazioni per compilare rapporti e migliorare il sito. I cookie raccolgono informazioni in forma anonima. I cookie di questo tipo vengono inviati dal nostro sito o da domini di terze parti.</p>
+
+        <h3>Cookie per l’integrazione di funzionalità di terze parti</h3>
+
+        <p>I cookie di questo tipo vengono utilizzati per integrare funzionalità di terze parti nel sito (ad esempio, moduli per i commenti o icone di social network che consentono ai visitatori di condividere il contenuto del sito).</p>
+
+        <p>I cookie di questa categoria possono essere inviati dai domini di terze parti che offrono le funzionalità presenti nel sito.</p>
+
+        <h3>Utilizzo dei cookie tecnici sul nostro sito</h3>
+
+        <p>Dal punto di vista legislativo, non siamo tenuti a richiedere il consenso dell’utente per i cookie tecnici. Questi, infatti, sono strettamente necessari per far funzionare correttamente il nostro sito.</p>
+
+        <h3>Utilizzo delle altre tipologie di cookie presenti sul nostro sito</h3>
+
+        <p>L’utente può esprimere il consenso per tutte le altre tipologie di cookie presenti sul nostro sito come previsto dalla legge vigente.</p>
+
+        <p>Il consenso avviene mediante specifiche configurazioni del browser e di programmi informatici o di dispositivi che siano di facile e chiara utilizzabilità per l’utente. Ti ricordiamo che è possibile modificare le preferenze relative ai cookie in qualsiasi momento.</p>
+
+        <p>È anche possibile disabilitare in qualsiasi momento i cookie dal browser, ma questa operazione potrebbe impedire l’utilizzo di alcune parti del nostro sito.</p>
+
+        <h3>Abilitazione/disabilitazione di cookie tramite il browser</h3>
+
+        <p>Esistono diversi modi per gestire i cookie e altre tecnologie di tracciabilità.</p>
+
+        <p>Modificando le impostazioni del browser, puoi accettare o rifiutare i cookie o decidere di ricevere un messaggio di avviso prima di accettare un cookie dai siti Web visitati.</p>
+
+        <p>Ti ricordiamo che disabilitando completamente i cookie nel browser potresti non essere in grado di utilizzare tutte le nostre funzionalità interattive.</p>
+
+        <p>Puoi eliminare tutti i cookie installati nella cartella dei cookie del tuo browser. Ciascun browser presenta procedure diverse per la gestione delle impostazioni. Fai clic su uno dei collegamenti sottostanti per ottenere istruzioni specifiche.</p>
+
+        <ul>
+          <li>Microsoft Windows Explorer</li>
+          <li>Google Chrome</li>
+          <li>Mozilla Firefox</li>
+          <li>Apple Safari</li>
+        </ul>
+
+        <p>Se non utilizzi nessuno dei browser sopra elencati, seleziona “cookie” nella relativa sezione della guida per scoprire dove si trova la tua cartella dei cookie.</p>
+
+        <h3>Eliminazione dei cookie Flash</h3>
+
+        <p>Fai clic sul collegamento qui di seguito per modificare le tue impostazioni relative ai cookie Flash.</p>
+
+        <p>Disabilitazione dei cookie Flash</p>
+
+        <h3>Considerazioni finali</h3>
+
+        <p>Si ricorda, infine, che, ai sensi dell’art. 122 secondo comma del D.lgs. 196/2003, il consenso all’utilizzo di tali cookie è espresso dall’interessato mediante il settaggio individuale che ha scelto liberamente per il browser utilizzato per la navigazione nel sito, ferma restando la facoltà dell’utente di comunicarci in ogni momento la propria volontà in merito ai dati gestiti per il tramite dei cookie che il browser stesso abbia accettato.</p>
+    </article>
     <a class="b b--gh" href="#home" data-go="home" style="margin-top:28px">Torna alla home</a>
   </div>
 </section>
@@ -2003,7 +2535,7 @@ input[type=range]:focus-visible::-moz-range-thumb{box-shadow:0 0 0 4px rgba(169,
     <span>&copy; 2026 The Media Company Store S.r.l. &middot; C.F. / P. IVA 09791811004</span>
     <span style="display:flex;gap:22px">
       <a href="#privacy" data-go="privacy">Privacy Policy</a>
-      <a href="#privacy" data-go="privacy">Cookie Policy</a>
+      <a href="#cookie" data-go="cookie">Cookie Policy</a>
       <button type="button" id="ck-riapri" class="ft-ck">Preferenze cookie</button>
     </span>
   </div>
@@ -2014,7 +2546,7 @@ input[type=range]:focus-visible::-moz-range-thumb{box-shadow:0 0 0 4px rgba(169,
   "use strict";
 
   var riavviaPila = null;
-  var PG = ['home','integrate','ooh','taxiadv','simulatore','store','travel','progetti','contattaci','privacy'];
+  var PG = ['home','integrate','ooh','taxiadv','simulatore','store','travel','progetti','contattaci','privacy','cookie'];
   var poco = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var fine = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
 
@@ -2044,6 +2576,11 @@ input[type=range]:focus-visible::-moz-range-thumb{box-shadow:0 0 0 4px rgba(169,
     try{ history.replaceState(null,'','#' + id); }catch(e){}
     rivela();
     reteSicurezza();
+    if(id === 'simulatore'){
+      var pr = document.getElementById('promo');
+      if(pr && !pr.hidden){ pr.classList.remove('su');
+        setTimeout(function(){ pr.hidden = true; }, 560); }
+    }
     return document.getElementById('pg-' + id);
   }
   /* il pulsante della tendina ha una logica sua: lo escludo da qui,
@@ -2068,6 +2605,25 @@ input[type=range]:focus-visible::-moz-range-thumb{box-shadow:0 0 0 4px rgba(169,
         }
         /* certi pulsanti arrivano ai contatti con gia' in mente il motivo:
            lo preselezionano, cosi' non lo si deve ridire */
+        var motivo = el.getAttribute('data-motivo');
+        if(motivo){
+          var sceltaMotivo = document.getElementById('c-i');
+          if(sceltaMotivo){
+            sceltaMotivo.value = motivo;
+            sceltaMotivo.dispatchEvent(new Event('change', { bubbles:true }));
+            var campoMotivo = sceltaMotivo.closest('.campo');
+            if(campoMotivo){
+              campoMotivo.classList.remove('precompilato');
+              void campoMotivo.offsetWidth;
+              campoMotivo.classList.add('precompilato');
+              setTimeout(function(){ campoMotivo.classList.remove('precompilato'); }, 1400);
+            }
+            setTimeout(function(){
+              sceltaMotivo.scrollIntoView({ block:'center', behavior:poco ? 'auto' : 'smooth' });
+              sceltaMotivo.focus({ preventScroll:true });
+            }, poco ? 0 : 180);
+          }
+        }
         /* "Prenota un appuntamento" accende la spunta: il menu dei
            servizi resta libero, cosi' sappiamo anche cosa gli serve */
         if(el.hasAttribute('data-appuntamento')){
@@ -2079,12 +2635,94 @@ input[type=range]:focus-visible::-moz-range-thumb{box-shadow:0 0 0 4px rgba(169,
         }
         /* il focus va sul titolo della nuova pagina: chi naviga da tastiera
            o con lo screen reader sente dove è arrivato, invece di ripartire da capo */
-        if(pag){
+        if(pag && !motivo){
           var h = pag.querySelector('h1');
           if(h){ h.setAttribute('tabindex','-1'); h.focus({ preventScroll:true }); }
         }
       });
     })(nodi[v]);
+  }
+
+  /* ── schede dei progetti ────────────────────────────────
+     La pagina mostra solo le anteprime. Il case study si apre sopra
+     la galleria: il video parte da solo dall'inizio a ogni apertura e,
+     quando si chiude, viene fermato e riavvolto. */
+  var apriCasi = document.querySelectorAll('[data-caso-apri]');
+  var ultimoApriCaso = null;
+
+  /* Riavvolge e ferma: cosi' il clic successivo riparte dall'inizio. */
+  function fermaFilm(finestra){
+    var film = finestra ? finestra.querySelector('video') : null;
+    if(!film){ return; }
+    film.pause();
+    try{ film.currentTime = 0; }catch(e){}
+  }
+
+  /* Parte dentro il gestore del clic, quindi il browser concede l'audio.
+     Se lo blocca comunque, riprova senza audio: meglio muto che fermo. */
+  function avviaFilm(finestra){
+    var film = finestra ? finestra.querySelector('video') : null;
+    if(!film){ return; }
+    try{ film.currentTime = 0; }catch(e){}
+    var esito = film.play();
+    if(esito && typeof esito.catch === 'function'){
+      esito.catch(function(){
+        film.muted = true;
+        var riprova = film.play();
+        if(riprova && typeof riprova.catch === 'function'){ riprova.catch(function(){}); }
+      });
+    }
+  }
+
+  function chiudiCaso(finestra){
+    if(!finestra){ return; }
+    fermaFilm(finestra);
+    if(typeof finestra.close === 'function' && finestra.open){ finestra.close(); }
+    else{ finestra.removeAttribute('open'); }
+    document.body.classList.remove('caso-aperto');
+    if(ultimoApriCaso){ ultimoApriCaso.focus(); }
+  }
+
+  /* Aperta anche dalla ricerca ⌘K, non solo dal clic sulla card. */
+  function apriCaso(id, pulsante){
+    var finestra = document.getElementById(id);
+    if(!finestra || finestra.open){ return; }
+    ultimoApriCaso = pulsante || null;
+    document.body.classList.add('caso-aperto');
+    if(typeof finestra.showModal === 'function'){ finestra.showModal(); }
+    else{ finestra.setAttribute('open',''); }
+    avviaFilm(finestra);
+  }
+
+  for(var ca=0; ca<apriCasi.length; ca++){
+    (function(pulsante){
+      pulsante.addEventListener('click', function(){
+        apriCaso(pulsante.getAttribute('data-caso-apri'), pulsante);
+      });
+    })(apriCasi[ca]);
+  }
+
+  var finestreCaso = document.querySelectorAll('.caso-dialog');
+  for(var cd=0; cd<finestreCaso.length; cd++){
+    (function(finestra){
+      var chiudiPulsante = finestra.querySelector('[data-caso-chiudi]');
+      if(chiudiPulsante){
+        chiudiPulsante.addEventListener('click', function(){ chiudiCaso(finestra); });
+      }
+      finestra.addEventListener('click', function(ev){
+        if(ev.target === finestra){ chiudiCaso(finestra); }
+      });
+      /* Esc: la chiusura nativa del <dialog> non e' affidabile su tutti i
+         browser, quindi la gestiamo noi. preventDefault evita che, dove
+         invece funziona, la scheda si chiuda due volte. */
+      finestra.addEventListener('keydown', function(ev){
+        if(ev.key === 'Escape'){ ev.preventDefault(); chiudiCaso(finestra); }
+      });
+      finestra.addEventListener('close', function(){
+        fermaFilm(finestra);
+        document.body.classList.remove('caso-aperto');
+      });
+    })(finestreCaso[cd]);
   }
 
   /* ── tendina "I nostri servizi" ─────────────────────────
@@ -2569,11 +3207,14 @@ input[type=range]:focus-visible::-moz-range-thumb{box-shadow:0 0 0 4px rgba(169,
     { t:'Maxi Affissioni',  s:'Formati e posizionamento nei punti nevralgici',    go:'ooh',      k:'affissioni maxi manifesti poster impianti' },
     { t:'OOH / DOOH',       s:'Pubblicità esterna statica e digitale',            go:'ooh',      k:'ooh dooh digitale schermi led esterna' },
     { t:'Progetti',         s:'Le campagne portate in strada',                    go:'progetti', k:'progetti lavori portfolio campagne case study foto' },
+    { t:'BANCOMAT',         s:'Campagna media integrata · Roma e Milano',          go:'progetti', caso:'caso-bancomat', k:'bancomat app termini centrale barberini cadorna metro stazioni flash mob dicembre 2025' },
+    { t:'Cesare Cremonini',  s:'Campagna OOH · Milano',                          go:'progetti', caso:'caso-cremonini', k:'cremonini radio italia stadi 2022 milano affissione parete rosk murale festa del perdono' },
     { t:'TMC Store',        s:'Area riservata con le offerte dedicate',           go:'store',    k:'store negozio ecommerce codice offerte riservata' },
     { t:'TMC Travel',       s:'Agenzia viaggi con Personal Travel Specialist',    go:'travel',   k:'travel viaggi vacanze agenzia specialist eventi meeting' },
     { t:'Contattaci',       s:'Parliamo del tuo piano di comunicazione',          go:'contattaci', k:'contatti contattaci email telefono preventivo scrivere piano' },
     { t:'Bartering',        s:'Copri parte della spesa con i tuoi prodotti',      go:'home',     k:'barter bartering baratto cambio merce compensazione magazzino' },
-    { t:'Privacy e cookie', s:'Informativa del sito',                             go:'privacy',  k:'privacy cookie policy legale informativa' }
+    { t:'Privacy Policy', s:'Informativa sul trattamento dei dati personali',     go:'privacy', k:'privacy dati personali gdpr legale informativa' },
+    { t:'Cookie Policy',  s:'Informazioni sui cookie utilizzati dal sito',        go:'cookie',  k:'cookie preferenze tecnici analitici informativa' }
   ];
   var cmd = document.getElementById('cmd'), cmdVelo = document.getElementById('cmd-velo');
   var cmdQ = document.getElementById('cmd-q'), cmdLista = document.getElementById('cmd-lista');
@@ -2618,6 +3259,8 @@ input[type=range]:focus-visible::-moz-range-thumb{box-shadow:0 0 0 4px rgba(169,
     if(!v){ return; }
     chiudiCmd();
     vaiConTransizione(v.go);
+    /* Le schede dei progetti si aprono sopra la pagina appena arrivata. */
+    if(v.caso){ setTimeout(function(){ apriCaso(v.caso); }, 320); }
   }
   function apriCmd(){
     ultimoFocus = document.activeElement;
@@ -2667,6 +3310,37 @@ input[type=range]:focus-visible::-moz-range-thumb{box-shadow:0 0 0 4px rgba(169,
     for(var w=0; w<continue_.length; w++){ vigile.observe(continue_[w]); }
   }
 
+  /* ── richiamo al simulatore ───────────────────────────────
+     Aspetta che l'avviso cookie sia stato deciso, cosi' non si
+     accavallano in basso; e non compare a chi e' gia' sul simulatore.
+     La chiusura vale per la visita: alla prossima si rifa' vivo. */
+  var promo = document.getElementById('promo');
+  if(promo){
+    var CHIAVE_P = 'tmc-promo';
+    function chiusaGia(){ try{ return sessionStorage.getItem(CHIAVE_P); }catch(e){ return null; } }
+    function segnaChiusa(){ try{ sessionStorage.setItem(CHIAVE_P, '1'); }catch(e){} }
+    function nascondiPromo(){
+      promo.classList.remove('su');
+      setTimeout(function(){ promo.hidden = true; }, 560);
+    }
+    function forsePromo(){
+      if(chiusaGia() || !promo.hidden){ return; }
+      var avvisoCookie = document.getElementById('ck');
+      if(avvisoCookie && !avvisoCookie.hidden){ return; }
+      if(document.querySelector('.pg.on') &&
+         document.querySelector('.pg.on').id === 'pg-simulatore'){ return; }
+      promo.hidden = false;
+      setTimeout(function(){ promo.classList.add('su'); }, 30);
+    }
+    window.tmcPromo = forsePromo;
+    document.getElementById('promo-x').addEventListener('click', function(){
+      segnaChiusa(); nascondiPromo();
+    });
+    document.getElementById('promo-vai').addEventListener('click', function(){
+      segnaChiusa(); nascondiPromo();
+    });
+  }
+
   /* ── avviso cookie ───────────────────────────────────────
      La scelta va in localStorage, che in finestra anonima o con i dati
      del sito bloccati puo' lanciare: se non riesco a leggerla mostro
@@ -2678,6 +3352,11 @@ input[type=range]:focus-visible::-moz-range-thumb{box-shadow:0 0 0 4px rgba(169,
     function leggiCk(){ try{ return localStorage.getItem(CHIAVE); }catch(e){ return null; } }
     function scriviCk(v){ try{ localStorage.setItem(CHIAVE, v); }catch(e){} }
     function mostraCk(){
+      var richiamo = document.getElementById('promo');
+      if(richiamo && !richiamo.hidden){
+        richiamo.classList.remove('su');
+        setTimeout(function(){ richiamo.hidden = true; }, 500);
+      }
       ck.hidden = false;
       /* non uso requestAnimationFrame: in una scheda aperta in secondo
          piano il browser lo congela, e l'avviso resterebbe montato ma
@@ -2689,6 +3368,7 @@ input[type=range]:focus-visible::-moz-range-thumb{box-shadow:0 0 0 4px rgba(169,
       window.tmcConsenso = scelta;
       ck.classList.remove('su');
       setTimeout(function(){ ck.hidden = true; }, 500);
+      setTimeout(function(){ if(window.tmcPromo){ window.tmcPromo(); } }, 650);
     }
     document.getElementById('ck-si').addEventListener('click', function(){ chiudiCk('tutti'); });
     document.getElementById('ck-no').addEventListener('click', function(){ chiudiCk('essenziali'); });
@@ -2697,6 +3377,11 @@ input[type=range]:focus-visible::-moz-range-thumb{box-shadow:0 0 0 4px rgba(169,
     var giaCk = leggiCk();
     window.tmcConsenso = giaCk || null;
     if(!giaCk){ setTimeout(mostraCk, 900); }
+    /* due riquadri in basso nello stesso momento sono uno di troppo:
+       il richiamo al simulatore aspetta il suo turno */
+    if(giaCk){
+      setTimeout(function(){ if(window.tmcPromo){ window.tmcPromo(); } }, 500);
+    }
   }
 
   /* ── strisce dei loghi ────────────────────────────────────

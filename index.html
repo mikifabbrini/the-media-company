@@ -1932,6 +1932,21 @@ body.caso-aperto{overflow:hidden;}
           </span>
         </span>
       </button>
+      <button class="progetto-card rv" type="button" data-caso-apri="caso-piueuropa"
+              aria-haspopup="dialog" aria-controls="caso-piueuropa">
+        <span class="progetto-card-foto">
+          <img src="img/progetti/piu-europa/navigli-maxi-milano.jpg"
+               alt="Maxi affissione +Europa con Emma Bonino sui Navigli a Milano"
+               width="2200" height="1650">
+          <span class="progetto-card-meta">1.200 comuni &middot; 2022</span>
+        </span>
+        <span class="progetto-card-testo">
+          <span><strong>+Europa</strong><small>Campagna media integrata</small></span>
+          <span class="progetto-card-freccia" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M7 17 17 7M9 7h8v8"/></svg>
+          </span>
+        </span>
+      </button>
       <button class="progetto-card rv" type="button" data-caso-apri="caso-cremonini"
               aria-haspopup="dialog" aria-controls="caso-cremonini">
         <span class="progetto-card-foto">
@@ -1948,6 +1963,62 @@ body.caso-aperto{overflow:hidden;}
         </span>
       </button>
     </div>
+
+    <dialog class="caso-dialog" id="caso-piueuropa" aria-labelledby="caso-piueuropa-titolo">
+      <article class="caso">
+        <button class="caso-x" type="button" data-caso-chiudi aria-label="Chiudi il progetto">
+          <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M2 2l12 12M14 2 2 14"/></svg>
+        </button>
+        <header class="caso-testa">
+          <div>
+            <span class="occhiello">+Europa &middot; 1.200 comuni, 2022</span>
+            <h2 id="caso-piueuropa-titolo">+Europa &mdash; Elezioni politiche 2022</h2>
+          </div>
+          <span class="caso-tag">Campagna media integrata</span>
+        </header>
+
+        <div class="caso-media">
+          <div class="caso-video">
+            <video controls playsinline preload="metadata"
+                   poster="img/progetti/piu-europa/video-poster.jpg"
+                   aria-label="Video della campagna elettorale +Europa: domination digitale in stazione">
+              <source src="img/progetti/piu-europa/campagna-elettorale.mp4" type="video/mp4">
+              Il tuo browser non supporta la riproduzione video.
+            </video>
+          </div>
+        </div>
+
+        <div class="caso-info">
+          <p>
+            Per +Europa abbiamo curato l&rsquo;intera campagna media in vista delle elezioni politiche del 2022, con una copertura nazionale: 1.200 comuni raggiunti e presidio delle 8 grandi citt&agrave; con i formati di maggiore visibilit&agrave;. Maxi affissioni e domination digitali nelle stazioni, impianti OOH nelle posizioni di maggior passaggio a Milano, Roma, Torino e Bologna, e affissioni dinamiche sui bus: un piano costruito per accumulare frequenza nelle settimane decisive.
+          </p>
+          <dl class="caso-dati" aria-label="Dettagli del progetto">
+            <div><dt>Cliente</dt><dd>+Europa</dd></div>
+            <div><dt>Periodo</dt><dd>2022</dd></div>
+            <div><dt>Copertura</dt><dd>1.200 comuni e 8 grandi citt&agrave;</dd></div>
+            <div><dt>Mezzi</dt><dd>Maxi affissioni, DOOH in stazione, bus</dd></div>
+          </dl>
+        </div>
+
+        <div class="caso-scatti">
+          <figure>
+            <img src="img/progetti/piu-europa/milano-centrale-dooh.jpg" width="2200" height="1650" loading="lazy"
+                 alt="Maxi schermi +Europa nell'atrio della stazione di Milano Centrale">
+            <figcaption>Milano Centrale &middot; DOOH</figcaption>
+          </figure>
+          <figure>
+            <img src="img/progetti/piu-europa/torino-bus.jpg" width="2200" height="1466" loading="lazy"
+                 alt="Bus GTT con side banner +Europa a Torino">
+            <figcaption>Torino &middot; Side banner bus</figcaption>
+          </figure>
+          <figure>
+            <img src="img/progetti/piu-europa/bologna-piazza-maggiore.jpg" width="2200" height="1468" loading="lazy"
+                 alt="Bus brandizzato +Europa in piazza Maggiore a Bologna">
+            <figcaption>Bologna &middot; Piazza Maggiore</figcaption>
+          </figure>
+        </div>
+      </article>
+    </dialog>
 
     <dialog class="caso-dialog" id="caso-cremonini" aria-labelledby="caso-cremonini-titolo">
       <article class="caso">
@@ -3208,6 +3279,7 @@ body.caso-aperto{overflow:hidden;}
     { t:'OOH / DOOH',       s:'Pubblicità esterna statica e digitale',            go:'ooh',      k:'ooh dooh digitale schermi led esterna' },
     { t:'Progetti',         s:'Le campagne portate in strada',                    go:'progetti', k:'progetti lavori portfolio campagne case study foto' },
     { t:'BANCOMAT',         s:'Campagna media integrata · Roma e Milano',          go:'progetti', caso:'caso-bancomat', k:'bancomat app termini centrale barberini cadorna metro stazioni flash mob dicembre 2025' },
+    { t:'+Europa',          s:'Campagna media integrata · 1.200 comuni',              go:'progetti', caso:'caso-piueuropa', k:'piu europa bonino emma elezioni politiche 2022 elettorale maxi affissioni bus stazioni torino bologna milano roma navigli' },
     { t:'Cesare Cremonini',  s:'Campagna OOH · Milano',                          go:'progetti', caso:'caso-cremonini', k:'cremonini radio italia stadi 2022 milano affissione parete rosk murale festa del perdono' },
     { t:'TMC Store',        s:'Area riservata con le offerte dedicate',           go:'store',    k:'store negozio ecommerce codice offerte riservata' },
     { t:'TMC Travel',       s:'Agenzia viaggi con Personal Travel Specialist',    go:'travel',   k:'travel viaggi vacanze agenzia specialist eventi meeting' },

@@ -948,6 +948,38 @@ input[type=range]:focus-visible::-moz-range-thumb{box-shadow:0 0 0 4px rgba(169,
   background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.5 6 6.5l5-5' stroke='%232B47D6' stroke-width='1.7' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
   background-repeat:no-repeat;background-position:right 18px center;background-size:12px;padding-right:44px;}
 
+/* ── calendario dell'appuntamento ──────────────────────────
+   Prende il posto del messaggio quando si chiede un appuntamento in
+   sede: stessa cornice, stessa larghezza, stesso raggio del riquadro
+   che sostituisce, cosi' il modulo non cambia forma. */
+.cal{border:1.5px solid var(--bordo);border-radius:var(--r-s);background:#fff;
+  padding:10px 12px 12px;transition:border-color .25s var(--e),box-shadow .25s var(--e);}
+.campo.ko .cal{border-color:#B3261E;}
+.cal-testa{display:flex;align-items:center;justify-content:space-between;gap:8px;
+  margin-bottom:8px;}
+.cal-testa strong{font-size:15px;font-weight:800;letter-spacing:-.02em;color:var(--ink);
+  text-transform:capitalize;}
+.cal-fr{width:34px;height:34px;border-radius:10px;display:grid;place-items:center;
+  cursor:pointer;background:var(--bg-2);transition:background-color .2s var(--e);}
+.cal-fr:hover{background:var(--blu-tenue);}
+.cal-fr:disabled{opacity:.35;cursor:default;background:var(--bg-2);}
+.cal-fr svg{width:8px;height:13px;fill:none;stroke:var(--blu);stroke-width:2;
+  stroke-linecap:round;stroke-linejoin:round;}
+.cal-gg,.cal-griglia{display:grid;grid-template-columns:repeat(7,1fr);gap:2px;}
+.cal-gg span{text-align:center;font-size:11px;font-weight:700;letter-spacing:.06em;
+  color:var(--ink-3);padding-bottom:4px;}
+.cal-d{height:34px;border-radius:9px;font:inherit;font-size:14px;font-weight:600;
+  color:var(--ink);cursor:pointer;background:none;
+  transition:background-color .18s var(--e),color .18s var(--e);}
+.cal-d:hover:not(:disabled){background:var(--blu-tenue);}
+.cal-d:disabled{color:var(--ink-3);opacity:.4;cursor:default;}
+.cal-d.oggi{box-shadow:inset 0 0 0 1.5px var(--bordo-hi);}
+.cal-d.scelto{background:var(--blu);color:#fff;}
+.cal-d.vuoto{visibility:hidden;}
+.cal-scelta{margin-top:10px;font-size:13.5px;font-weight:600;color:var(--blu);
+  min-height:19px;}
+@media (max-width:520px){ .cal-d{height:40px;} }
+
 /* lo spazio dell'errore è sempre riservato: comparendo non deve
    spingere in basso i campi sotto (regola "content jumping") */
 .err{display:flex;align-items:center;gap:7px;min-height:19px;
@@ -1816,8 +1848,26 @@ input[type=range]:focus-visible::-moz-range-thumb{box-shadow:0 0 0 4px rgba(169,
           </select>
         </div>
         <div class="campo" id="w-m">
-          <label for="c-m">Messaggio</label>
+          <label for="c-m" id="lab-m">Messaggio</label>
           <textarea id="c-m" name="messaggio" placeholder="Raccontaci l'obiettivo, la città, il periodo e il budget indicativo…" aria-describedby="e-m"></textarea>
+
+          <div class="cal" id="cal" hidden>
+            <div class="cal-testa">
+              <button class="cal-fr" type="button" id="cal-pre" aria-label="Mese precedente">
+                <svg viewBox="0 0 8 13" aria-hidden="true"><path d="M6.5 1 1.5 6.5l5 5.5"/></svg>
+              </button>
+              <strong id="cal-mese" aria-live="polite"></strong>
+              <button class="cal-fr" type="button" id="cal-suc" aria-label="Mese successivo">
+                <svg viewBox="0 0 8 13" aria-hidden="true"><path d="m1.5 1 5 5.5-5 5.5"/></svg>
+              </button>
+            </div>
+            <div class="cal-gg" aria-hidden="true">
+              <span>L</span><span>M</span><span>M</span><span>G</span><span>V</span><span>S</span><span>D</span>
+            </div>
+            <div class="cal-griglia" id="cal-griglia" role="group" aria-label="Giorni del mese"></div>
+            <p class="cal-scelta" id="cal-scelta"></p>
+          </div>
+          <input type="hidden" id="c-d" name="data">
           <span class="err" id="e-m" role="alert"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 1 15 14H1L8 1Zm0 5v4m0 2v.5"stroke="#B3261E" stroke-width="1.6" fill="none" stroke-linecap="round"/></svg>Raccontaci in due righe di cosa hai bisogno.</span>
         </div>
         <p class="dim tiny" id="nota-fac"><i style="font-style:normal;color:var(--blu);font-weight:800">*</i> campo facoltativo</p>
@@ -1986,7 +2036,11 @@ input[type=range]:focus-visible::-moz-range-thumb{box-shadow:0 0 0 4px rgba(169,
         var motivo = el.getAttribute('data-motivo');
         if(motivo){
           var sel = document.getElementById('c-i');
-          if(sel){ sel.value = motivo; }
+          if(sel){
+            sel.value = motivo;
+            /* il cambio da codice non scatena "change": avviso io */
+            if(window.tmcAppuntamento){ window.tmcAppuntamento(motivo === 'Appuntamento in sede'); }
+          }
         }
         /* il focus va sul titolo della nuova pagina: chi naviga da tastiera
            o con lo screen reader sente dove è arrivato, invece di ripartire da capo */
@@ -2321,6 +2375,95 @@ input[type=range]:focus-visible::-moz-range-thumb{box-shadow:0 0 0 4px rgba(169,
     var esito = document.getElementById('esito');
     var esitoTxt = document.getElementById('esito-txt');
 
+    /* ── calendario dell'appuntamento ─────────────────────
+       Chi chiede un appuntamento in sede non deve raccontare niente:
+       deve dire quando. Il campo messaggio lascia il posto a un mese
+       navigabile, e quello che si sceglie finisce in un campo nascosto
+       che parte insieme al modulo. */
+    var MESI = ['gennaio','febbraio','marzo','aprile','maggio','giugno',
+                'luglio','agosto','settembre','ottobre','novembre','dicembre'];
+    var cal = document.getElementById('cal');
+    var calGriglia = document.getElementById('cal-griglia');
+    var calMese = document.getElementById('cal-mese');
+    var calScelta = document.getElementById('cal-scelta');
+    var campoData = document.getElementById('c-d');
+    var areaMsg = document.getElementById('c-m');
+    var etichettaMsg = document.getElementById('lab-m');
+    var oggi = new Date(); oggi.setHours(0,0,0,0);
+    var vista = new Date(oggi.getFullYear(), oggi.getMonth(), 1);
+    var scelto = null;
+
+    function due(n){ return (n < 10 ? '0' : '') + n; }
+
+    function disegnaMese(){
+      calMese.textContent = MESI[vista.getMonth()] + ' ' + vista.getFullYear();
+      /* lunedi' primo: getDay() mette la domenica a 0, qui la sposto in fondo */
+      var primo = (new Date(vista.getFullYear(), vista.getMonth(), 1).getDay() + 6) % 7;
+      var quanti = new Date(vista.getFullYear(), vista.getMonth() + 1, 0).getDate();
+      calGriglia.textContent = '';
+      for(var v=0; v<primo; v++){
+        var vuoto = document.createElement('span');
+        vuoto.className = 'cal-d vuoto';
+        calGriglia.appendChild(vuoto);
+      }
+      for(var g=1; g<=quanti; g++){
+        var d = new Date(vista.getFullYear(), vista.getMonth(), g);
+        var b = document.createElement('button');
+        b.type = 'button'; b.className = 'cal-d'; b.textContent = g;
+        b.dataset.iso = d.getFullYear() + '-' + due(d.getMonth()+1) + '-' + due(g);
+        if(d < oggi){ b.disabled = true; }                 /* i giorni passati non si prenotano */
+        if(+d === +oggi){ b.classList.add('oggi'); }
+        if(scelto && b.dataset.iso === scelto){ b.classList.add('scelto'); }
+        b.setAttribute('aria-label', g + ' ' + MESI[vista.getMonth()] + ' ' + vista.getFullYear());
+        calGriglia.appendChild(b);
+      }
+      /* non si torna a un mese gia' passato */
+      document.getElementById('cal-pre').disabled =
+        (vista.getFullYear() === oggi.getFullYear() && vista.getMonth() === oggi.getMonth());
+    }
+
+    calGriglia.addEventListener('click', function(e){
+      var b = e.target.closest ? e.target.closest('.cal-d') : null;
+      if(!b || b.disabled || !b.dataset.iso){ return; }
+      scelto = b.dataset.iso;
+      campoData.value = scelto;
+      var p = scelto.split('-');
+      calScelta.textContent = 'Appuntamento richiesto per il ' + (+p[2]) + ' ' +
+                              MESI[+p[1]-1] + ' ' + p[0];
+      document.getElementById('w-m').classList.remove('ko');
+      disegnaMese();
+    });
+    document.getElementById('cal-pre').addEventListener('click', function(){
+      vista.setMonth(vista.getMonth() - 1); disegnaMese();
+    });
+    document.getElementById('cal-suc').addEventListener('click', function(){
+      vista.setMonth(vista.getMonth() + 1); disegnaMese();
+    });
+
+    function modoAppuntamento(acceso){
+      cal.hidden = !acceso;
+      areaMsg.hidden = acceso;
+      areaMsg.disabled = acceso;
+      etichettaMsg.textContent = acceso ? 'Quando vuoi passare' : 'Messaggio';
+      etichettaMsg.htmlFor = acceso ? '' : 'c-m';
+      document.getElementById('e-m').lastChild.textContent = acceso
+        ? 'Scegli il giorno dell\'appuntamento.'
+        : 'Raccontaci in due righe di cosa hai bisogno.';
+      document.getElementById('w-m').classList.remove('ko');
+      if(acceso){ disegnaMese(); }
+    }
+    window.tmcAppuntamento = modoAppuntamento;
+
+    var scelta = document.getElementById('c-i');
+    if(scelta){
+      scelta.addEventListener('change', function(){
+        modoAppuntamento(scelta.value === 'Appuntamento in sede');
+      });
+      /* se si arriva qui dal pulsante "Prenota un appuntamento" il motivo
+         e' gia' selezionato: allineo subito il campo */
+      modoAppuntamento(scelta.value === 'Appuntamento in sede');
+    }
+
     function valida(){
       var problemi = [];
       function segna(idBox, idCampo, ok){
@@ -2332,7 +2475,11 @@ input[type=range]:focus-visible::-moz-range-thumb{box-shadow:0 0 0 4px rgba(169,
       var mail = document.getElementById('c-e').value.trim();
       segna('w-n','c-n', document.getElementById('c-n').value.trim().length > 1);
       segna('w-e','c-e', /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(mail));
-      segna('w-m','c-m', document.getElementById('c-m').value.trim().length > 4);
+      if(cal.hidden){
+        segna('w-m','c-m', document.getElementById('c-m').value.trim().length > 4);
+      }else{
+        segna('w-m','c-d', !!campoData.value);
+      }
       return problemi;
     }
 

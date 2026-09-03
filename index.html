@@ -1744,7 +1744,7 @@ input[type=range]:focus-visible::-moz-range-thumb{box-shadow:0 0 0 4px rgba(169,
                   <span class="sim-sw-p" aria-hidden="true"></span>
                 </button>
                 <div class="sim-can-c" id="box-taxi"><div><div class="sim-can-i">
-                  <input type="range" id="sim-taxi" min="100" max="700" value="200" step="10" aria-label="Mezzi in campagna">
+                  <input type="range" id="sim-taxi" min="100" max="700" value="100" step="10" aria-label="Mezzi in campagna">
                   <fieldset class="sim-dur">
                     <legend>Durata</legend>
                     <div class="sim-chips" role="radiogroup" aria-label="Durata della campagna Taxi">
@@ -1763,12 +1763,12 @@ input[type=range]:focus-visible::-moz-range-thumb{box-shadow:0 0 0 4px rgba(169,
                   <span class="sim-sw-p" aria-hidden="true"></span>
                 </button>
                 <div class="sim-can-c" id="box-ooh"><div><div class="sim-can-i">
-                  <input type="range" id="sim-ooh" min="10" max="700" value="50" step="10" aria-label="Impianti in campagna">
+                  <input type="range" id="sim-ooh" min="10" max="700" value="10" step="10" aria-label="Impianti in campagna">
                   <fieldset class="sim-dur">
                     <legend>Durata</legend>
                     <div class="sim-chips" role="radiogroup" aria-label="Durata della campagna OOH">
-                      <button type="button" class="chip" data-giorni="14" role="radio" aria-checked="false">14 giorni</button>
-                      <button type="button" class="chip att" data-giorni="30" role="radio" aria-checked="true">1 mese</button>
+                      <button type="button" class="chip att" data-giorni="14" role="radio" aria-checked="true">14 giorni</button>
+                      <button type="button" class="chip" data-giorni="30" role="radio" aria-checked="false">1 mese</button>
                       <button type="button" class="chip" data-giorni="90" role="radio" aria-checked="false">3 mesi</button>
                       <button type="button" class="chip" data-giorni="180" role="radio" aria-checked="false">6 mesi</button>
                       <button type="button" class="chip" data-giorni="365" role="radio" aria-checked="false">1 anno</button>
@@ -1784,7 +1784,7 @@ input[type=range]:focus-visible::-moz-range-thumb{box-shadow:0 0 0 4px rgba(169,
                   <span class="sim-sw-p" aria-hidden="true"></span>
                 </button>
                 <div class="sim-can-c" id="box-radio"><div><div class="sim-can-i">
-                  <input type="range" id="sim-radio" min="5" max="200" value="20" step="5" aria-label="Spot in programmazione">
+                  <input type="range" id="sim-radio" min="5" max="200" value="5" step="5" aria-label="Spot in programmazione">
                 </div></div></div>
               </div>
               <div class="sim-can on" data-can="web" style="--seg:#D7DEFB">
@@ -1794,7 +1794,7 @@ input[type=range]:focus-visible::-moz-range-thumb{box-shadow:0 0 0 4px rgba(169,
                   <span class="sim-sw-p" aria-hidden="true"></span>
                 </button>
                 <div class="sim-can-c" id="box-web"><div><div class="sim-can-i">
-                  <input type="range" id="sim-web" min="1" max="10" value="2" step="1" aria-label="Articoli su testata">
+                  <input type="range" id="sim-web" min="1" max="10" value="1" step="1" aria-label="Articoli su testata">
                 </div></div></div>
               </div>
             </div>
@@ -2866,6 +2866,11 @@ input[type=range]:focus-visible::-moz-range-thumb{box-shadow:0 0 0 4px rgba(169,
           calcola();
         });
         var chips = box.querySelectorAll('.sim-dur .chip');
+        /* la durata di partenza la leggo dal chip acceso, non da un numero
+           scritto due volte: cosi' il totale non puo' smentire quello che
+           si vede selezionato */
+        var acceso = box.querySelector('.sim-dur .chip.att');
+        if(acceso){ c.giorni = +acceso.getAttribute('data-giorni'); }
         for(var y=0;y<chips.length;y++){
           (function(pulsante){
             pulsante.addEventListener('click', function(){

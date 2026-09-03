@@ -1826,7 +1826,7 @@ input[type=range]:focus-visible::-moz-range-thumb{box-shadow:0 0 0 4px rgba(169,
           <div class="campo" id="w-a">
             <label for="c-a">Azienda o societ&agrave;</label>
             <input id="c-a" name="azienda" type="text" autocomplete="organization" placeholder="Nome dell&#39;azienda" aria-describedby="e-a">
-            <span class="err" id="e-a" role="alert"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 1 15 14H1L8 1Zm0 5v4m0 2v.5"stroke="#B3261E" stroke-width="1.6" fill="none" stroke-linecap="round"/></svg>Dicci per chi lavori, prima di fissare.</span>
+            <span class="err" id="e-a" role="alert"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 1 15 14H1L8 1Zm0 5v4m0 2v.5"stroke="#B3261E" stroke-width="1.6" fill="none" stroke-linecap="round"/></svg>Dicci per chi lavori.</span>
           </div>
         </div>
         <div class="f2">
@@ -1837,17 +1837,29 @@ input[type=range]:focus-visible::-moz-range-thumb{box-shadow:0 0 0 4px rgba(169,
           </div>
           <div class="campo"><label for="c-t">Telefono</label><input id="c-t" name="telefono" type="tel" autocomplete="tel" placeholder="+39 000 000 0000"></div>
         </div>
-        <div class="campo">
-          <label for="c-i">Di cosa hai bisogno</label>
-          <select id="c-i">
-            <option>Campagna media</option>
-            <option>Campagna out of home</option>
-            <option>Campagna taxi</option>
-            <option>Campagna radio/stampa</option>
-            <option>TMC Travel</option>
-            <option>Appuntamento in sede</option>
-            <option>Altro</option>
-          </select>
+        <div class="f2">
+          <div class="campo">
+            <label for="c-i">Di cosa hai bisogno</label>
+            <select id="c-i" name="motivo">
+              <option>Campagna media</option>
+              <option>Campagna out of home</option>
+              <option>Campagna taxi</option>
+              <option>Campagna radio/stampa</option>
+              <option>TMC Travel</option>
+              <option>Appuntamento in sede</option>
+              <option>Altro</option>
+            </select>
+          </div>
+          <div class="campo">
+            <label for="c-b">Budget indicativo</label>
+            <select id="c-b" name="budget">
+              <option value="">Non ancora definito</option>
+              <option>Fino a 5.000 &euro;</option>
+              <option>5.000 &ndash; 15.000 &euro;</option>
+              <option>15.000 &ndash; 50.000 &euro;</option>
+              <option>Oltre 50.000 &euro;</option>
+            </select>
+          </div>
         </div>
         <div class="campo" id="w-m">
           <label for="c-m" id="lab-m">Messaggio</label>
@@ -2477,12 +2489,11 @@ input[type=range]:focus-visible::-moz-range-thumb{box-shadow:0 0 0 4px rgba(169,
       var mail = document.getElementById('c-e').value.trim();
       segna('w-n','c-n', document.getElementById('c-n').value.trim().length > 1);
       segna('w-e','c-e', /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(mail));
+      segna('w-a','c-a', document.getElementById('c-a').value.trim().length > 1);
       if(cal.hidden){
         segna('w-m','c-m', document.getElementById('c-m').value.trim().length > 4);
-        document.getElementById('w-a').classList.remove('ko');
       }else{
         segna('w-m','c-d', !!campoData.value);
-        segna('w-a','c-a', document.getElementById('c-a').value.trim().length > 1);
       }
       return problemi;
     }

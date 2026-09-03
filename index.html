@@ -978,6 +978,7 @@ input[type=range]:focus-visible::-moz-range-thumb{box-shadow:0 0 0 4px rgba(169,
 .cal-d.vuoto{visibility:hidden;}
 .cal-scelta{margin-top:10px;font-size:13.5px;font-weight:600;color:var(--blu);
   min-height:19px;}
+.cal-nota{margin:6px 0 0;font-size:12.5px;line-height:1.45;color:var(--ink-3);}
 @media (max-width:520px){ .cal-d{height:40px;} }
 
 /* lo spazio dell'errore è sempre riservato: comparendo non deve
@@ -1823,8 +1824,8 @@ input[type=range]:focus-visible::-moz-range-thumb{box-shadow:0 0 0 4px rgba(169,
             <span class="err" id="e-n" role="alert"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 1 15 14H1L8 1Zm0 5v4m0 2v.5"stroke="#B3261E" stroke-width="1.6" fill="none" stroke-linecap="round"/></svg>Scrivi il tuo nome.</span>
           </div>
           <div class="campo">
-            <label for="c-a">Azienda <i aria-hidden="true">*</i></label>
-            <input id="c-a" name="azienda" type="text" autocomplete="organization" placeholder="Nome azienda" aria-describedby="nota-fac">
+            <label for="c-a">Cliente</label>
+            <input id="c-a" name="cliente" type="text" autocomplete="organization" placeholder="Nome del cliente">
           </div>
         </div>
         <div class="f2">
@@ -1866,11 +1867,11 @@ input[type=range]:focus-visible::-moz-range-thumb{box-shadow:0 0 0 4px rgba(169,
             </div>
             <div class="cal-griglia" id="cal-griglia" role="group" aria-label="Giorni del mese"></div>
             <p class="cal-scelta" id="cal-scelta"></p>
+            <p class="cal-nota">Invii una richiesta: la segreteria ti conferma la disponibilit&agrave; appena possibile.</p>
           </div>
           <input type="hidden" id="c-d" name="data">
           <span class="err" id="e-m" role="alert"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 1 15 14H1L8 1Zm0 5v4m0 2v.5"stroke="#B3261E" stroke-width="1.6" fill="none" stroke-linecap="round"/></svg>Raccontaci in due righe di cosa hai bisogno.</span>
         </div>
-        <p class="dim tiny" id="nota-fac"><i style="font-style:normal;color:var(--blu);font-weight:800">*</i> campo facoltativo</p>
 
         <div class="esito" id="esito" role="status" aria-live="polite">
           <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 0a10 10 0 1 0 0 20A10 10 0 0 0 10 0Zm4.7 7.6-5.5 5.6a1 1 0 0 1-1.4 0L5.3 10.6a1 1 0 1 1 1.4-1.4l2 2 4.6-4.8a1 1 0 0 1 1.4 1.4Z"/></svg>

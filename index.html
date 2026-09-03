@@ -948,6 +948,19 @@ input[type=range]:focus-visible::-moz-range-thumb{box-shadow:0 0 0 4px rgba(169,
   background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.5 6 6.5l5-5' stroke='%232B47D6' stroke-width='1.7' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
   background-repeat:no-repeat;background-position:right 18px center;background-size:12px;padding-right:44px;}
 
+/* la spunta dell'appuntamento: una riga sola, non un campo in piu' */
+.spunta{display:flex;align-items:center;gap:11px;min-height:44px;cursor:pointer;
+  font-size:15px;font-weight:600;color:var(--ink);}
+.spunta input{position:absolute;width:1px;height:1px;opacity:0;}
+.spunta-q{flex:none;width:22px;height:22px;border-radius:7px;display:grid;place-items:center;
+  border:1.5px solid var(--bordo);background:#fff;
+  transition:background-color .2s var(--e),border-color .2s var(--e);}
+.spunta-q svg{width:13px;height:10px;opacity:0;transition:opacity .18s var(--e);}
+.spunta input:checked + .spunta-q{background:var(--blu);border-color:var(--blu);}
+.spunta input:checked + .spunta-q svg{opacity:1;}
+.spunta input:focus-visible + .spunta-q{box-shadow:0 0 0 4px rgba(43,71,214,.18);}
+.spunta:hover .spunta-q{border-color:var(--bordo-hi);}
+
 /* ── calendario dell'appuntamento ──────────────────────────
    Prende il posto del messaggio quando si chiede un appuntamento in
    sede: stessa cornice, stessa larghezza, stesso raggio del riquadro
@@ -1404,7 +1417,7 @@ input[type=range]:focus-visible::-moz-range-thumb{box-shadow:0 0 0 4px rgba(169,
           </p>
           <div class="invito-b">
             <a class="b b--pri" href="#contattaci" data-go="contattaci">Raccontaci il tuo piano</a>
-            <a class="b b--gh" href="#contattaci" data-go="contattaci" data-motivo="Appuntamento in sede">Prenota un appuntamento</a>
+            <a class="b b--gh" href="#contattaci" data-go="contattaci" data-appuntamento>Prenota un appuntamento</a>
           </div>
         </div>
 
@@ -1846,7 +1859,6 @@ input[type=range]:focus-visible::-moz-range-thumb{box-shadow:0 0 0 4px rgba(169,
               <option>Campagna taxi</option>
               <option>Campagna radio/stampa</option>
               <option>TMC Travel</option>
-              <option>Appuntamento in sede</option>
               <option>Altro</option>
             </select>
           </div>
@@ -1861,6 +1873,15 @@ input[type=range]:focus-visible::-moz-range-thumb{box-shadow:0 0 0 4px rgba(169,
             </select>
           </div>
         </div>
+        <label class="spunta" for="c-app">
+          <input type="checkbox" id="c-app" name="appuntamento">
+          <span class="spunta-q" aria-hidden="true">
+            <svg viewBox="0 0 14 11" fill="none" stroke="#fff" stroke-width="2.2"
+                 stroke-linecap="round" stroke-linejoin="round"><path d="m1 5.5 4 4 8-8"/></svg>
+          </span>
+          <span>Voglio fissare un appuntamento in sede</span>
+        </label>
+
         <div class="campo" id="w-m">
           <label for="c-m" id="lab-m">Messaggio</label>
           <textarea id="c-m" name="messaggio" placeholder="Raccontaci l'obiettivo, la città, il periodo e il budget indicativo…" aria-describedby="e-m"></textarea>
@@ -2047,13 +2068,13 @@ input[type=range]:focus-visible::-moz-range-thumb{box-shadow:0 0 0 4px rgba(169,
         }
         /* certi pulsanti arrivano ai contatti con gia' in mente il motivo:
            lo preselezionano, cosi' non lo si deve ridire */
-        var motivo = el.getAttribute('data-motivo');
-        if(motivo){
-          var sel = document.getElementById('c-i');
-          if(sel){
-            sel.value = motivo;
-            /* il cambio da codice non scatena "change": avviso io */
-            if(window.tmcAppuntamento){ window.tmcAppuntamento(motivo === 'Appuntamento in sede'); }
+        /* "Prenota un appuntamento" accende la spunta: il menu dei
+           servizi resta libero, cosi' sappiamo anche cosa gli serve */
+        if(el.hasAttribute('data-appuntamento')){
+          var sp = document.getElementById('c-app');
+          if(sp){
+            sp.checked = true;
+            if(window.tmcAppuntamento){ window.tmcAppuntamento(true); }
           }
         }
         /* il focus va sul titolo della nuova pagina: chi naviga da tastiera
@@ -2468,14 +2489,10 @@ input[type=range]:focus-visible::-moz-range-thumb{box-shadow:0 0 0 4px rgba(169,
     }
     window.tmcAppuntamento = modoAppuntamento;
 
-    var scelta = document.getElementById('c-i');
-    if(scelta){
-      scelta.addEventListener('change', function(){
-        modoAppuntamento(scelta.value === 'Appuntamento in sede');
-      });
-      /* se si arriva qui dal pulsante "Prenota un appuntamento" il motivo
-         e' gia' selezionato: allineo subito il campo */
-      modoAppuntamento(scelta.value === 'Appuntamento in sede');
+    var spunta = document.getElementById('c-app');
+    if(spunta){
+      spunta.addEventListener('change', function(){ modoAppuntamento(spunta.checked); });
+      modoAppuntamento(spunta.checked);
     }
 
     function valida(){

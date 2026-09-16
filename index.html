@@ -586,27 +586,6 @@ body.menu-open #menu{opacity:1;visibility:visible;transform:none;transition-dela
 .taxi-impatto.in-vista .taxi-scia{animation:taxi-passaggio 1.35s ease-out both;}
 @keyframes taxi-passaggio{0%{stroke-dashoffset:220;opacity:0;}20%{opacity:.8;}100%{stroke-dashoffset:-400;opacity:0;}}
 .taxi-impatto .numeri{gap:clamp(20px,3vw,44px);}
-/* una corsia in cima al riquadro: tre taxi che la attraversano, a velocita' diverse */
-.taxi-strada{position:relative;height:52px;margin:calc(clamp(28px,3.8vw,54px) * -1 + 12px) calc(clamp(28px,3.8vw,54px) * -1) clamp(14px,1.8vw,22px);
-  overflow:hidden;pointer-events:none;
-  background:linear-gradient(#DCE4F5,#DCE4F5) left bottom/100% 1px no-repeat,
-             repeating-linear-gradient(90deg,#C9D5F0 0 18px,transparent 18px 38px) left 50%/100% 2px no-repeat;}
-.taxi-auto{position:absolute;bottom:4px;left:0;width:76px;height:36px;will-change:transform;
-  animation:taxi-corsa var(--durata) linear infinite;animation-delay:var(--ritardo);transform:translateX(-80px);}
-.taxi-auto svg{display:block;width:100%;height:100%;overflow:visible;}
-.taxi-auto .tx-corpo{fill:#fff;stroke:var(--ink);stroke-width:1.4;stroke-linejoin:round;}
-.taxi-auto .tx-vetro{fill:#DDE6FB;stroke:var(--ink);stroke-width:1.1;stroke-linejoin:round;}
-.taxi-auto .tx-insegna{fill:var(--blu);}
-.taxi-auto .tx-ruota{fill:var(--ink);}
-.taxi-auto .tx-cerchio{fill:#C9D5F0;}
-.taxi-auto .tx-fascia{stroke:var(--blu);stroke-width:1.6;}
-/* stessa velocita', distanza regolare: non si tamponano mai */
-.taxi-auto--1{--durata:15s;--ritardo:0s;}
-.taxi-auto--2{--durata:15s;--ritardo:-5s;}
-.taxi-auto--3{--durata:15s;--ritardo:-10s;}
-@keyframes taxi-corsa{from{transform:translateX(-90px);}to{transform:translateX(calc(100cqw + 10px));}}
-.taxi-strada{container-type:inline-size;}
-@media(prefers-reduced-motion:reduce){.taxi-auto{animation:none;}.taxi-auto--1{transform:translateX(12cqw);}.taxi-auto--2{transform:translateX(48cqw);}.taxi-auto--3{transform:translateX(80cqw);}}
 /* testo tra il riquadro dei numeri e la foto: stesso spazio sopra e sotto */
 .testo-centro{--spazio:clamp(32px,4vw,56px);padding:var(--spazio) 0;}
 .testo-centro .lead{max-width:none;}
@@ -2754,28 +2733,6 @@ body.tmc-dialog-open{overflow:hidden}
 
   <section class="sec" style="padding-top:clamp(8px,1.2vw,16px);padding-bottom:0">
     <div class="wrap">
-      <div class="taxi-impatto rv">
-        <div class="taxi-strada" aria-hidden="true">
-          <span class="taxi-auto taxi-auto--1"><svg viewBox="0 0 64 30"><path class="tx-corpo" d="M5 22.5v-5.2c0-1.4.9-2.6 2.3-3l7.2-2.1 6.3-5.4c.9-.8 2.1-1.2 3.3-1.2h14.6c1.4 0 2.7.6 3.6 1.7l4.6 5.3 7.9 1.6c1.8.4 3.2 2 3.2 3.9v4.4c0 .8-.6 1.4-1.4 1.4H6.4c-.8 0-1.4-.6-1.4-1.4Z"/><path class="tx-vetro" d="M17.6 12.2 22.4 8c.5-.4 1.1-.7 1.8-.7h6.3v4.9Zm15.4 0V7.3h5c.8 0 1.5.3 2 .9l3.5 4Z"/><rect class="tx-insegna" x="25" y="1.5" width="12" height="4.2" rx="1.2"/><circle class="tx-ruota" cx="17" cy="24" r="4.3"/><circle class="tx-ruota" cx="48" cy="24" r="4.3"/><circle class="tx-cerchio" cx="17" cy="24" r="1.6"/><circle class="tx-cerchio" cx="48" cy="24" r="1.6"/><path class="tx-fascia" d="M8 18.6h50"/></svg></span>
-          <span class="taxi-auto taxi-auto--2"><svg viewBox="0 0 64 30"><path class="tx-corpo" d="M5 22.5v-5.2c0-1.4.9-2.6 2.3-3l7.2-2.1 6.3-5.4c.9-.8 2.1-1.2 3.3-1.2h14.6c1.4 0 2.7.6 3.6 1.7l4.6 5.3 7.9 1.6c1.8.4 3.2 2 3.2 3.9v4.4c0 .8-.6 1.4-1.4 1.4H6.4c-.8 0-1.4-.6-1.4-1.4Z"/><path class="tx-vetro" d="M17.6 12.2 22.4 8c.5-.4 1.1-.7 1.8-.7h6.3v4.9Zm15.4 0V7.3h5c.8 0 1.5.3 2 .9l3.5 4Z"/><rect class="tx-insegna" x="25" y="1.5" width="12" height="4.2" rx="1.2"/><circle class="tx-ruota" cx="17" cy="24" r="4.3"/><circle class="tx-ruota" cx="48" cy="24" r="4.3"/><circle class="tx-cerchio" cx="17" cy="24" r="1.6"/><circle class="tx-cerchio" cx="48" cy="24" r="1.6"/><path class="tx-fascia" d="M8 18.6h50"/></svg></span>
-          <span class="taxi-auto taxi-auto--3"><svg viewBox="0 0 64 30"><path class="tx-corpo" d="M5 22.5v-5.2c0-1.4.9-2.6 2.3-3l7.2-2.1 6.3-5.4c.9-.8 2.1-1.2 3.3-1.2h14.6c1.4 0 2.7.6 3.6 1.7l4.6 5.3 7.9 1.6c1.8.4 3.2 2 3.2 3.9v4.4c0 .8-.6 1.4-1.4 1.4H6.4c-.8 0-1.4-.6-1.4-1.4Z"/><path class="tx-vetro" d="M17.6 12.2 22.4 8c.5-.4 1.1-.7 1.8-.7h6.3v4.9Zm15.4 0V7.3h5c.8 0 1.5.3 2 .9l3.5 4Z"/><rect class="tx-insegna" x="25" y="1.5" width="12" height="4.2" rx="1.2"/><circle class="tx-ruota" cx="17" cy="24" r="4.3"/><circle class="tx-ruota" cx="48" cy="24" r="4.3"/><circle class="tx-cerchio" cx="17" cy="24" r="1.6"/><circle class="tx-cerchio" cx="48" cy="24" r="1.6"/><path class="tx-fascia" d="M8 18.6h50"/></svg></span>
-        </div>
-        <h2 class="taxi-impatto-titolo">Taxi Advertising</h2>
-        <svg class="taxi-percorso" viewBox="0 0 700 260" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><path d="M0 45h190q30 0 30 30v80q0 30 30 30h450M0 215h100q30 0 30-30V65q0-30 30-30h350q30 0 30 30v195M320 0v260M0 115h700M610 0v260"/><path class="taxi-scia" d="M0 45h190q30 0 30 30v80q0 30 30 30h450"/></svg>
-        <div class="numeri">
-          <div><span class="taxi-unita">Ogni giorno</span><b data-n="15000" aria-label="15.000 contatti">15.000</b><span class="dim">Contatti al giorno prodotti da un taxi brandizzato</span></div>
-          <div><span class="taxi-unita">Ogni mese</span><b data-n="390000" aria-label="390.000 contatti">390.000</b><span class="dim">Contatti al mese, per un solo mezzo in circolazione</span></div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section class="sec" style="padding-top:0">
-    <div class="wrap">
-      <div class="rv testo-centro">
-        <p class="lead">Il taxi brandizzato è il mezzo che garantisce la miglior copertura e diffusione ad ampio raggio nelle grandi città, veicolando il messaggio pubblicitario giorno e notte e raggiungendo tutte le tipologie di target.</p>
-        <p class="lead">Progettiamo campagne taxi calibrate per territorio, copertura e durata, portando il messaggio nel cuore della città e nella quotidianità delle persone. In qualsiasi città, in Italia e all'estero.</p>
-      </div>
       <div class="taxi-fila" tabindex="0" role="region" aria-label="Le nostre campagne taxi in movimento">
         <div class="taxi-fila-pista">
           <ul class="taxi-fila-gruppo" aria-label="16 campagne illustrate sui taxi">
@@ -2797,6 +2754,23 @@ body.tmc-dialog-open{overflow:hidden}
           <li><img src="img/taxi-fila/allart-finstral.svg" alt="Taxi con campagna Allart Center · Finstral" width="600" height="240" loading="eager" decoding="async"></li>
           </ul>
         </div>
+      </div>
+      <div class="taxi-impatto rv">
+        <h2 class="taxi-impatto-titolo">Taxi Advertising</h2>
+        <svg class="taxi-percorso" viewBox="0 0 700 260" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><path d="M0 45h190q30 0 30 30v80q0 30 30 30h450M0 215h100q30 0 30-30V65q0-30 30-30h350q30 0 30 30v195M320 0v260M0 115h700M610 0v260"/><path class="taxi-scia" d="M0 45h190q30 0 30 30v80q0 30 30 30h450"/></svg>
+        <div class="numeri">
+          <div><span class="taxi-unita">Ogni giorno</span><b data-n="15000" aria-label="15.000 contatti">15.000</b><span class="dim">Contatti al giorno prodotti da un taxi brandizzato</span></div>
+          <div><span class="taxi-unita">Ogni mese</span><b data-n="390000" aria-label="390.000 contatti">390.000</b><span class="dim">Contatti al mese, per un solo mezzo in circolazione</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" style="padding-top:0">
+    <div class="wrap">
+      <div class="rv testo-centro">
+        <p class="lead">Il taxi brandizzato è il mezzo che garantisce la miglior copertura e diffusione ad ampio raggio nelle grandi città, veicolando il messaggio pubblicitario giorno e notte e raggiungendo tutte le tipologie di target.</p>
+        <p class="lead">Progettiamo campagne taxi calibrate per territorio, copertura e durata, portando il messaggio nel cuore della città e nella quotidianità delle persone. In qualsiasi città, in Italia e all'estero.</p>
       </div>
       <div class="rv" style="border-radius:var(--r);overflow:hidden;box-shadow:var(--sh-2)">
         <div class="pg4" role="img" aria-label="Esempio di campagna Taxi Advertising"

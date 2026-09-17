@@ -407,6 +407,14 @@ body.menu-open #menu{opacity:1;visibility:visible;transform:none;transition-dela
   padding:6px 11px;border-radius:999px;font-size:11.5px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;
   color:#fff;background:rgba(6,14,38,.58);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);
   border:1px solid rgba(255,255,255,.22);}
+/* attesa del video: dentro il riquadro, mai sopra la pagina */
+.ooh-film-attesa{position:absolute;z-index:2;left:50%;top:50%;width:76px;height:76px;margin:-38px 0 0 -38px;
+  display:grid;place-items:center;border-radius:50%;background:rgba(255,255,255,.92);box-shadow:var(--sh-2);
+  opacity:0;transform:scale(.85);transition:opacity .25s var(--e),transform .3s var(--spring);pointer-events:none;}
+.ooh-film.attesa .ooh-film-attesa{opacity:1;transform:scale(1);}
+.ooh-film-attesa img{width:28px;height:auto;}
+.ooh-film-anello{position:absolute;inset:-7px;border-radius:50%;border:3px solid transparent;
+  border-top-color:#fff;border-bottom-color:#fff;animation:carica-gira 1.15s linear infinite;}
 .ooh-film-b{position:absolute;z-index:2;right:14px;bottom:14px;width:44px;height:44px;
   display:grid;place-items:center;border-radius:50%;cursor:pointer;color:var(--ink);
   background:rgba(255,255,255,.94);border:1px solid var(--bordo);box-shadow:var(--sh-1);
@@ -2561,6 +2569,7 @@ body.tmc-dialog-open{overflow:hidden}
     <div class="wrap">
     <figure class="ooh-film" aria-label="Video: maxi schermo LED con la campagna Cuba">
       <span class="ooh-film-eti" aria-hidden="true">DOOH · Maxi LED</span>
+      <span class="ooh-film-attesa" aria-hidden="true"><span class="ooh-film-anello"></span><img src="img/brand/M_tmc-01.svg" alt="" width="28" height="33"></span>
       <video class="ooh-film-v" id="ooh-film" muted loop playsinline disablepictureinpicture
              disableremoteplayback preload="none" poster="img/video/ooh-poster.jpg"
              data-src-720="img/video/ooh-720.mp4" data-src-1080="img/video/ooh-1080.mp4"
@@ -4258,9 +4267,10 @@ body.tmc-dialog-open{overflow:hidden}
     var imgs = pag.querySelectorAll('img');
     for(var i=0;i<imgs.length;i++){
       var im = imgs[i];
-      if(!im.getAttribute('src') || im.complete){ continue; }
+      if(!im.getAttribute('src') || im.complete || im.loading === 'lazy'){ continue; }
       var r = im.getBoundingClientRect();
-      if((!r.width && !r.height) || r.top > limite || r.bottom < 0){ continue; }
+      if((!r.width && !r.height) || r.top > limite || r.bottom < 0 ||
+         r.left > window.innerWidth || r.right < 0){ continue; }
       attese.push(im);
     }
     if(!attese.length){ return; }
@@ -4273,8 +4283,9 @@ body.tmc-dialog-open{overflow:hidden}
       if(cambioAperto === motivo){ cambioAperto = null; }
     }
     function una(){ if(--restano <= 0){ chiudi(); } }
-    /* nessun tetto: una foto che non arriva tiene il marchio acceso, una
-       foto andata in errore invece chiude subito, perche' non arrivera' mai */
+    /* tetto di 2,5 secondi: una foto lenta non deve mai tenere la pagina
+       coperta. Scaduto il tempo la pagina si mostra e la foto arriva da sola. */
+    setTimeout(chiudi, 2500);
     for(var k=0;k<attese.length;k++){
       attese[k].addEventListener('load', una, { once:true });
       attese[k].addEventListener('error', una, { once:true });
@@ -4980,62 +4991,54 @@ body.tmc-dialog-open{overflow:hidden}
   }
 
   /* ── video OOH ────────────────────────────────────────────
-     Tre versioni dello stesso filmato: 720p, 1080p e 4K HEVC. Il 4K solo
-     su schermi grandi, se il browser lo decodifica e la linea e' veloce.
-     Parte appena il browser dice che puo' andare avanti senza fermarsi
-     (non si aspetta a video fermo: Chrome in pausa smette di scaricare, e
-     l'attesa non finirebbe mai). Se durante la riproduzione resta senza
-     dati compare il caricamento del sito, e sparisce appena riparte. Se
-     un'attesa dura piu' di 4 secondi, o si ferma due volte in poco tempo,
+     Tre versioni: 720p, 1080p, 4K HEVC. Si parte da quella che la linea
+     regge (720p se la connessione non e' veloce), mai dal 4K alla prima
+     visita: il file e' grande e non e' ancora in cache.
+     Mentre aspetta dati si vede l'anteprima con un piccolo indicatore
+     dentro il riquadro: la pagina resta sempre libera e navigabile.
+     Se un'attesa supera i 3 secondi, o si ferma due volte in poco tempo,
      scende di qualita' dallo stesso punto. */
   var film = document.getElementById('ooh-film');
   if(film){
+    var filmBox = film.parentNode;
     var filmBtn = document.getElementById('ooh-film-b');
     var filmFermo = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    var filmVisibile = false, filmLivello = null, filmAttese = [], filmTimer = null, filmInCarico = false;
-    var filmCarica = window.tmcCarica || { inizia:function(){}, finisci:function(){} };
+    var filmVisibile = false, filmLivello = null, filmAttese = [], filmTimer = null;
 
     function filmScegli(){
-      var lato = Math.max(window.innerWidth, window.innerHeight) * Math.min(window.devicePixelRatio || 1, 2);
       var rete = navigator.connection || {};
-      var lenta = rete.saveData || /(^|-)(2g|3g)$/.test(rete.effectiveType || '');
-      var veloce = rete.downlink ? rete.downlink >= 9 : true;
-      var hevc = ['hvc1.1.6.L153.B0','hvc1.1.6.L150.B0','hvc1'].some(function(c){
-        return film.canPlayType('video/mp4; codecs="' + c + '"') === 'probably';
-      });
-      if(!lenta && veloce && hevc && lato >= 2400 && window.innerWidth >= 1100){ return '2160'; }
-      if(!lenta && window.innerWidth >= 700){ return '1080'; }
-      return '720';
+      var lenta = rete.saveData || /(^|-)(2g|3g)$/.test(rete.effectiveType || '') ||
+                  (rete.downlink && rete.downlink < 8);
+      if(lenta || window.innerWidth < 700){ return '720'; }
+      return '1080';
+    }
+    function filmAttesa(si){
+      filmBox.classList.toggle('attesa', !!si);
+      if(!si){ clearTimeout(filmTimer); filmTimer = null; }
     }
     function filmImposta(livello, da){
-      if(filmLivello === livello){ return; }
+      if(filmLivello === livello && film.getAttribute('src')){ return; }
       filmLivello = livello;
       film.src = film.getAttribute('data-src-' + livello);
       film.preload = 'auto';
       if(da){ film.addEventListener('loadedmetadata', function(){ try{ film.currentTime = da; }catch(e){} }, { once:true }); }
       film.load();
-      filmAvvia();
     }
     function filmScendi(){
       var t = film.currentTime || 0;
-      if(filmLivello === '2160'){ filmImposta('1080', t); return true; }
-      if(filmLivello === '1080'){ filmImposta('720', t); return true; }
+      if(filmLivello === '2160'){ filmImposta('1080', t); filmAvvia(); return true; }
+      if(filmLivello === '1080'){ filmImposta('720', t); filmAvvia(); return true; }
       return false;
-    }
-    function filmSblocca(){
-      clearTimeout(filmTimer); filmTimer = null;
-      if(filmInCarico){ filmInCarico = false; filmCarica.finisci('video'); }
     }
     function filmAvvia(){
       if(!filmVisibile || filmFermo || document.hidden){ return; }
-      if(!film.src){ filmImposta(filmScegli()); return; }
+      if(!film.getAttribute('src')){ filmImposta(filmScegli()); }
       var p = film.play(); if(p && p.catch){ p.catch(function(){}); }
     }
 
-    /* in attesa di dati mentre deve andare: caricamento del sito */
     film.addEventListener('waiting', function(){
       if(filmFermo || !filmVisibile || document.hidden){ return; }
-      if(!filmInCarico){ filmInCarico = true; filmCarica.inizia('video'); }
+      filmAttesa(true);
       if(film.currentTime > .5){
         var ora = Date.now();
         filmAttese = filmAttese.filter(function(t){ return ora - t < 15000; });
@@ -5043,23 +5046,24 @@ body.tmc-dialog-open{overflow:hidden}
         if(filmAttese.length >= 2 && filmScendi()){ filmAttese = []; return; }
       }
       clearTimeout(filmTimer);
-      filmTimer = setTimeout(function(){ if(filmInCarico && !filmScendi()){ filmSblocca(); } }, 4000);
+      filmTimer = setTimeout(function(){ if(filmBox.classList.contains('attesa')){ filmScendi(); } }, 3000);
     });
-    film.addEventListener('playing', function(){ filmSblocca(); film.parentNode.classList.add('vivo'); });
-    film.addEventListener('canplay', function(){ if(filmInCarico){ filmAvvia(); } });
-    film.addEventListener('pause', function(){ film.parentNode.classList.remove('vivo'); });
-    film.addEventListener('error', function(){ if(!filmScendi()){ filmSblocca(); } });
+    film.addEventListener('loadstart', function(){ if(filmVisibile && !filmFermo){ filmAttesa(true); } });
+    film.addEventListener('playing', function(){ filmAttesa(false); filmBox.classList.add('vivo'); });
+    film.addEventListener('canplay', function(){ filmAvvia(); });
+    film.addEventListener('pause', function(){ filmBox.classList.remove('vivo'); });
+    film.addEventListener('error', function(){ if(!filmScendi()){ filmAttesa(false); } });
 
     /* vicino: comincia a scaricare prima di arrivarci */
     new IntersectionObserver(function(voci){
-      if(voci[0].isIntersecting && !film.src){ filmLivello = filmScegli(); film.src = film.getAttribute('data-src-' + filmLivello); film.preload = 'auto'; film.load(); }
+      if(voci[0].isIntersecting && !film.getAttribute('src')){ filmImposta(filmScegli()); }
     }, { rootMargin:'600px 0px' }).observe(film);
     new IntersectionObserver(function(voci){
       filmVisibile = voci[0].intersectionRatio >= .35;
-      if(filmVisibile){ filmAvvia(); } else { filmSblocca(); film.pause(); }
+      if(filmVisibile){ filmAvvia(); } else { filmAttesa(false); film.pause(); }
     }, { threshold:[0, .35] }).observe(film);
     document.addEventListener('visibilitychange', function(){
-      if(document.hidden){ filmSblocca(); film.pause(); } else { filmAvvia(); }
+      if(document.hidden){ filmAttesa(false); film.pause(); } else { filmAvvia(); }
     });
     function filmStato(){
       filmBtn.setAttribute('aria-pressed', filmFermo ? 'true' : 'false');
@@ -5067,7 +5071,7 @@ body.tmc-dialog-open{overflow:hidden}
     }
     filmBtn.addEventListener('click', function(){
       filmFermo = !filmFermo;
-      if(filmFermo){ filmSblocca(); film.pause(); } else { filmAvvia(); }
+      if(filmFermo){ filmAttesa(false); film.pause(); } else { filmAvvia(); }
       filmStato();
     });
     filmStato();

@@ -424,9 +424,9 @@ body.menu-open #menu{opacity:1;visibility:visible;transform:none;transition-dela
 .ooh-car{max-width:880px;margin:0 auto;}
 /* titolo del carosello: centrato, il titolo su una riga, il testo sotto piu' stretto */
 .ooh-car-testa{margin:0 auto clamp(24px,3vw,38px);text-align:center;}
-.ooh-car-testa .lead{max-width:none;margin:14px auto 0;text-wrap:balance;}
+.ooh-car-testa .lead{max-width:none;margin:18px auto 0;text-wrap:balance;}
 @media (min-width:1100px){ .ooh-car-testa .lead{white-space:nowrap;} }
-.ooh-car-testa .lead+.lead{margin-top:10px;}
+.ooh-car-testa .lead+.lead{margin-top:4px;}
 .ooh-car-vista{position:relative;overflow:hidden;border-radius:var(--r);box-shadow:var(--sh-2);background:var(--bg-2);}
 .ooh-car-track{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;scroll-behavior:smooth;
   scrollbar-width:none;overscroll-behavior-x:contain;outline:none;}
@@ -589,7 +589,7 @@ body.menu-open #menu{opacity:1;visibility:visible;transform:none;transition-dela
 /* testo tra il riquadro dei numeri e la foto: stesso spazio sopra e sotto */
 .testo-centro{--spazio:clamp(32px,4vw,56px);padding:var(--spazio) 0;}
 .testo-centro .lead{max-width:none;}
-.testo-centro .lead+.lead{margin-top:10px;}
+.testo-centro .lead+.lead{margin-top:4px;}
 .taxi-impatto-titolo{position:relative;margin:0 0 clamp(20px,2.6vw,32px);font-size:clamp(24px,2.6vw,34px);
   font-weight:700;letter-spacing:-.035em;line-height:1.1;color:var(--ink);}
 .taxi-impatto .numeri>div{position:relative;min-width:0;}
@@ -1886,6 +1886,8 @@ body.tmc-dialog-open{overflow:hidden}
 #tmc-travel-voli .tmc-head .lead{margin-top:8px}
 #tmc-travel-sumisura .tmc-head,#tmc-travel-sumisura .mid{margin-top:8px}
 #tmc-travel-sumisura .lead{margin:12px 0 0}
+/* due frasi sullo stesso argomento: piu' vicine tra loro che al titolo */
+#tmc-travel-sumisura .lead+.lead{margin-top:4px}
 #tmc-sumisura{margin-top:20px}
 .tmc-sumisura-chiuso{padding:18px 20px}
 
@@ -2788,7 +2790,7 @@ body.tmc-dialog-open{overflow:hidden}
           Oltre al taxi pianifichiamo il city tour bus — superfici molto più ampie, quindi un
           impatto visivo maggiore — e il tram. In qualsiasi città, in Italia e all'estero.
         </p>
-        <p class="lead" style="margin-top:10px">
+        <p class="lead" style="margin-top:4px">
           Negli anni abbiamo brandizzato mezzi di ogni tipologia. Valutiamo insieme al cliente
           il supporto più adatto, definendolo in base agli obiettivi della campagna, alla
           copertura richiesta e alla durata della pianificazione.
@@ -2874,7 +2876,7 @@ body.tmc-dialog-open{overflow:hidden}
       <div class="rv">
         <h2 class="mid" style="max-width:20ch">Più canali. Un’unica strategia.</h2>
         <p class="lead" style="margin-top:18px;max-width:none">Ogni mezzo ha un ruolo preciso nel percorso di comunicazione.</p>
-        <p class="lead" style="margin-top:10px;max-width:none">Costruiamo campagne in cui i diversi touchpoint si rafforzano tra loro, aumentando copertura, continuità e riconoscibilità del brand.</p>
+        <p class="lead" style="margin-top:4px;max-width:none">Costruiamo campagne in cui i diversi touchpoint si rafforzano tra loro, aumentando copertura, continuità e riconoscibilità del brand.</p>
       </div>
       <div class="rv" style="margin-top:clamp(24px,3vw,40px);border-radius:var(--r);overflow:hidden;box-shadow:var(--sh-2)">
         <div class="pg3" role="img" aria-label="Esempio di campagna cross-mediale"

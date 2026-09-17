@@ -598,9 +598,12 @@ body.menu-open #menu{opacity:1;visibility:visible;transform:none;transition-dela
 .testo-centro{--spazio:clamp(32px,4vw,56px);padding:var(--spazio) 0 0;}
 .testo-centro .lead{max-width:none;}
 .testo-centro .lead+.lead{margin-top:4px;}
-/* pagina Taxi: titolo di sezione, poi il riquadro dei numeri pulito, poi la fila di taxi */
-.taxi-sezione-titolo{margin:clamp(18px,2.4vw,30px) 0 clamp(16px,2vw,24px);}
-#pg-taxiadv .taxi-fila{margin:clamp(26px,3.2vw,40px) 0 0;}
+/* pagina Taxi, come OOH: prima i taxi che scorrono, poi titolo e testo, poi i numeri */
+#pg-taxiadv .taxi-fila{margin:0;}
+.taxi-intro{margin-top:clamp(32px,4vw,56px);}
+.taxi-intro .lead{max-width:none;margin-top:18px;}
+.taxi-intro .lead+.lead{margin-top:4px;}
+.taxi-intro+.taxi-impatto{margin-top:clamp(28px,3.4vw,44px);}
 .taxi-impatto .numeri>div{position:relative;min-width:0;}
 .taxi-impatto .numeri>div+div{border-left:1px solid #D4DEF2;padding-left:clamp(20px,3vw,44px);}
 .taxi-impatto .numeri b{color:var(--ink);font-size:clamp(38px,5vw,62px);letter-spacing:-.055em;}
@@ -2743,15 +2746,8 @@ body.tmc-dialog-open{overflow:hidden}
     </div>
   </div>
 
-  <section class="sec" style="padding-top:clamp(8px,1.2vw,16px);padding-bottom:0">
+  <section class="sec" style="padding-top:clamp(8px,1.2vw,16px)">
     <div class="wrap">
-      <h2 class="mid rv taxi-sezione-titolo">Taxi Advertising</h2>
-      <div class="taxi-impatto rv">
-        <div class="numeri">
-          <div><span class="taxi-unita">Ogni giorno</span><b data-n="15000" aria-label="15.000 contatti">15.000</b><span class="dim">Contatti al giorno prodotti da un taxi brandizzato</span></div>
-          <div><span class="taxi-unita">Ogni mese</span><b data-n="390000" aria-label="390.000 contatti">390.000</b><span class="dim">Contatti al mese, per un solo mezzo in circolazione</span></div>
-        </div>
-      </div>
       <div class="taxi-fila" tabindex="0" role="region" aria-label="Le nostre campagne taxi in movimento">
         <div class="taxi-fila-pista">
           <ul class="taxi-fila-gruppo" aria-label="16 campagne illustrate sui taxi">
@@ -2774,14 +2770,16 @@ body.tmc-dialog-open{overflow:hidden}
           </ul>
         </div>
       </div>
-    </div>
-  </section>
-
-  <section class="sec" style="padding-top:0">
-    <div class="wrap">
-      <div class="rv testo-centro">
+      <div class="rv taxi-intro">
+        <h2 class="mid">Taxi Advertising</h2>
         <p class="lead">Il taxi brandizzato è il mezzo che garantisce la miglior copertura e diffusione ad ampio raggio nelle grandi città, veicolando il messaggio pubblicitario giorno e notte e raggiungendo tutte le tipologie di target.</p>
         <p class="lead">Progettiamo campagne taxi calibrate per territorio, copertura e durata, portando il messaggio nel cuore della città e nella quotidianità delle persone. In qualsiasi città, in Italia e all'estero.</p>
+      </div>
+      <div class="taxi-impatto rv">
+        <div class="numeri">
+          <div><span class="taxi-unita">Ogni giorno</span><b data-n="15000" aria-label="15.000 contatti">15.000</b><span class="dim">Contatti al giorno prodotti da un taxi brandizzato</span></div>
+          <div><span class="taxi-unita">Ogni mese</span><b data-n="390000" aria-label="390.000 contatti">390.000</b><span class="dim">Contatti al mese, per un solo mezzo in circolazione</span></div>
+        </div>
       </div>
     </div>
   </section>

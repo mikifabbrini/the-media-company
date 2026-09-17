@@ -595,11 +595,12 @@ body.menu-open #menu{opacity:1;visibility:visible;transform:none;transition-dela
 @keyframes taxi-passaggio{0%{stroke-dashoffset:220;opacity:0;}20%{opacity:.8;}100%{stroke-dashoffset:-400;opacity:0;}}
 .taxi-impatto .numeri{gap:clamp(20px,3vw,44px);}
 /* testo tra il riquadro dei numeri e la foto: stesso spazio sopra e sotto */
-.testo-centro{--spazio:clamp(32px,4vw,56px);padding:var(--spazio) 0;}
+.testo-centro{--spazio:clamp(32px,4vw,56px);padding:var(--spazio) 0 0;}
 .testo-centro .lead{max-width:none;}
 .testo-centro .lead+.lead{margin-top:4px;}
-.taxi-impatto-titolo{position:relative;margin:0 0 clamp(20px,2.6vw,32px);font-size:clamp(24px,2.6vw,34px);
-  font-weight:700;letter-spacing:-.035em;line-height:1.1;color:var(--ink);}
+/* pagina Taxi: titolo di sezione, poi il riquadro dei numeri pulito, poi la fila di taxi */
+.taxi-sezione-titolo{margin:clamp(18px,2.4vw,30px) 0 clamp(16px,2vw,24px);}
+#pg-taxiadv .taxi-fila{margin:clamp(26px,3.2vw,40px) 0 0;}
 .taxi-impatto .numeri>div{position:relative;min-width:0;}
 .taxi-impatto .numeri>div+div{border-left:1px solid #D4DEF2;padding-left:clamp(20px,3vw,44px);}
 .taxi-impatto .numeri b{color:var(--ink);font-size:clamp(38px,5vw,62px);letter-spacing:-.055em;}
@@ -2744,6 +2745,13 @@ body.tmc-dialog-open{overflow:hidden}
 
   <section class="sec" style="padding-top:clamp(8px,1.2vw,16px);padding-bottom:0">
     <div class="wrap">
+      <h2 class="mid rv taxi-sezione-titolo">Taxi Advertising</h2>
+      <div class="taxi-impatto rv">
+        <div class="numeri">
+          <div><span class="taxi-unita">Ogni giorno</span><b data-n="15000" aria-label="15.000 contatti">15.000</b><span class="dim">Contatti al giorno prodotti da un taxi brandizzato</span></div>
+          <div><span class="taxi-unita">Ogni mese</span><b data-n="390000" aria-label="390.000 contatti">390.000</b><span class="dim">Contatti al mese, per un solo mezzo in circolazione</span></div>
+        </div>
+      </div>
       <div class="taxi-fila" tabindex="0" role="region" aria-label="Le nostre campagne taxi in movimento">
         <div class="taxi-fila-pista">
           <ul class="taxi-fila-gruppo" aria-label="16 campagne illustrate sui taxi">
@@ -2766,14 +2774,6 @@ body.tmc-dialog-open{overflow:hidden}
           </ul>
         </div>
       </div>
-      <div class="taxi-impatto rv">
-        <h2 class="taxi-impatto-titolo">Taxi Advertising</h2>
-        <svg class="taxi-percorso" viewBox="0 0 700 260" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><path d="M0 45h190q30 0 30 30v80q0 30 30 30h450M0 215h100q30 0 30-30V65q0-30 30-30h350q30 0 30 30v195M320 0v260M0 115h700M610 0v260"/><path class="taxi-scia" d="M0 45h190q30 0 30 30v80q0 30 30 30h450"/></svg>
-        <div class="numeri">
-          <div><span class="taxi-unita">Ogni giorno</span><b data-n="15000" aria-label="15.000 contatti">15.000</b><span class="dim">Contatti al giorno prodotti da un taxi brandizzato</span></div>
-          <div><span class="taxi-unita">Ogni mese</span><b data-n="390000" aria-label="390.000 contatti">390.000</b><span class="dim">Contatti al mese, per un solo mezzo in circolazione</span></div>
-        </div>
-      </div>
     </div>
   </section>
 
@@ -2782,10 +2782,6 @@ body.tmc-dialog-open{overflow:hidden}
       <div class="rv testo-centro">
         <p class="lead">Il taxi brandizzato è il mezzo che garantisce la miglior copertura e diffusione ad ampio raggio nelle grandi città, veicolando il messaggio pubblicitario giorno e notte e raggiungendo tutte le tipologie di target.</p>
         <p class="lead">Progettiamo campagne taxi calibrate per territorio, copertura e durata, portando il messaggio nel cuore della città e nella quotidianità delle persone. In qualsiasi città, in Italia e all'estero.</p>
-      </div>
-      <div class="rv" style="border-radius:var(--r);overflow:hidden;box-shadow:var(--sh-2)">
-        <div class="pg4" role="img" aria-label="Esempio di campagna Taxi Advertising"
-             style="aspect-ratio:21/9;background-size:cover;background-position:center"></div>
       </div>
     </div>
   </section>

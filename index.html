@@ -2005,7 +2005,10 @@ body.tmc-dialog-open{overflow:hidden}
 .tmc-voli-chiuso svg{flex:none;width:17px;height:17px;fill:none;stroke:currentColor;
   stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
 /* da iscritti lo sconto si vede anche qui, come sulle schede */
-.tmc-voli-sconto{margin-top:10px;padding:9px 14px;border-radius:12px;
+/* sconto e pulsante in fondo: le due schede restano allineate anche se
+   un testo e’ piu’ corto dell’altro */
+.tmc-voli-descrizione{flex:1}
+.tmc-voli-sconto{margin-top:18px;padding:9px 14px;border-radius:12px;
   background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.24);
   justify-content:space-between;color:#D7D3FA;min-height:0}
 .tmc-voli-sconto strong{color:#fff;font-size:27px}

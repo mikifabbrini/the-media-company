@@ -650,8 +650,6 @@ body.menu-open #menu{opacity:1;visibility:visible;transform:none;transition-dela
   color:var(--ink-2);font-size:14.5px;transition:box-shadow .2s var(--e),color .2s var(--e);}
 .cerca-b:hover{box-shadow:inset 0 0 0 1px var(--bordo-hi);color:var(--ink);}
 .cerca-b svg{width:16px;height:16px;flex:none;}
-.cerca-k{font-family:inherit;font-size:11.5px;font-weight:600;background:#fff;color:var(--ink-3);
-  padding:3px 6px;border-radius:6px;box-shadow:inset 0 0 0 1px var(--bordo);}
 
 .cmd-velo{position:fixed;inset:0;z-index:190;background:rgba(15,27,61,.42);
   backdrop-filter:blur(3px);animation:sfuma .18s var(--e);}
@@ -1663,7 +1661,7 @@ body.caso-aperto{overflow:hidden;}
   .sim-corpo{grid-template-columns:minmax(0,1fr);}
   .lst-r{grid-template-columns:48px minmax(0,1fr);row-gap:6px;}
   .lst-r p{grid-column:2;}
-  .cerca-t,.cerca-k{display:none;}
+  .cerca-t{display:none;}
   .cerca-b{width:44px;padding:0;justify-content:center;}
 }
 @media (max-width:760px){
@@ -2262,7 +2260,6 @@ body.tmc-dialog-open{overflow:hidden}
       <button class="cerca-b" id="apri-cmd" type="button" aria-label="Cerca nel sito (Comando K)">
         <svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="9" cy="9" r="6" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="m13.5 13.5 4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
         <span class="cerca-t">Cerca</span>
-        <kbd class="cerca-k" aria-hidden="true">⌘K</kbd>
       </button>
       <a class="b b--pri" href="#contattaci" data-go="contattaci" style="min-height:46px;padding:0 22px;font-size:14px;letter-spacing:.04em">CONTATTACI</a>
       <button class="burger" id="burger" aria-label="Apri il menu" aria-expanded="false" aria-controls="menu"><span aria-hidden="true"></span></button>

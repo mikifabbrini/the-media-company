@@ -1893,6 +1893,15 @@ body.tmc-dialog-open{overflow:hidden}
 .tmc-members-gate>.b{min-width:190px}.tmc-login-switch{display:block;margin:18px auto 0;min-height:40px;color:var(--blu);font-size:14px;text-decoration:underline;text-underline-offset:4px}
 .tmc-member-form{text-align:left;margin-top:22px;padding-top:22px;border-top:1px solid var(--bordo)}.tmc-member-form>div{margin-bottom:16px}.tmc-member-form label{display:block;font-size:14px;font-weight:600;margin-bottom:7px}
 .tmc-member-form input{width:100%;height:50px;background:white;border:1px solid var(--bordo-hi);border-radius:12px;padding:0 14px;font:inherit;font-size:16px;color:var(--ink)}.tmc-member-form .b{width:100%;white-space:normal}.tmc-member-form .tmc-member-error{color:#ab2433;background:#fff0f1;padding:10px 14px;border-radius:8px;font-size:14px}
+.tmc-f2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.tmc-f2>div{margin-bottom:0}
+.tmc-pw-regole{margin:8px 0 0;font-size:13px;line-height:1.45;color:var(--ink-2)}
+.tmc-consensi{display:flex;flex-direction:column;gap:12px;margin-bottom:18px}
+.tmc-consenso{display:flex;align-items:flex-start;gap:10px;font-size:13.5px;font-weight:500;line-height:1.5;color:var(--ink-2);cursor:pointer}
+.tmc-consenso input{width:18px;height:18px;flex:none;margin-top:2px;accent-color:var(--blu)}
+.tmc-consenso a{color:var(--blu);text-decoration:underline;text-underline-offset:2px}
+.tmc-signup-form input[aria-invalid="true"]{border-color:#ab2433}
+@media(max-width:520px){.tmc-f2{grid-template-columns:minmax(0,1fr)}}
 .tmc-source{font-size:14px!important;color:var(--ink-2)}.tmc-source a{color:var(--blu);text-underline-offset:3px;text-decoration:underline}
 .tmc-rich h3{font-size:22px;margin:26px 0 12px;line-height:1.3}.tmc-rich h3:first-child{margin-top:0}.tmc-offer-terms{background:var(--bg-2);border-radius:18px;padding:26px!important}.tmc-offer-terms h3{margin-top:14px}
 /* TMC Travel respira meno: una pagina sola, non sei sezioni in fila.
@@ -4626,7 +4635,7 @@ body.tmc-dialog-open{overflow:hidden}
 <!-- ═══════════ TMC TRAVEL ═══════════ -->
 <section class="pg" id="pg-travel">
  <div class="hero hero--testo tmc-hero"><div class="aura aura-2" aria-hidden="true"></div><div class="wrap hero-g">
-  <div><h1 class="big" style="max-width:12ch">TMC Travel</h1><p class="lead" style="margin-top:22px;max-width:52ch">TMC Travel è un'agenzia di viaggi per ogni tipo di destinazione, sia nazionale che internazionale, che riesce ad offrire ai propri clienti soluzioni a prezzi altamente competitivi.</p><p class="lead" style="margin-top:10px;max-width:52ch">Iscriviti al nostro club privato e scopri le offerte di TMC Travel, guidato dai nostri Personal Travel Specialist, sempre disponibili per ogni tua richiesta.</p><div class="tmc-hero-actions"><button class="b b--pri" type="button" data-member-access>Iscriviti ora</button><button class="b b--gh" type="button" data-member-access>Accedi</button></div></div>
+  <div><h1 class="big" style="max-width:12ch">TMC Travel</h1><p class="lead" style="margin-top:22px;max-width:52ch">TMC Travel è un'agenzia di viaggi per ogni tipo di destinazione, sia nazionale che internazionale, che riesce ad offrire ai propri clienti soluzioni a prezzi altamente competitivi.</p><p class="lead" style="margin-top:10px;max-width:52ch">Iscriviti al nostro club privato e scopri le offerte di TMC Travel, guidato dai nostri Personal Travel Specialist, sempre disponibili per ogni tua richiesta.</p><div class="tmc-hero-actions"><button class="b b--pri" type="button" data-member-access>Iscriviti ora</button><button class="b b--gh" type="button" data-member-access data-member-login>Accedi</button></div></div>
   <button class="tmc-cover" type="button" data-tmc-kind="travel" data-tmc-category="travel" style="padding:0;text-align:left"><img src="img/travel/alpitour-1.webp" alt="Bungalow sull’acqua e laguna turchese alle Maldive" width="1600" height="898" fetchpriority="high"><span class="tmc-cover-label"><strong>Il tuo prossimo orizzonte.</strong></span></button>
  </div></div>
  <section class="sec tmc-collection tmc-members" id="tmc-travel-catalogo" aria-labelledby="tmc-travel-heading"><div class="wrap">
@@ -7903,7 +7912,11 @@ body.tmc-dialog-open{overflow:hidden}
     travelQuery.addEventListener('input',renderTravel);travelSort.addEventListener('change',renderTravel);
     collection.querySelector('[data-tmc-reset]').addEventListener('click',function(){travelQuery.value='';travelSort.value='default';renderTravel();travelQuery.focus();});
     document.querySelectorAll('[data-tmc-kind="travel"]').forEach(function(b){b.addEventListener('click',function(){collection.scrollIntoView({behavior:reduced?'auto':'smooth',block:'start'});document.getElementById('tmc-travel-heading').focus({preventScroll:true});});});
-    document.querySelectorAll('[data-member-access]').forEach(function(b){b.addEventListener('click',function(){apriAccesso(this);});});
+    document.querySelectorAll('[data-member-access]').forEach(function(b){b.addEventListener('click',function(){
+      apriAccesso(this);
+      /* chi arriva da "Accedi" vede subito il modulo delle credenziali */
+      if(this.hasAttribute('data-member-login')){ showLogin(); }
+    });});
     document.querySelectorAll('[data-member-logout]').forEach(function(b){b.addEventListener('click',function(){
       var sezione=this.closest('section');
       member=false;try{sessionStorage.removeItem('tmc-travel-demo-access');}catch(e){}
@@ -7937,17 +7950,20 @@ body.tmc-dialog-open{overflow:hidden}
     document.querySelectorAll('[data-tmc-destinazioni]').forEach(function(s){s.innerHTML=opzioniDestinazioni();});
     renderTravel();renderMembers();
   }
-  function gate(solo){return '<div class="tmc-gated-content">'+(solo?'':'<div class="tmc-blurred-preview" aria-hidden="true" inert><h3>La tua prossima vacanza</h3><p>Il piacere di partire, il tempo per rallentare. Un soggiorno da costruire intorno ai tuoi desideri, con spazi da vivere e nuovi luoghi da scoprire.</p><h3>Il soggiorno e i servizi</h3><p>Sistemazioni, esperienze e dettagli del viaggio si incontrano in una proposta pensata per te. Accedi per leggere tutti i particolari del soggiorno.</p></div>')+'<div class="tmc-members-gate" id="tmc-members-gate"><span class="tmc-gate-icon">'+lock()+'</span><span class="occhiello">Il tuo prossimo viaggio ti aspetta</span><h3>Iscriviti alla nostra agenzia viaggi</h3><p>Accedi alle descrizioni complete delle proposte selezionate.</p><button class="b b--pri" type="button" data-member-enroll>Iscriviti <span aria-hidden="true">→</span></button><button class="tmc-login-switch" type="button" data-member-enroll>Hai già le credenziali? Accedi</button><form class="tmc-member-form" id="tmc-member-form" hidden><p>Inserisci le credenziali di accesso ricevute dall’agenzia.</p><div><label for="tmc-member-user">Nome utente</label><input id="tmc-member-user" name="username" autocomplete="username" required autocapitalize="none" spellcheck="false"></div><div><label for="tmc-member-password">Password</label><input id="tmc-member-password" name="password" type="password" autocomplete="current-password" required></div><p class="tmc-member-error" id="tmc-member-error" role="alert" hidden></p><button class="b b--pri" type="submit">Accedi e sblocca l’offerta →</button></form></div></div>';}
+  function gate(solo){return '<div class="tmc-gated-content">'+(solo?'':'<div class="tmc-blurred-preview" aria-hidden="true" inert><h3>La tua prossima vacanza</h3><p>Il piacere di partire, il tempo per rallentare. Un soggiorno da costruire intorno ai tuoi desideri, con spazi da vivere e nuovi luoghi da scoprire.</p><h3>Il soggiorno e i servizi</h3><p>Sistemazioni, esperienze e dettagli del viaggio si incontrano in una proposta pensata per te. Accedi per leggere tutti i particolari del soggiorno.</p></div>')+'<div class="tmc-members-gate" id="tmc-members-gate"><span class="tmc-gate-icon">'+lock()+'</span><span class="occhiello">Il tuo prossimo viaggio ti aspetta</span><h3>Iscriviti alla nostra agenzia viaggi</h3><p>Accedi alle descrizioni complete delle proposte selezionate.</p><button class="b b--pri" type="button" data-member-signup>Iscriviti <span aria-hidden="true">→</span></button><button class="tmc-login-switch" type="button" data-member-enroll>Hai già le credenziali? Accedi</button><form class="tmc-member-form tmc-signup-form" id="tmc-signup-form" method="post" novalidate hidden><p>Crea il tuo accesso al club TMC Travel. I campi con * sono obbligatori.</p><div class="tmc-f2"><div><label for="sg-nome">Nome *</label><input id="sg-nome" name="nome" autocomplete="given-name" maxlength="60" required></div><div><label for="sg-cognome">Cognome *</label><input id="sg-cognome" name="cognome" autocomplete="family-name" maxlength="60" required></div></div><div><label for="sg-email">Email *</label><input id="sg-email" name="email" type="email" autocomplete="username email" maxlength="254" required autocapitalize="none" spellcheck="false"></div><div><label for="sg-tel">Telefono *</label><input id="sg-tel" name="telefono" type="tel" autocomplete="tel" maxlength="40" required></div><div><label for="sg-pw">Password *</label><input id="sg-pw" name="password" type="password" autocomplete="new-password" minlength="8" required aria-describedby="sg-pw-regole"><p class="tmc-pw-regole" id="sg-pw-regole">Almeno 8 caratteri, una lettera maiuscola, un numero e un carattere speciale (per esempio ! ? @ # $ %).</p></div><div><label for="sg-pw2">Conferma password *</label><input id="sg-pw2" name="password2" type="password" autocomplete="new-password" minlength="8" required></div><div class="tmc-consensi"><label class="tmc-consenso"><input type="checkbox" id="sg-privacy" name="privacy" required><span>Ho letto l’<a href="#privacy" data-go="privacy" data-chiudi-dialogo>informativa privacy</a> e acconsento al trattamento dei miei dati. *</span></label><label class="tmc-consenso"><input type="checkbox" id="sg-newsletter" name="newsletter" required><span>Iscrivimi alla newsletter di TMC Travel con le offerte del club. *</span></label><label class="tmc-consenso"><input type="checkbox" id="sg-marketing" name="marketing"><span>Acconsento a ricevere comunicazioni commerciali e promozioni dai partner di TMC Travel. (facoltativo)</span></label></div><p class="tmc-member-error" id="tmc-signup-error" role="alert" hidden></p><button class="b b--pri" type="submit" id="tmc-signup-invia">Crea il mio accesso →</button><button class="tmc-login-switch" type="button" data-member-enroll>Hai già un accesso? Entra</button></form><form class="tmc-member-form" id="tmc-member-form" hidden><p>Entra con l’email e la password del tuo accesso.</p><div><label for="tmc-member-user">Email</label><input id="tmc-member-user" name="username" autocomplete="username" required autocapitalize="none" spellcheck="false"></div><div><label for="tmc-member-password">Password</label><input id="tmc-member-password" name="password" type="password" autocomplete="current-password" required></div><p class="tmc-member-error" id="tmc-member-error" role="alert" hidden></p><button class="b b--pri" type="submit">Accedi e sblocca l’offerta →</button></form></div></div>';}
   /* Il riquadro di iscrizione compare in due posti: dentro la scheda di una
      proposta e da solo, quando si arriva da un bottone "Iscriviti". Il
      cablaggio e' lo stesso, cambia solo cosa succede dopo l'accesso. */
   function collegaGate(dopo){
     dialogBody.querySelectorAll('[data-member-enroll]').forEach(function(b){b.addEventListener('click',showLogin);});
+    dialogBody.querySelectorAll('[data-member-signup]').forEach(function(b){b.addEventListener('click',showSignup);});
+    dialogBody.querySelectorAll('[data-chiudi-dialogo]').forEach(function(a){a.addEventListener('click',function(){dialog.close();});});
+    collegaIscrizione(dopo);
     var form=document.getElementById('tmc-member-form');if(!form)return;
-    form.addEventListener('submit',function(ev){
+    form.addEventListener('submit',async function(ev){
       ev.preventDefault();
       var u=form.elements.namedItem('username'),pw=form.elements.namedItem('password');
-      if(!signIn(u.value,pw.value)){
+      if(!signIn(u.value,pw.value) && !(await signInConto(u.value,pw.value))){
         var error=document.getElementById('tmc-member-error');
         error.textContent='Nome utente o password non corretti. Riprova.';error.hidden=false;
         pw.setAttribute('aria-invalid','true');pw.setAttribute('aria-describedby','tmc-member-error');pw.focus();return;
@@ -7969,13 +7985,104 @@ body.tmc-dialog-open{overflow:hidden}
     collegaGate(function(){dialog.close();if(dopo)dopo();});
     if(!dialog.open)dialog.showModal();
     document.body.classList.add('tmc-dialog-open');dialog.scrollTop=0;
-    dialogBody.querySelector('[data-member-enroll]').focus({preventScroll:true});
+    dialogBody.querySelector('[data-member-signup]').focus({preventScroll:true});
   }
 
-  function showLogin(){var form=document.getElementById('tmc-member-form');if(!form)return;form.hidden=false;dialogBody.querySelectorAll('[data-member-enroll]').forEach(function(b){b.hidden=true;});form.scrollIntoView({behavior:reduced?'auto':'smooth',block:'center'});document.getElementById('tmc-member-user').focus({preventScroll:true});}
+  /* ── iscrizione al club ───────────────────────────────────
+     Nome, cognome, recapiti e password scelta dall'utente, con i consensi.
+     La password non viene mai spedita: resta nel browser in forma cifrata e
+     serve per rientrare da questo dispositivo. I dati dell'iscrizione
+     arrivano per email all'agenzia, che poi attiva l'accesso vero. */
+  var PW_REGOLE = [
+    { prova:function(v){ return v.length >= 8; }, testo:'almeno 8 caratteri' },
+    { prova:function(v){ return /[A-Z]/.test(v); }, testo:'una lettera maiuscola' },
+    { prova:function(v){ return /[0-9]/.test(v); }, testo:'un numero' },
+    { prova:function(v){ return /[^A-Za-z0-9]/.test(v); }, testo:'un carattere speciale' }
+  ];
+  function pwMancanze(v){
+    return PW_REGOLE.filter(function(r){ return !r.prova(v); }).map(function(r){ return r.testo; });
+  }
+  async function impronta(email,password){
+    var testo = email.trim().toLowerCase() + '::' + password;
+    if(window.crypto && crypto.subtle){
+      var buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(testo));
+      return Array.prototype.map.call(new Uint8Array(buf), function(b){ return b.toString(16).padStart(2,'0'); }).join('');
+    }
+    var h = 0; for(var i=0;i<testo.length;i++){ h = (h*31 + testo.charCodeAt(i))|0; }
+    return 'x' + h;
+  }
+  function contoSalvato(){
+    try{ return JSON.parse(localStorage.getItem('tmc-travel-conto') || 'null'); }catch(e){ return null; }
+  }
+  function collegaIscrizione(dopo){
+    var form = document.getElementById('tmc-signup-form');
+    if(!form){ return; }
+    var errore = document.getElementById('tmc-signup-error');
+    function ko(campo,testo){
+      errore.textContent = testo; errore.hidden = false;
+      if(campo){ campo.setAttribute('aria-invalid','true'); campo.focus(); }
+      return false;
+    }
+    form.addEventListener('input',function(ev){ ev.target.removeAttribute('aria-invalid'); errore.hidden = true; });
+    form.addEventListener('submit',async function(ev){
+      ev.preventDefault();
+      var c = form.elements, v = function(n){ return (c[n].value || '').trim(); };
+      errore.hidden = true;
+      if(v('nome').length < 2){ return ko(c.nome,'Scrivi il tuo nome.'); }
+      if(v('cognome').length < 2){ return ko(c.cognome,'Scrivi il tuo cognome.'); }
+      if(!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v('email'))){ return ko(c.email,'Serve un indirizzo email valido.'); }
+      if(v('telefono').replace(/[^0-9]/g,'').length < 8){ return ko(c.telefono,'Serve un numero di telefono valido.'); }
+      var mancano = pwMancanze(c.password.value);
+      if(mancano.length){ return ko(c.password,'Alla password manca: ' + mancano.join(', ') + '.'); }
+      if(c.password.value !== c.password2.value){ return ko(c.password2,'Le due password non coincidono.'); }
+      if(!c.privacy.checked){ return ko(c.privacy,'Per iscriverti serve il consenso al trattamento dei dati.'); }
+      if(!c.newsletter.checked){ return ko(c.newsletter,'L\u2019iscrizione alla newsletter del club è obbligatoria.'); }
+      var invia = document.getElementById('tmc-signup-invia');
+      invia.disabled = true; invia.textContent = 'Creo l\u2019accesso…';
+      try{
+        localStorage.setItem('tmc-travel-conto', JSON.stringify({
+          email: v('email').toLowerCase(), nome: v('nome'),
+          impronta: await impronta(v('email'), c.password.value)
+        }));
+      }catch(e){}
+      var endpoint = '';
+      try{ endpoint = String(JSON.parse(document.getElementById('tmc-request-config').textContent).endpoint || '').trim(); }catch(e){}
+      if(/^https:\/\//.test(endpoint)){
+        try{
+          await fetch(endpoint,{ method:'POST', headers:{'Content-Type':'application/json','Accept':'application/json'},
+            body: JSON.stringify({ _subject:'Nuova iscrizione al club TMC Travel', _template:'table', _replyto:v('email'),
+              nome:v('nome'), cognome:v('cognome'), email:v('email'), telefono:v('telefono'),
+              consenso_privacy:'Accettato', newsletter:'Iscritto',
+              comunicazioni_commerciali: c.marketing.checked ? 'Accettate' : 'Non accettate' }),
+            credentials:'omit' });
+        }catch(e){}
+      }
+      entra();
+      renderTravel(); renderMembers();
+      if(dopo){ dopo(); }
+    });
+  }
+  function showSignup(){
+    var form = document.getElementById('tmc-signup-form');
+    var accesso = document.getElementById('tmc-member-form');
+    if(!form){ return; }
+    form.hidden = false;
+    if(accesso){ accesso.hidden = true; }
+    dialogBody.querySelectorAll('[data-member-signup]').forEach(function(b){ b.hidden = true; });
+    form.scrollIntoView({behavior:reduced?'auto':'smooth',block:'center'});
+    document.getElementById('sg-nome').focus({preventScroll:true});
+  }
+  function showLogin(){var iscr=document.getElementById('tmc-signup-form');if(iscr){iscr.hidden=true;}var form=document.getElementById('tmc-member-form');if(!form)return;form.hidden=false;dialogBody.querySelectorAll('[data-member-enroll]').forEach(function(b){b.hidden=true;});form.scrollIntoView({behavior:reduced?'auto':'smooth',block:'center'});document.getElementById('tmc-member-user').focus({preventScroll:true});}
+  function entra(){ member=true;try{sessionStorage.setItem('tmc-travel-demo-access','yes');}catch(e){}return true; }
   function signIn(username,password){
-    if(username.trim().toUpperCase()!=='MICHELE'||password!=='0000')return false;
-    member=true;try{sessionStorage.setItem('tmc-travel-demo-access','yes');}catch(e){}return true;
+    if(username.trim().toUpperCase()==='MICHELE'&&password==='0000'){ return entra(); }
+    return false;
+  }
+  /* accesso con l'email e la password scelte iscrivendosi da questo dispositivo */
+  async function signInConto(email,password){
+    var conto=contoSalvato();
+    if(!conto||conto.email!==email.trim().toLowerCase())return false;
+    return (await impronta(email,password))===conto.impronta ? entra() : false;
   }
   function openProduct(id,button){var p=byId[id];if(!p)return;if(!dialog.open)lastFocus=button||document.activeElement;currentProduct=p;
     var gallery=p.gallery.length?p.gallery:[p.image],locked=isLocked(p);

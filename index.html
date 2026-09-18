@@ -8138,9 +8138,10 @@ body.tmc-dialog-open{overflow:hidden}
   /* pulsante verso il sito di chi ospita o dell'operatore: si apre in una
      scheda nuova, cosi' la pagina di TMC resta aperta */
   function sitoLink(p){
-    if(!p.source){ return ''; }
-    var eti = p.operator ? 'Vedi su ' + esc(p.operator) : 'Sito ufficiale';
-    return '<a class="b b--gh" href="'+esc(p.source)+'" target="_blank" rel="noopener noreferrer">'+eti+' <span aria-hidden="true">↗</span></a>';
+    /* per le proposte degli operatori il collegamento e' gia' sul logo:
+       un secondo pulsante sarebbe lo stesso invito due volte */
+    if(!p.source || p.operator){ return ''; }
+    return '<a class="b b--gh" href="'+esc(p.source)+'" target="_blank" rel="noopener noreferrer">Sito ufficiale <span aria-hidden="true">↗</span></a>';
   }
   function openProduct(id,button){var p=byId[id];if(!p)return;if(!dialog.open)lastFocus=button||document.activeElement;currentProduct=p;
     var gallery=p.gallery.length?p.gallery:[p.image],locked=isLocked(p);

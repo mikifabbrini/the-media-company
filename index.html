@@ -1930,7 +1930,9 @@ body.tmc-dialog-open{overflow:hidden}
 /* Voli e "su misura": le testate di sezione stavano larghe come se sotto
    ci fosse una griglia, ma sotto c'e' un pannello solo. Stringo li' e fra
    i paragrafi, cosi' la pagina finisce prima senza togliere niente. */
+#tmc-travel-voli{padding-top:clamp(32px,4vw,60px)}
 #tmc-travel-voli .tmc-head{margin-bottom:16px}
+#tmc-travel-voli .tmc-head h2{margin-top:0}
 #tmc-travel-voli .tmc-head .lead{margin-top:8px}
 #tmc-travel-sumisura .tmc-head,#tmc-travel-sumisura .mid{margin-top:8px}
 #tmc-travel-sumisura .lead{margin:12px 0 0}
@@ -4650,7 +4652,7 @@ body.tmc-dialog-open{overflow:hidden}
   <noscript><p>Attiva JavaScript per consultare le proposte e richiedere informazioni.</p></noscript>
  </div></section>
  <section class="sec tmc-voli" id="tmc-travel-voli" aria-labelledby="tmc-voli-heading"><div class="wrap">
-  <div class="tmc-head"><div><span class="occhiello">VOLI</span><h2 class="mid" id="tmc-voli-heading">Dall'Italia, verso ogni destinazione.</h2><p class="lead">Le nostre soluzioni aeree per i tuoi viaggi.</p></div><div class="tmc-member-account"><button type="button" class="b b--pri" data-member-access>Iscriviti</button><span data-member-status role="status" hidden>Accesso attivo</span><button type="button" class="tmc-reset" data-member-logout hidden>Esci</button></div></div>
+  <div class="tmc-head"><div><h2 class="mid" id="tmc-voli-heading">Dall'Italia, verso ogni destinazione.</h2><p class="lead">Le nostre soluzioni aeree per i tuoi viaggi.</p></div><div class="tmc-member-account"><button type="button" class="b b--pri" data-member-access>Iscriviti</button><span data-member-status role="status" hidden>Accesso attivo</span><button type="button" class="tmc-reset" data-member-logout hidden>Esci</button></div></div>
   <div id="tmc-voli-banner"></div>
  </div></section>
  <section class="sec tmc-sumisura" id="tmc-travel-sumisura"><div class="wrap tmc-specialist">
@@ -7827,15 +7829,15 @@ body.tmc-dialog-open{overflow:hidden}
      foto:'img/travel/turkish-aereo.jpg',fotoAlt:'Code di aeromobili Turkish Airlines in aeroporto al tramonto',
      logo:'img/travel/turkish-logo.png',logoW:324,logoH:94,
      apertura:'La compagnia che tocca più Paesi di qualunque altra: 287 destinazioni, da Istanbul verso Europa, Asia, Africa e Americhe.',
-     resto:'Cabine doppie e triple, con la Premium Economy in mezzo. Gli accordi di code share con altri 40 vettori e Star Alliance portano il biglietto anche dove l’aereo non arriva.',
-     scheda:'<p>Turkish Airlines collega 287 destinazioni nel mondo, 51 delle quali in Turchia, con voli in 113 Paesi fra Europa, Asia, Africa e Americhe. A bordo, cabine doppie (Business ed Economy) e triple, con la Premium Economy in mezzo.</p><p>Gli accordi di code share con altri 40 vettori e l’appartenenza a Star Alliance portano il biglietto anche dove l’aereo non arriva.</p>'},
+     resto:'Cabine doppie e triple, con la Premium Economy in mezzo.',
+     scheda:'<p>Turkish Airlines collega 287 destinazioni nel mondo, 51 delle quali in Turchia, con voli in 113 Paesi fra Europa, Asia, Africa e Americhe. A bordo, cabine doppie (Business ed Economy) e triple, con la Premium Economy in mezzo.</p>'},
     {id:'voli-aeroitalia',nome:'Aeroitalia',
      titolo:'Vola con Aeroitalia.',occhiello:'Volo di linea · Compagnia italiana',
      foto:'img/travel/aeroitalia-aereo.jpg',fotoAlt:'Un Boeing 737 Aeroitalia in decollo al tramonto',
      logo:'img/travel/aeroitalia-logo.png',logoW:312,logoH:78,
      apertura:'La compagnia italiana: collegamenti fra le città del Paese e le isole, con una flotta di Boeing 737.',
      resto:'Dalle rotte nazionali ai voli internazionali, si parte dai principali aeroporti italiani. Il volo si prenota tramite TMC Travel, che segue il preventivo e la prenotazione.',
-     scheda:'<p>Aeroitalia è una compagnia italiana con flotta Boeing 737. Collega le città del Paese e le isole, e affianca alle rotte nazionali una serie di collegamenti internazionali.</p><p>Si parte dai principali aeroporti italiani: il consulente verifica rotte, classi e disponibilità per le date che indichi.</p>'}
+     scheda:'<p>Aeroitalia è una compagnia italiana con flotta Boeing 737. Collega le città del Paese e le isole, e affianca alle rotte nazionali una serie di collegamenti internazionali.</p>'}
   ];
   VOLI.forEach(function(v){
     byId[v.id]={id:v.id,name:v.titolo.replace(/\.$/,''),place:v.occhiello,

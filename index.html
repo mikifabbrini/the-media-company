@@ -1930,9 +1930,7 @@ body.tmc-dialog-open{overflow:hidden}
 /* Voli e "su misura": le testate di sezione stavano larghe come se sotto
    ci fosse una griglia, ma sotto c'e' un pannello solo. Stringo li' e fra
    i paragrafi, cosi' la pagina finisce prima senza togliere niente. */
-#tmc-travel-voli{padding-top:clamp(32px,4vw,60px)}
 #tmc-travel-voli .tmc-head{margin-bottom:16px}
-#tmc-travel-voli .tmc-head h2{margin-top:0}
 #tmc-travel-voli .tmc-head .lead{margin-top:8px}
 #tmc-travel-sumisura .tmc-head,#tmc-travel-sumisura .mid{margin-top:8px}
 #tmc-travel-sumisura .lead{margin:12px 0 0}
@@ -4652,7 +4650,7 @@ body.tmc-dialog-open{overflow:hidden}
   <noscript><p>Attiva JavaScript per consultare le proposte e richiedere informazioni.</p></noscript>
  </div></section>
  <section class="sec tmc-voli" id="tmc-travel-voli" aria-labelledby="tmc-voli-heading"><div class="wrap">
-  <div class="tmc-head"><div><h2 class="mid" id="tmc-voli-heading">Dall'Italia, verso ogni destinazione.</h2><p class="lead">Le nostre soluzioni aeree per i tuoi viaggi.</p></div><div class="tmc-member-account"><button type="button" class="b b--pri" data-member-access>Iscriviti</button><span data-member-status role="status" hidden>Accesso attivo</span><button type="button" class="tmc-reset" data-member-logout hidden>Esci</button></div></div>
+  <div class="tmc-head"><div><span class="occhiello">VOLI</span><h2 class="mid" id="tmc-voli-heading">Dall'Italia, verso ogni destinazione.</h2><p class="lead">Le nostre soluzioni aeree per i tuoi viaggi.</p></div><div class="tmc-member-account"><button type="button" class="b b--pri" data-member-access>Iscriviti</button><span data-member-status role="status" hidden>Accesso attivo</span><button type="button" class="tmc-reset" data-member-logout hidden>Esci</button></div></div>
   <div id="tmc-voli-banner"></div>
  </div></section>
  <section class="sec tmc-sumisura" id="tmc-travel-sumisura"><div class="wrap tmc-specialist">
@@ -7825,14 +7823,14 @@ body.tmc-dialog-open{overflow:hidden}
      percentuale non compare: si legge dentro, dopo l'accesso. */
   var VOLI=[
     {id:'voli-turkish',nome:'Turkish Airlines',
-     titolo:'Vola con Turkish Airlines.',occhiello:'Volo di linea · Star Alliance',
+     titolo:'Vola con Turkish Airlines.',occhiello:'',
      foto:'img/travel/turkish-aereo.jpg',fotoAlt:'Code di aeromobili Turkish Airlines in aeroporto al tramonto',
      logo:'img/travel/turkish-logo.png',logoW:324,logoH:94,
      apertura:'La compagnia che tocca più Paesi di qualunque altra: 287 destinazioni, da Istanbul verso Europa, Asia, Africa e Americhe.',
      resto:'Cabine doppie e triple, con la Premium Economy in mezzo.',
      scheda:'<p>Turkish Airlines collega 287 destinazioni nel mondo, 51 delle quali in Turchia, con voli in 113 Paesi fra Europa, Asia, Africa e Americhe. A bordo, cabine doppie (Business ed Economy) e triple, con la Premium Economy in mezzo.</p>'},
     {id:'voli-aeroitalia',nome:'Aeroitalia',
-     titolo:'Vola con Aeroitalia.',occhiello:'Volo di linea · Compagnia italiana',
+     titolo:'Vola con Aeroitalia.',occhiello:'',
      foto:'img/travel/aeroitalia-aereo.jpg',fotoAlt:'Un Boeing 737 Aeroitalia in decollo al tramonto',
      logo:'img/travel/aeroitalia-logo.png',logoW:312,logoH:78,
      apertura:'La compagnia italiana: collegamenti fra le città del Paese e le isole, con una flotta di Boeing 737.',
@@ -7889,7 +7887,7 @@ body.tmc-dialog-open{overflow:hidden}
           (chiuso?'<span class="tmc-card-lock" role="button" tabindex="0" aria-label="Riservato agli iscritti: vai all’iscrizione">'+lock()+'<span>Riservato agli iscritti</span></span>':'')+
         '</div>'+
         '<div class="tmc-voli-testo">'+
-          '<span class="occhiello">'+esc(v.occhiello)+'</span>'+
+          (v.occhiello?'<span class="occhiello">'+esc(v.occhiello)+'</span>':'')+
           '<h3>'+esc(v.titolo)+'</h3>'+
           '<div class="tmc-voli-descrizione"><p>'+esc(v.apertura)+'</p>'+
             (chiuso?'<p class="tmc-voli-velato" aria-hidden="true">'+esc(v.resto)+'</p>'
@@ -8147,7 +8145,7 @@ body.tmc-dialog-open{overflow:hidden}
   function openProduct(id,button){var p=byId[id];if(!p)return;if(!dialog.open)lastFocus=button||document.activeElement;currentProduct=p;
     var gallery=p.gallery.length?p.gallery:[p.image],locked=isLocked(p);
     dialog.querySelector('[data-tmc-detail-category]').textContent=p.member?'TMC Travel · Selezione '+p.operator:'TMC Travel';
-    dialogBody.innerHTML='<div class="tmc-detail-top"><div class="tmc-detail-gallery"><div class="tmc-detail-visual'+(locked?' is-locked':'')+'"><img class="tmc-detail-image is-travel" id="tmc-detail-image" src="'+esc(file(gallery[0]))+'" alt="'+esc(p.name)+'">'+(locked?'<span class="tmc-card-lock">'+lock()+'</span>':'')+'</div>'+(!locked&&gallery.length>1?'<div class="tmc-thumbs" aria-label="Fotografie di '+esc(p.name)+'">'+gallery.map(function(im,i){return '<button type="button" data-tmc-photo="'+i+'" aria-label="Mostra foto '+(i+1)+' di '+gallery.length+'" aria-pressed="'+(i===0)+'"><img src="'+esc(file(im))+'" alt="" loading="lazy"></button>';}).join('')+'</div>':'')+'</div><div><span class="occhiello">'+esc(p.place)+'</span><h2 id="tmc-detail-title" tabindex="-1">'+esc(p.name)+'</h2><div class="tmc-rich">'+(locked?'<p>'+esc(p.teaser)+'</p>':p.summary)+'</div>'+(p.member?operator(p):discount(p))+'<div class="tmc-detail-action">'+(locked?'<button type="button" class="b b--pri" data-member-scroll>Iscriviti e scopri l’offerta ↓</button>':requestLink(p.id,'b b--pri')+sitoLink(p))+'</div></div></div>'+(locked?gate():'<div class="tmc-detail-panels">'+p.panels.map(function(panel){return '<section class="tmc-detail-panel tmc-rich">'+panel.html+'</section>';}).join('')+'</div>');
+    dialogBody.innerHTML='<div class="tmc-detail-top"><div class="tmc-detail-gallery"><div class="tmc-detail-visual'+(locked?' is-locked':'')+'"><img class="tmc-detail-image is-travel" id="tmc-detail-image" src="'+esc(file(gallery[0]))+'" alt="'+esc(p.name)+'">'+(locked?'<span class="tmc-card-lock">'+lock()+'</span>':'')+'</div>'+(!locked&&gallery.length>1?'<div class="tmc-thumbs" aria-label="Fotografie di '+esc(p.name)+'">'+gallery.map(function(im,i){return '<button type="button" data-tmc-photo="'+i+'" aria-label="Mostra foto '+(i+1)+' di '+gallery.length+'" aria-pressed="'+(i===0)+'"><img src="'+esc(file(im))+'" alt="" loading="lazy"></button>';}).join('')+'</div>':'')+'</div><div>'+(p.place?'<span class="occhiello">'+esc(p.place)+'</span>':'')+'<h2 id="tmc-detail-title" tabindex="-1">'+esc(p.name)+'</h2><div class="tmc-rich">'+(locked?'<p>'+esc(p.teaser)+'</p>':p.summary)+'</div>'+(p.member?operator(p):discount(p))+'<div class="tmc-detail-action">'+(locked?'<button type="button" class="b b--pri" data-member-scroll>Iscriviti e scopri l’offerta ↓</button>':requestLink(p.id,'b b--pri')+sitoLink(p))+'</div></div></div>'+(locked?gate():'<div class="tmc-detail-panels">'+p.panels.map(function(panel){return '<section class="tmc-detail-panel tmc-rich">'+panel.html+'</section>';}).join('')+'</div>');
     hydrate(dialogBody);dialogBody.querySelectorAll('[data-tmc-photo]').forEach(function(b){b.addEventListener('click',function(){var n=Number(b.getAttribute('data-tmc-photo'));dialogBody.querySelector('#tmc-detail-image').src=file(gallery[n]);dialogBody.querySelectorAll('[data-tmc-photo]').forEach(function(x){x.setAttribute('aria-pressed',String(x===b));});});});
     var scroll=dialogBody.querySelector('[data-member-scroll]');if(scroll)scroll.addEventListener('click',function(){document.getElementById('tmc-members-gate').scrollIntoView({behavior:reduced?'auto':'smooth',block:'center'});dialogBody.querySelector('[data-member-enroll]').focus({preventScroll:true});});
     collegaGate(function(){openProduct(p.id,lastFocus);dialogBody.querySelector('#tmc-detail-title').focus({preventScroll:true});});

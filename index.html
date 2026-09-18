@@ -4676,7 +4676,6 @@ body.tmc-dialog-open{overflow:hidden}
     <div class="aura aura-1" aria-hidden="true"></div>
     <div class="wrap">
       <a class="tmc-request-back" href="#travel" data-request-back>← Torna a TMC Travel</a>
-      <span class="occhiello" id="tmc-request-kind">TMC Travel</span>
       <h1 class="big" id="tmc-request-heading" tabindex="-1">Richiedi informazioni.</h1>
       <p class="lead">La tua scelta, i tuoi desideri. Raccontaci come possiamo aiutarti.</p>
     </div>
@@ -4690,13 +4689,13 @@ body.tmc-dialog-open{overflow:hidden}
       </div>
       <div class="tmc-request-layout" id="tmc-request-layout" hidden>
         <aside class="tmc-request-summary" aria-labelledby="tmc-request-summary-title">
-          <div class="tmc-request-summary-head"><span class="occhiello">La tua scelta</span><h2 id="tmc-request-summary-title">Riepilogo della richiesta</h2></div>
+          <div class="tmc-request-summary-head"><h2 id="tmc-request-summary-title">Riepilogo della richiesta</h2></div>
           <div id="tmc-request-product"></div>
           <div class="tmc-request-recap" id="tmc-request-recap"></div>
           <p class="tmc-request-note">La richiesta è senza impegno. Disponibilità e condizioni saranno confermate dal nostro team.</p>
         </aside>
         <form class="form tmc-request-form" id="tmc-request-form" method="post" novalidate>
-          <div><span class="occhiello">Parliamo di te</span><h2>I tuoi recapiti</h2><p class="dim">I campi con * sono obbligatori.</p></div>
+          <div><h2>I tuoi recapiti</h2><p class="dim">I campi con * sono obbligatori.</p></div>
           <div class="f2">
             <div class="campo"><label for="rq-nome">Nome *</label><input id="rq-nome" name="nome" autocomplete="given-name" maxlength="80" required aria-describedby="rq-nome-error"><span class="tmc-field-error" id="rq-nome-error" hidden></span></div>
             <div class="campo"><label for="rq-cognome">Cognome *</label><input id="rq-cognome" name="cognome" autocomplete="family-name" maxlength="80" required aria-describedby="rq-cognome-error"><span class="tmc-field-error" id="rq-cognome-error" hidden></span></div>
@@ -8213,11 +8212,11 @@ body.tmc-dialog-open{overflow:hidden}
     requestSave();requestSelected=selected||null;requestVersion++;requestBusy=false;
     document.getElementById('tmc-request-empty').hidden=!!selected;
     document.getElementById('tmc-request-layout').hidden=!selected;
-    document.getElementById('tmc-request-kind').textContent='TMC Travel';
+    var tipo=document.getElementById('tmc-request-kind'); if(tipo){ tipo.textContent='TMC Travel'; }
     if(!selected)return;
     var back=document.querySelector('[data-request-back]');
     back.href='#travel';back.textContent='← Torna a TMC Travel';
-    document.getElementById('tmc-request-product').innerHTML='<img class="tmc-request-photo is-travel" src="'+esc(file(selected.image))+'" alt="'+esc(selected.name)+'"><div class="tmc-request-product-copy"><span class="tmc-product-k">TMC Travel</span><h3>'+esc(selected.name)+'</h3><p>Preventivo e disponibilità su richiesta.</p>'+(!selected.member&&selected.discount?'<p><strong>'+discountLabel(selected)+': '+esc(selected.discount)+'%</strong>Condizioni della proposta da confermare.</p>':'')+(selected.member?'<p>Proposta '+esc(selected.operator)+' · TMC Travel agenzia di viaggi.</p>':'')+'</div>';
+    document.getElementById('tmc-request-product').innerHTML='<img class="tmc-request-photo is-travel" src="'+esc(file(selected.image))+'" alt="'+esc(selected.name)+'"><div class="tmc-request-product-copy"><h3>'+esc(selected.name)+'</h3><p>Preventivo e disponibilità su richiesta.</p>'+(!selected.member&&selected.discount?'<p><strong>'+discountLabel(selected)+': '+esc(selected.discount)+'%</strong>Condizioni della proposta da confermare.</p>':'')+(selected.member?'<p>Proposta '+esc(selected.operator)+' · TMC Travel agenzia di viaggi.</p>':'')+'</div>';
     requestForm.reset();if(selected.requestDeparture)requestField('partenza').value=selected.requestDeparture;requestClearErrors();requestStatus('');
     /* sul volo la partenza non e' un dettaglio qualsiasi: dev'essere italiana */
     var notaPartenza=document.getElementById('rq-itinerario-nota');

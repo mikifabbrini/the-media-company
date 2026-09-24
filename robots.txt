@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+Disallow: /richiesta/
+Sitemap: https://www.themediacompany.it/sitemap.xml

@@ -3,7 +3,7 @@
   "use strict";
 
   var riavviaPila = null;
-  var PG = ['home','integrate','ooh','taxiadv','campagne-taxi','simulatore','travel','richiesta','progetti','contattaci','privacy','cookie'];
+  var PG = ['home','integrate','ooh','maxi-affissioni','taxiadv','campagne-taxi','simulatore','travel','richiesta','progetti','contattaci','privacy','cookie'];
 
   /* ── pagine separate ──────────────────────────────────────────────────
      Il sito gira in due modi. Come pagina unica (anteprima locale, artifact)

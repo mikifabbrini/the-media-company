@@ -2165,3 +2165,33 @@ body.tmc-dialog-open{overflow:hidden}
   #pg-simulatore .sim-can,#pg-simulatore .sim-node,#pg-simulatore .sim-step{transition:none;}
 }
 
+
+/* ═══ pagine servizio: blocchi, formati e domande frequenti ═══ */
+.serv-blocchi{display:grid;gap:clamp(30px,4vw,54px);}
+.serv-blocco h2{margin:0 0 14px;}
+.serv-blocco .lead + .lead{margin-top:14px;}
+.fmt{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:clamp(14px,1.8vw,22px);margin:clamp(18px,2vw,26px) 0 0;padding:0;}
+.fmt li{list-style:none;padding:clamp(20px,2.2vw,26px);border:1px solid var(--bordo);border-radius:var(--r-foto);background:#fff;}
+.fmt b{display:block;margin-bottom:8px;font-size:18px;color:var(--viola);}
+.fmt p{margin:0;font-size:16px;line-height:1.55;color:var(--ink-2);}
+
+.faq{display:grid;gap:10px;margin-top:clamp(18px,2vw,26px);}
+.faq details{border:1px solid var(--bordo);border-radius:18px;background:#fff;}
+.faq details[open]{border-color:var(--blu);}
+.faq summary{list-style:none;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:18px;
+  padding:clamp(15px,1.7vw,20px) clamp(16px,1.9vw,24px);font-weight:600;color:var(--ink);font-size:clamp(16px,1.5vw,19px);}
+.faq summary::-webkit-details-marker{display:none;}
+.faq summary:hover,.faq details[open] summary{color:var(--blu);}
+.faq-piu{flex:0 0 auto;width:30px;height:30px;border-radius:50%;border:1px solid var(--bordo);display:grid;place-items:center;color:var(--blu);
+  transition:transform .25s ease,background .25s ease,color .25s ease,border-color .25s ease;}
+.faq details[open] .faq-piu{transform:rotate(45deg);background:var(--blu);border-color:var(--blu);color:#fff;}
+.faq-piu svg{width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:2;}
+.faq-r{padding:0 clamp(16px,1.9vw,24px) clamp(16px,1.9vw,22px);}
+.faq-r p{margin:0;color:var(--ink-2);line-height:1.65;}
+@media(prefers-reduced-motion:reduce){.faq-piu{transition:none;}}
+
+/* la voce figlia nel menu: sta sotto OOH & DOOH, non accanto */
+.tendina .voce-figlia{padding-left:32px;position:relative;}
+.tendina .voce-figlia::before{content:"";position:absolute;left:17px;top:50%;width:9px;height:1px;background:var(--ink-2);opacity:.45;}
+#menu .sotto-voce.voce-figlia{padding-left:28px;font-size:.95em;}
+.ft-l .voce-figlia{padding-left:14px;}

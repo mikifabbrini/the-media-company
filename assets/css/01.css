@@ -2168,8 +2168,10 @@ body.tmc-dialog-open{overflow:hidden}
 
 /* ═══ pagine servizio: blocchi, formati e domande frequenti ═══ */
 .serv-blocchi{display:grid;gap:clamp(30px,4vw,54px);}
-.serv-blocco h2{margin:0 0 14px;}
+.serv-blocco h2{margin:0 0 2px;}
+.serv-blocco .lead{margin-top:8px;}
 .serv-blocco .lead + .lead{margin-top:14px;}
+.serv-blocco .fmt{margin-top:clamp(14px,1.6vw,20px);}
 .fmt{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:clamp(14px,1.8vw,22px);margin:clamp(18px,2vw,26px) 0 0;padding:0;}
 .fmt li{list-style:none;padding:clamp(20px,2.2vw,26px);border:1px solid var(--bordo);border-radius:var(--r-foto);background:#fff;}
 .fmt b{display:block;margin-bottom:8px;font-size:18px;color:var(--viola);}

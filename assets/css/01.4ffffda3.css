@@ -2184,11 +2184,19 @@ body.tmc-dialog-open{overflow:hidden}
 .fmt p{margin:0;font-size:16px;line-height:1.55;color:var(--ink-2);}
 /* Titoletti dentro un blocco servizio e gli elenchi di emittenti e canali. */
 .serv-blocco h3{margin:clamp(20px,2.2vw,28px) 0 0;font-size:clamp(16px,1.4vw,18px);color:var(--viola);}
-/* Strisce di marchi dentro le pagine servizio: stesse della home,
-   ma piu' corte, quindi il giro dura in proporzione (--dur, ~1.6s a logo). */
-.serv-blocco .loghi--serv{margin-top:14px;}
-.loghi.loghi--serv.gira .loghi-pista{animation-duration:var(--dur,40s);}
-.loghi--serv .loghi-fila{gap:clamp(26px,3.4vw,54px);}
+/* Marchi dentro le pagine servizio: stessa misura e stesso trattamento
+   della fascia in home, ma fermi e senza riquadri. Il nome resta sempre
+   scritto: qui non scorre niente, e col dito l'hover non esiste. */
+.marchi-fila{display:flex;flex-wrap:wrap;align-items:flex-start;
+  gap:clamp(20px,2.8vw,44px);margin:16px 0 0;padding:0;list-style:none;}
+.marchi-fila li{flex:none;display:grid;place-items:center;gap:8px;
+  width:clamp(92px,10.5vw,132px);padding:8px 0 2px;}
+.marchi-fila img{display:block;width:auto;height:auto;
+  max-width:clamp(92px,10.5vw,132px);max-height:clamp(32px,3.4vw,44px);object-fit:contain;
+  opacity:.92;transition:opacity .35s var(--e),transform .35s var(--spring);}
+.marchi-fila li:hover img{opacity:1;transform:scale(1.09);}
+.marchi-fila b{display:block;text-align:center;font-size:11px;font-weight:700;
+  letter-spacing:.03em;line-height:1.3;color:var(--blu);}
 }
 
 .faq{display:grid;gap:10px;margin-top:clamp(18px,2vw,26px);}

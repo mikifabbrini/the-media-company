@@ -2167,6 +2167,10 @@ body.tmc-dialog-open{overflow:hidden}
 
 
 /* ═══ pagine servizio: blocchi, formati e domande frequenti ═══ */
+/* Quando il titolone non ha sottotitolo, il testo gli sta vicino:
+   senza questa regola restano fino a 124px di vuoto in mezzo. */
+.hero--testo:not(:has(.sotto-titolo)){padding-bottom:clamp(6px,0.8vw,12px);}
+.hero--testo:not(:has(.sotto-titolo)) + .sec{padding-top:clamp(12px,1.4vw,20px);}
 .serv-blocchi{display:grid;gap:clamp(30px,4vw,54px);}
 .serv-blocco h2{margin:0 0 2px;}
 .serv-blocco .lead{margin-top:8px;}

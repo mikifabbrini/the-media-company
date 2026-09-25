@@ -2180,6 +2180,11 @@ body.tmc-dialog-open{overflow:hidden}
 .fmt li{list-style:none;padding:clamp(20px,2.2vw,26px);border:1px solid var(--bordo);border-radius:var(--r-foto);background:#fff;}
 .fmt b{display:block;margin-bottom:8px;font-size:18px;color:var(--viola);}
 .fmt p{margin:0;font-size:16px;line-height:1.55;color:var(--ink-2);}
+/* Titoletti dentro un blocco servizio e gli elenchi di emittenti e canali. */
+.serv-blocco h3{margin:clamp(20px,2.2vw,28px) 0 0;font-size:clamp(16px,1.4vw,18px);color:var(--viola);}
+.emitt{display:flex;flex-wrap:wrap;gap:9px;margin:12px 0 0;padding:0;list-style:none;}
+.emitt li{padding:8px 15px;border:1px solid var(--bordo);border-radius:999px;background:#fff;
+  font-size:15px;font-weight:600;color:var(--ink-2);}
 
 .faq{display:grid;gap:10px;margin-top:clamp(18px,2vw,26px);}
 .faq details{border:1px solid var(--bordo);border-radius:18px;background:#fff;}

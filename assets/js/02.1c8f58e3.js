@@ -3,7 +3,7 @@
   "use strict";
 
   var riavviaPila = null;
-  var PG = ['home','integrate','ooh','maxi-affissioni','dooh','stazioni','taxiadv','campagne-taxi','simulatore','travel','richiesta','progetti','contattaci','privacy','cookie'];
+  var PG = ['home','integrate','ooh','maxi-affissioni','dooh','stazioni','radiotv','taxiadv','campagne-taxi','simulatore','travel','richiesta','progetti','contattaci','privacy','cookie'];
 
   /* ── pagine separate ──────────────────────────────────────────────────
      Il sito gira in due modi. Come pagina unica (anteprima locale, artifact)
@@ -1298,6 +1298,7 @@
     { t:'Maxi affissioni',  s:'Il formato più grande della pubblicità esterna',   go:'maxi-affissioni', k:'affissioni maxi manifesti poster impianti telo ponteggio parete dipinta facciata roma milano' },
     { t:'DOOH e maxi LED',  s:'Schermi digitali in stazione, in metro e in città', go:'dooh',     k:'dooh digital out of home led maxi led schermi digitali totem videowall stazioni metro centri commerciali facciata' },
     { t:'Grandi Stazioni e metro', s:'GO TV, maxi LED, domination e MUPI',          go:'stazioni', k:'grandi stazioni metro metropolitana go tv station domination mupi ledwall termini tiburtina milano centrale barberini cadorna napoli banchina tornelli ferroviarie' },
+    { t:'Campagne radio e TV', s:'Spot su emittenti nazionali e locali, TV e piattaforme', go:'radiotv', k:'radio tv televisione spot emittenti nazionali locali radiofonica advertising sky media publitalia mediaset rai cairo netflix canali kids bambini rds radio italia rtl 24 dimensione suono globo rock centro suono retesport radiosei ram power disco radio' },
     { t:'OOH / DOOH',       s:'Pubblicità esterna statica e digitale',            go:'ooh',      k:'ooh dooh digitale schermi led esterna' },
     { t:'Progetti',         s:'Le campagne portate in strada',                    go:'progetti', k:'progetti lavori portfolio campagne case study foto' },
     { t:'Baci Gelato',      s:'Campagna cross-mediale',                   go:'progetti', caso:'caso-froneri', k:'baci gelato froneri dooh go tv stazioni ferroviarie ledwall milano roma napoli torino genova bologna bari palermo verona venezia bus turistici 2026 lancio' },

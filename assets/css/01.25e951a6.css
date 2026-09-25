@@ -2171,7 +2171,9 @@ body.tmc-dialog-open{overflow:hidden}
    senza questa regola restano fino a 124px di vuoto in mezzo. */
 .hero--testo:not(:has(.sotto-titolo)){padding-bottom:clamp(6px,0.8vw,12px);}
 .hero--testo:not(:has(.sotto-titolo)) + .sec{padding-top:clamp(12px,1.4vw,20px);}
-.serv-blocchi{display:grid;gap:clamp(30px,4vw,54px);}
+/* minmax(0,1fr) e non 1fr: senza, la colonna si allarga per far stare
+   la striscia dei loghi, che e' larga quanto il suo contenuto. */
+.serv-blocchi{display:grid;grid-template-columns:minmax(0,1fr);gap:clamp(30px,4vw,54px);}
 .serv-blocco h2{margin:0 0 2px;}
 .serv-blocco .lead{margin-top:8px;}
 .serv-blocco .lead + .lead{margin-top:14px;}
@@ -2182,21 +2184,11 @@ body.tmc-dialog-open{overflow:hidden}
 .fmt p{margin:0;font-size:16px;line-height:1.55;color:var(--ink-2);}
 /* Titoletti dentro un blocco servizio e gli elenchi di emittenti e canali. */
 .serv-blocco h3{margin:clamp(20px,2.2vw,28px) 0 0;font-size:clamp(16px,1.4vw,18px);color:var(--viola);}
-/* Griglia di marchi: stesso trattamento della fascia in home, ma ferma.
-   Il nome sta sotto in assoluto, se occupasse spazio farebbe saltare la griglia. */
-.marchi{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));
-  gap:clamp(10px,1.4vw,18px);margin:14px 0 0;padding:0;list-style:none;}
-.marchi li{position:relative;display:grid;place-items:center;min-height:96px;
-  padding:16px 12px 24px;border:1px solid var(--bordo);border-radius:var(--r-foto);background:#fff;}
-.marchi img{display:block;width:auto;height:auto;max-width:106px;max-height:40px;object-fit:contain;
-  opacity:.92;transition:opacity .35s var(--e),transform .35s var(--spring);}
-.marchi li:hover img{opacity:1;transform:scale(1.07);}
-.marchi-nome{position:absolute;left:50%;bottom:7px;transform:translateX(-50%);
-  width:calc(100% - 16px);text-align:center;font-size:10.5px;font-weight:700;letter-spacing:.03em;
-  line-height:1.25;color:var(--blu);opacity:.75;}
-@media (max-width:520px){
-  .marchi{grid-template-columns:repeat(auto-fill,minmax(104px,1fr));}
-  .marchi li{min-height:84px;padding:12px 8px 22px;}
+/* Strisce di marchi dentro le pagine servizio: stesse della home,
+   ma piu' corte, quindi il giro dura in proporzione (--dur, ~1.6s a logo). */
+.serv-blocco .loghi--serv{margin-top:14px;}
+.loghi.loghi--serv.gira .loghi-pista{animation-duration:var(--dur,40s);}
+.loghi--serv .loghi-fila{gap:clamp(26px,3.4vw,54px);}
 }
 
 .faq{display:grid;gap:10px;margin-top:clamp(18px,2vw,26px);}

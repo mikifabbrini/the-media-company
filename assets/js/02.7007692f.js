@@ -1529,10 +1529,13 @@
       var voci = fila.children;
       for(var i=0;i<voci.length;i++){
         var im = voci[i].querySelector('img');
-        if(!im || !im.alt){ continue; }
+        /* le copie di riempimento hanno alt vuoto (il nome va letto una
+           volta sola): il nome da mostrare se lo portano in data-nome */
+        var nome = im ? (im.alt || im.getAttribute('data-nome') || '') : '';
+        if(!nome){ continue; }
         var eti = document.createElement('span');
         eti.className = 'loghi-nome';
-        eti.textContent = im.alt;
+        eti.textContent = nome;
         eti.setAttribute('aria-hidden', 'true');
         voci[i].appendChild(eti);
       }

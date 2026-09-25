@@ -1562,6 +1562,24 @@
     })(strisce[ls]);
   }
 
+  /* ── marchi fermi nelle pagine servizio ───────────────────
+     Col mouse il nome compare da solo (CSS). Col dito no: un tocco
+     accende il marchio e lascia il nome scritto finche' non se ne
+     tocca un altro. */
+  var fileMarchi = document.querySelectorAll('.marchi-fila');
+  for(var fm=0; fm<fileMarchi.length; fm++){
+    (function(fila){
+      fila.addEventListener('click', function(e){
+        var li = e.target.closest ? e.target.closest('li') : null;
+        if(!li || !fila.contains(li)){ return; }
+        var gia = li.classList.contains('acceso');
+        var accesi = fila.querySelectorAll('li.acceso');
+        for(var a=0;a<accesi.length;a++){ accesi[a].classList.remove('acceso'); }
+        li.classList.toggle('acceso', !gia);
+      });
+    })(fileMarchi[fm]);
+  }
+
   /* ── barter: il giro ──────────────────────────────────────
      Quattro battute: tappa 1, tappa 2, tappa 3, ritorno. Il ritorno
      e' una battuta a se' perche' e' il pezzo che chiude il cerchio e

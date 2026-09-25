@@ -2184,19 +2184,24 @@ body.tmc-dialog-open{overflow:hidden}
 .fmt p{margin:0;font-size:16px;line-height:1.55;color:var(--ink-2);}
 /* Titoletti dentro un blocco servizio e gli elenchi di emittenti e canali. */
 .serv-blocco h3{margin:clamp(20px,2.2vw,28px) 0 0;font-size:clamp(16px,1.4vw,18px);color:var(--viola);}
-/* Marchi dentro le pagine servizio: stessa misura e stesso trattamento
-   della fascia in home, ma fermi e senza riquadri. Il nome resta sempre
-   scritto: qui non scorre niente, e col dito l'hover non esiste. */
+/* Marchi dentro le pagine servizio: fermi, senza riquadri. Il nome sta
+   sotto in assoluto e compare col mouse sopra o con un clic (col dito
+   l'hover non esiste): se occupasse spazio la fila salterebbe a ogni
+   passaggio. Il posto per il nome e' gia' riservato dal padding. */
 .marchi-fila{display:flex;flex-wrap:wrap;align-items:flex-start;
-  gap:clamp(20px,2.8vw,44px);margin:16px 0 0;padding:0;list-style:none;}
-.marchi-fila li{flex:none;display:grid;place-items:center;gap:8px;
-  width:clamp(92px,10.5vw,132px);padding:8px 0 2px;}
+  gap:clamp(22px,3vw,48px);margin:18px 0 0;padding:0;list-style:none;}
+.marchi-fila li{position:relative;flex:none;display:grid;place-items:center;
+  width:clamp(132px,15vw,190px);padding:12px 0 32px;cursor:pointer;}
 .marchi-fila img{display:block;width:auto;height:auto;
-  max-width:clamp(92px,10.5vw,132px);max-height:clamp(32px,3.4vw,44px);object-fit:contain;
+  max-width:clamp(132px,15vw,190px);max-height:clamp(46px,4.9vw,64px);object-fit:contain;
   opacity:.92;transition:opacity .35s var(--e),transform .35s var(--spring);}
-.marchi-fila li:hover img{opacity:1;transform:scale(1.09);}
-.marchi-fila b{display:block;text-align:center;font-size:11px;font-weight:700;
-  letter-spacing:.03em;line-height:1.3;color:var(--blu);}
+.marchi-fila li:hover img,.marchi-fila li.acceso img{opacity:1;transform:scale(1.09);}
+.marchi-fila b{position:absolute;left:50%;bottom:4px;
+  transform:translateX(-50%) translateY(4px);width:calc(100% + 20px);
+  text-align:center;font-size:11px;font-weight:700;letter-spacing:.04em;
+  line-height:1.25;color:var(--blu);opacity:0;pointer-events:none;
+  transition:opacity .3s var(--e),transform .3s var(--e);}
+.marchi-fila li:hover b,.marchi-fila li.acceso b{opacity:1;transform:translateX(-50%) translateY(0);}
 }
 
 .faq{display:grid;gap:10px;margin-top:clamp(18px,2vw,26px);}

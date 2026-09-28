@@ -275,6 +275,39 @@
   /* Il piano del simulatore finisce nel messaggio, gia' scritto.
      Viaggia in sessionStorage e non nell'indirizzo: e' troppo lungo
      per starci, e nell'indirizzo non ci va roba scritta dall'utente. */
+  /* Quello che hai gia' scritto nel modulo resta scritto se vai a
+     rivedere il simulatore e torni. Vive quanto la scheda del browser
+     e non esce da li'. Il consenso privacy NON si ricorda: una spunta
+     rimessa da sola non sarebbe un consenso dato da te. */
+  var CAMPI_MODULO = ['c-n','c-a','c-e','c-t','c-m'];
+  function salvaModulo(){
+    var dati = {};
+    for(var i=0;i<CAMPI_MODULO.length;i++){
+      var el = document.getElementById(CAMPI_MODULO[i]);
+      if(el && el.value){ dati[CAMPI_MODULO[i]] = el.value; }
+    }
+    var sp = document.getElementById('c-app');
+    if(sp && sp.checked){ dati.app = 1; }
+    try{
+      if(Object.keys(dati).length){ sessionStorage.setItem('tmc-modulo', JSON.stringify(dati)); }
+      else { sessionStorage.removeItem('tmc-modulo'); }
+    }catch(e){}
+  }
+  function scordaModulo(){
+    try{ sessionStorage.removeItem('tmc-modulo'); }catch(e){}
+  }
+  window.tmcScordaModulo = scordaModulo;
+  function ripristinaModulo(){
+    var dati = null;
+    try{ dati = JSON.parse(sessionStorage.getItem('tmc-modulo')); }catch(e){}
+    if(!dati){ return; }
+    for(var i=0;i<CAMPI_MODULO.length;i++){
+      var el = document.getElementById(CAMPI_MODULO[i]);
+      if(el && dati[CAMPI_MODULO[i]]){ el.value = dati[CAMPI_MODULO[i]]; }
+    }
+    if(dati.app){ applicaAppuntamento(); }
+  }
+
   function applicaPiano(piano){
     var scatola = document.getElementById('c-piano');
     var lista = document.getElementById('c-piano-voci');
@@ -302,6 +335,17 @@
     sp.checked = true;
     if(window.tmcAppuntamento){ window.tmcAppuntamento(true); }
   }
+
+  /* salva mentre scrive: se poi va a rivedere il simulatore, al ritorno
+     ritrova tutto. Il modulo non c'e' su ogni pagina, quindi si aggancia
+     solo dove esiste. */
+  (function(){
+    var mod = document.getElementById('modulo');
+    if(!mod){ return; }
+    mod.addEventListener('input', salvaModulo);
+    mod.addEventListener('change', salvaModulo);
+    ripristinaModulo();
+  })();
 
   var nodi = document.querySelectorAll('[data-go]:not(#btn-servizi)');
   for(var v=0; v<nodi.length; v++){
@@ -1281,6 +1325,10 @@
           if(!res.ok || (res.j.success !== true && res.j.success !== 'true')){ throw new Error('non confermato'); }
           mostraEsito('Grazie! Abbiamo ricevuto la tua richiesta: ti rispondiamo entro 48 ore.', true);
           modulo.reset();
+          /* mandato: non ha piu' senso tenere in giro i suoi dati */
+          if(window.tmcScordaModulo){ window.tmcScordaModulo(); }
+          var pianoVia = document.getElementById('c-piano');
+          if(pianoVia){ pianoVia.hidden = true; }
           scelto = null; campoData.value = ''; calScelta.textContent = '';
           modoAppuntamento(false);
         })

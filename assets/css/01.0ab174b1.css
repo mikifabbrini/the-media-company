@@ -1577,8 +1577,12 @@ body.caso-aperto{overflow:hidden;}
    pulsanti e non devono sembrarlo. */
 .piano{margin-top:-2px;}
 .piano[hidden]{display:none;}
-.piano-eti{display:block;font-size:10.5px;font-weight:700;letter-spacing:.06em;
-  text-transform:uppercase;color:var(--blu);opacity:.7;}
+.piano-eti{display:inline-flex;align-items:center;gap:6px;font-size:10.5px;
+  font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--blu);
+  text-decoration:none;opacity:.75;transition:opacity .25s var(--e);}
+.piano-eti svg{width:14px;height:7px;transition:transform .25s var(--spring);}
+.piano-eti:hover{opacity:1;text-decoration:underline;text-underline-offset:3px;}
+.piano-eti:hover svg{transform:translateX(-3px);}
 .piano-voci{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0 0;padding:0;list-style:none;}
 .piano-voci li{padding:5px 11px;border-radius:999px;background:var(--blu);color:#fff;
   font-size:12px;line-height:1.35;user-select:none;cursor:default;}

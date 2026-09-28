@@ -1900,6 +1900,63 @@
       return { motivo: motivo, voci: voci, dati: righe.join(' | ') };
     };
 
+    /* Quello che hai composto resta scritto per la durata della visita:
+       "Torna al simulatore" deve riportarti ai tuoi numeri, non a una
+       pagina azzerata. Vale solo per questa scheda del browser. */
+    function indice(lista, acceso){
+      for(var i=0;i<lista.length;i++){ if(lista[i] === acceso){ return i; } }
+      return -1;
+    }
+    function salvaStato(){
+      var stato = {};
+      for(var a=0;a<CANALI.length;a++){
+        var k = CANALI[a].k;
+        var box = document.querySelector('.sim-can[data-can="' + k + '"]');
+        if(!box){ continue; }
+        var dur = box.querySelectorAll('.sim-dur .chip');
+        var tip = box.querySelectorAll('.sim-tipo .chip');
+        stato[k] = {
+          on: box.classList.contains('on'),
+          n: +document.getElementById('sim-' + k).value,
+          dur: indice(dur, box.querySelector('.sim-dur .chip.att')),
+          tip: indice(tip, box.querySelector('.sim-tipo .chip.att'))
+        };
+      }
+      try{ sessionStorage.setItem('tmc-simulatore', JSON.stringify(stato)); }catch(e){}
+    }
+    function ripristinaStato(){
+      var stato = null;
+      try{ stato = JSON.parse(sessionStorage.getItem('tmc-simulatore')); }catch(e){}
+      if(!stato){ return false; }
+      for(var a=0;a<CANALI.length;a++){
+        var c = CANALI[a], s = stato[c.k];
+        var box = document.querySelector('.sim-can[data-can="' + c.k + '"]');
+        if(!box || !s){ continue; }
+        box.classList.toggle('on', !!s.on);
+        var sw = box.querySelector('.sim-sw');
+        if(sw){ sw.setAttribute('aria-pressed', s.on ? 'true' : 'false'); }
+        var rng = document.getElementById('sim-' + c.k);
+        rng.value = s.n; rng.disabled = !s.on;
+        var tip = box.querySelectorAll('.sim-tipo .chip');
+        for(var q=0;q<tip.length;q++){
+          var sceltoT = q === s.tip;
+          tip[q].classList.toggle('att', sceltoT);
+          tip[q].setAttribute('aria-checked', sceltoT ? 'true' : 'false');
+          tip[q].disabled = !s.on;
+          if(sceltoT){ c.per = +tip[q].getAttribute('data-per'); c.et = tip[q].getAttribute('data-et'); }
+        }
+        var dur = box.querySelectorAll('.sim-dur .chip');
+        for(var z=0;z<dur.length;z++){
+          var sceltoD = z === s.dur;
+          dur[z].classList.toggle('att', sceltoD);
+          dur[z].setAttribute('aria-checked', sceltoD ? 'true' : 'false');
+          dur[z].disabled = !s.on;
+          if(sceltoD){ c.giorni = +dur[z].getAttribute('data-giorni'); }
+        }
+      }
+      return true;
+    }
+
     function calcola(){
       var tot = 0, quote = {}, righe = '';
       for(var a=0;a<CANALI.length;a++){
@@ -1939,6 +1996,7 @@
       /* la barra cresce a radice quadrata, se no il web da solo non
          muoverebbe un pixel accanto al taxi; i segmenti dentro
          dividono quella larghezza in proporzione */
+      salvaStato();
       simBarra.style.width = (tot ? Math.max(4, Math.sqrt(tot / MAX) * 100) : 0) + '%';
       for(var b=0;b<CANALI.length;b++){
         simBarra.querySelector('[data-seg="' + CANALI[b].k + '"]').style.width =
@@ -2013,6 +2071,7 @@
       b.addEventListener('click',function(){ document.getElementById('sw-'+b.dataset.node).click(); });
     });
     document.getElementById('sim-reset').addEventListener('click',function(){
+      try{ sessionStorage.removeItem('tmc-simulatore'); }catch(e){}
       CANALI.forEach(function(c){
         var box=simPage.querySelector('.sim-can[data-can="'+c.k+'"]');
         box.classList.remove('on');
@@ -2038,6 +2097,7 @@
       simNum.removeAttribute('aria-busy');simNum.classList.remove('pulse');
       simMotion();simCompact();
     });
+    ripristinaStato();
     calcola();
   }
 

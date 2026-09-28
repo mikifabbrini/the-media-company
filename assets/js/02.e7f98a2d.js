@@ -275,27 +275,24 @@
   /* Il piano del simulatore finisce nel messaggio, gia' scritto.
      Viaggia in sessionStorage e non nell'indirizzo: e' troppo lungo
      per starci, e nell'indirizzo non ci va roba scritta dall'utente. */
-  function applicaPiano(testo){
-    var campo = document.getElementById('c-m');
-    if(!campo || !testo){ return; }
-    campo.value = testo;
-    campo.dispatchEvent(new Event('input', { bubbles:true }));
-    /* il piano e' lungo: allargo il riquadro quanto basta a leggerlo
-       tutto, senza farlo diventare una pagina intera */
-    campo.style.height = 'auto';
-    campo.style.height = Math.min(campo.scrollHeight + 2, 340) + 'px';
-    var scatola = campo.closest('.campo');
-    if(scatola){
-      scatola.classList.remove('precompilato');
-      void scatola.offsetWidth;
-      scatola.classList.add('precompilato');
-      setTimeout(function(){ scatola.classList.remove('precompilato'); }, 1400);
+  function applicaPiano(piano){
+    var scatola = document.getElementById('c-piano');
+    var lista = document.getElementById('c-piano-voci');
+    var nascosto = document.getElementById('c-piano-dati');
+    if(!scatola || !lista || !piano || !piano.voci || !piano.voci.length){ return; }
+    var html = '';
+    for(var i=0;i<piano.voci.length;i++){
+      html += '<li>' + piano.voci[i].et + ' <b>' + piano.voci[i].qt + '</b></li>';
     }
+    lista.innerHTML = html;
+    if(nascosto){ nascosto.value = piano.dati || ''; }
+    scatola.hidden = false;
   }
   function riprendiPiano(){
-    var testo = null;
-    try{ testo = sessionStorage.getItem('tmc-piano'); sessionStorage.removeItem('tmc-piano'); }catch(e){}
-    if(testo){ applicaPiano(testo); }
+    var grezzo = null;
+    try{ grezzo = sessionStorage.getItem('tmc-piano'); sessionStorage.removeItem('tmc-piano'); }catch(e){}
+    if(!grezzo){ return; }
+    try{ applicaPiano(JSON.parse(grezzo)); }catch(e){}
   }
 
   function applicaAppuntamento(){
@@ -318,7 +315,7 @@
           piano = window.tmcSimPiano();
           if(piano){
             motivo = piano.motivo;
-            try{ sessionStorage.setItem('tmc-piano', piano.testo); }catch(e){}
+            try{ sessionStorage.setItem('tmc-piano', JSON.stringify(piano)); }catch(e){}
           }
         }
         /* Pagina diversa: quello che il pulsante voleva fare viaggia
@@ -334,7 +331,7 @@
         var pag = vai(el.getAttribute('data-go'));
         if(mira){ segnalaCard(mira); }
         if(motivo){ applicaMotivo(motivo); }
-        if(piano){ riprendiPiano(); }
+        if(piano){ applicaPiano(piano); }
         if(appunt){ applicaAppuntamento(); }
         /* il focus va sul titolo della nuova pagina: chi naviga da tastiera
            o con lo screen reader sente dove è arrivato, invece di ripartire da capo */
@@ -1878,18 +1875,17 @@
        "Chiedi il piano esatto", che lo scrive nel modulo al posto tuo.
        Chiedere di nuovo quello che hai gia' scelto non ha senso. */
     window.tmcSimPiano = function(){
-      var voci = [], accesi = [], totale = 0;
+      var voci = [], accesi = [], righe = [];
       for(var a=0;a<CANALI.length;a++){
         var c = CANALI[a];
         var box = document.querySelector('.sim-can[data-can="' + c.k + '"]');
         if(!box || !box.classList.contains('on')){ continue; }
         var n = +document.getElementById('sim-' + c.k).value;
         var dur = box.querySelector('.sim-dur .chip.att');
-        var q = Math.round(n * c.per * (c.giorni || 1) / (c.baseSpot || 1));
-        totale += q; accesi.push(c.k);
-        voci.push('\u2022 ' + c.et + ': ' + n + ' ' + (n === 1 ? c.un[0] : c.un[1]) +
-                  (dur ? ', ' + dur.textContent.trim() : '') +
-                  ' \u2014 circa ' + q.toLocaleString('it-IT') + ' contatti');
+        accesi.push(c.k);
+        voci.push({ et: c.et, qt: n + ' ' + (n === 1 ? c.un[0] : c.un[1]) });
+        righe.push(c.et + ': ' + n + ' ' + (n === 1 ? c.un[0] : c.un[1]) +
+                   (dur ? ', ' + dur.textContent.trim() : ''));
       }
       if(!voci.length){ return null; }
       var motivo = accesi.length > 1 ? 'Campagna cross-mediale' :
@@ -1897,11 +1893,9 @@
                    accesi[0] === 'ooh'   ? 'Campagna out of home' :
                    accesi[0] === 'radio' ? 'Campagna radio o TV' :
                                            'Campagna stampa';
-      return { motivo: motivo, testo:
-        'Ho provato il simulatore e questo \u00e8 il piano che ho messo insieme:\n\n' +
-        voci.join('\n') +
-        '\n\nTotale stimato: circa ' + totale.toLocaleString('it-IT') + ' contatti.\n\n' +
-        'Vorrei il piano esatto su questi numeri.' };
+      /* voci = le targhette che si vedono (solo le quantita')
+         dati = quello che parte davvero con l'invio, durata compresa */
+      return { motivo: motivo, voci: voci, dati: righe.join(' | ') };
     };
 
     function calcola(){

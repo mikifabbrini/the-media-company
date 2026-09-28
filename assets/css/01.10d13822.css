@@ -1572,18 +1572,19 @@ body.caso-aperto{overflow:hidden;}
   background:var(--blu-2);transition:transform .35s var(--spring);}
 .serv-cta:hover .serv-cta-azione svg{transform:translateX(4px) rotate(-8deg);}
 .campo.precompilato select{border-color:var(--blu);animation:campo-pronto 1.25s var(--e);}
-/* Il piano che arriva dal simulatore: si legge e basta. Niente bordo
-   marcato ne' cursore a manina, se no sembrano pulsanti da premere. */
-.piano{margin-top:-4px;padding:14px 16px;border-radius:14px;
-  background:var(--blu-tenue);border:1px solid var(--bordo);}
+/* Il piano che arriva dal simulatore: si legge e basta. Nessun riquadro
+   intorno, solo le targhette blu. Niente cursore a manina: non sono
+   pulsanti e non devono sembrarlo. */
+.piano{margin-top:-2px;}
 .piano[hidden]{display:none;}
-.piano-eti{display:block;font-size:11px;font-weight:700;letter-spacing:.06em;
-  text-transform:uppercase;color:var(--blu);opacity:.8;}
-.piano-voci{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0 0;padding:0;list-style:none;}
-.piano-voci li{padding:7px 13px;border-radius:999px;background:#fff;
-  border:1px solid var(--bordo);font-size:14px;color:var(--ink-2);
-  user-select:none;cursor:default;}
-.piano-voci li b{font-weight:700;color:var(--blu);}
+.piano-eti{display:block;font-size:10.5px;font-weight:700;letter-spacing:.06em;
+  text-transform:uppercase;color:var(--blu);opacity:.7;}
+.piano-voci{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0 0;padding:0;list-style:none;}
+.piano-voci li{padding:5px 11px;border-radius:999px;background:var(--blu);color:#fff;
+  font-size:12px;line-height:1.35;user-select:none;cursor:default;}
+.piano-voci li b{font-weight:700;}
+.piano-voci li i{font-style:normal;opacity:.72;}
+.piano-voci li i::before{content:"\00B7";margin:0 5px;opacity:.72;}
 @keyframes serv-scia{
   0%,22%{transform:translateX(-55%) rotate(7deg);}
   62%,100%{transform:translateX(55%) rotate(7deg);}

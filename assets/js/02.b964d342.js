@@ -282,7 +282,8 @@
     if(!scatola || !lista || !piano || !piano.voci || !piano.voci.length){ return; }
     var html = '';
     for(var i=0;i<piano.voci.length;i++){
-      html += '<li>' + piano.voci[i].et + ' <b>' + piano.voci[i].qt + '</b></li>';
+      html += '<li>' + piano.voci[i].et + ' <b>' + piano.voci[i].qt + '</b>' +
+              (piano.voci[i].dur ? ' <i>' + piano.voci[i].dur + '</i>' : '') + '</li>';
     }
     lista.innerHTML = html;
     if(nascosto){ nascosto.value = piano.dati || ''; }
@@ -1883,7 +1884,8 @@
         var n = +document.getElementById('sim-' + c.k).value;
         var dur = box.querySelector('.sim-dur .chip.att');
         accesi.push(c.k);
-        voci.push({ et: c.et, qt: n + ' ' + (n === 1 ? c.un[0] : c.un[1]) });
+        voci.push({ et: c.et, qt: n + ' ' + (n === 1 ? c.un[0] : c.un[1]),
+                    dur: dur ? dur.textContent.trim() : '' });
         righe.push(c.et + ': ' + n + ' ' + (n === 1 ? c.un[0] : c.un[1]) +
                    (dur ? ', ' + dur.textContent.trim() : ''));
       }

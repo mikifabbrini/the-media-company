@@ -475,6 +475,10 @@ body.menu-open #menu{opacity:1;visibility:visible;transform:none;transition-dela
 
 /* ── card servizi ─────────────────────────────────────────── */
 .griglia{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:clamp(16px,2vw,24px);}
+/* I quattro servizi stanno su una riga sola: con auto-fit il quarto
+   finiva da solo sotto agli altri tre. */
+@media (min-width:1040px){ .griglia--quattro{grid-template-columns:repeat(4,minmax(0,1fr));} }
+@media (min-width:660px) and (max-width:1039px){ .griglia--quattro{grid-template-columns:repeat(2,minmax(0,1fr));} }
 .srv{position:relative;background:var(--sup);border-radius:var(--r);padding:clamp(26px,2.6vw,34px);
   border:1px solid var(--bordo);box-shadow:var(--sh-1);display:flex;flex-direction:column;gap:14px;
   min-height:248px;overflow:hidden;text-align:left;

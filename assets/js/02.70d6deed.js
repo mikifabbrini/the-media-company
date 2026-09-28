@@ -3,7 +3,7 @@
   "use strict";
 
   var riavviaPila = null;
-  var PG = ['home','integrate','ooh','maxi-affissioni','dooh','stazioni','radiotv','taxiadv','campagne-taxi','simulatore','travel','richiesta','progetti','contattaci','privacy','cookie'];
+  var PG = ['home','integrate','ooh','maxi-affissioni','dooh','stazioni','radiotv','taxiadv','campagne-taxi','simulatore','travel','richiesta','progetti','approfondimenti','contattaci','privacy','cookie'];
 
   /* ── pagine separate ──────────────────────────────────────────────────
      Il sito gira in due modi. Come pagina unica (anteprima locale, artifact)
@@ -1382,6 +1382,7 @@
     { t:'Campagne radio e TV', s:'Spot su emittenti nazionali e locali, TV e piattaforme', go:'radiotv', k:'radio tv televisione spot emittenti nazionali locali radiofonica advertising sky media publitalia mediaset rai cairo netflix canali kids bambini rds radio italia rtl 24 dimensione suono globo rock centro suono retesport radiosei ram power disco radio' },
     { t:'OOH / DOOH',       s:'Pubblicità esterna statica e digitale',            go:'ooh',      k:'ooh dooh digitale schermi led esterna' },
     { t:'Progetti',         s:'Le campagne portate in strada',                    go:'progetti', k:'progetti lavori portfolio campagne case study foto' },
+    { t:'Approfondimenti',  s:'Guide e notizie dalle nostre campagne',            go:'approfondimenti', k:'approfondimenti guide articoli news notizie blog consigli come funziona quanto costa spiegazioni' },
     { t:'Baci Gelato',      s:'Campagna cross-mediale',                   go:'progetti', caso:'caso-froneri', k:'baci gelato froneri dooh go tv stazioni ferroviarie ledwall milano roma napoli torino genova bologna bari palermo verona venezia bus turistici 2026 lancio' },
     { t:'BANCOMAT',         s:'Campagna cross-mediale',          go:'progetti', caso:'caso-bancomat', k:'bancomat app termini centrale barberini cadorna metro stazioni flash mob dicembre 2025' },
     { t:'Cuba',             s:'Campagna cross-mediale',              go:'progetti', caso:'caso-cuba', k:'cuba unica mintur turismo internazionale madrid barcellona varsavia francoforte pechino shanghai guangzhou ledwall bus due piani 2025' },

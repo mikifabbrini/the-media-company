@@ -2223,8 +2223,12 @@ body.tmc-dialog-open{overflow:hidden}
   line-height:1.25;color:var(--blu);opacity:0;pointer-events:none;
   transition:opacity .3s var(--e),transform .3s var(--e);}
 .marchi-fila li:hover b,.marchi-fila li.acceso b{opacity:1;transform:translateX(-50%) translateY(0);}
-}
 
+/* Elenco degli approfondimenti. La data la porta solo chi e' una
+   notizia: le guide non scadono e non devono sembrare vecchie. */
+.appr{display:grid;gap:clamp(12px,1.4vw,18px);margin:0;padding:0;list-style:none;}
+.appr-vuoto{padding:clamp(20px,2.2vw,26px);border:1px dashed var(--bordo);
+  border-radius:var(--r-foto);color:var(--ink-2);font-size:16px;line-height:1.6;}
 .faq{display:grid;gap:10px;margin-top:clamp(18px,2vw,26px);}
 .faq details{border:1px solid var(--bordo);border-radius:18px;background:#fff;}
 .faq details[open]{border-color:var(--blu);}

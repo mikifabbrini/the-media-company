@@ -272,6 +272,32 @@
       sceltaMotivo.focus({ preventScroll:true });
     }, poco ? 0 : 180);
   }
+  /* Il piano del simulatore finisce nel messaggio, gia' scritto.
+     Viaggia in sessionStorage e non nell'indirizzo: e' troppo lungo
+     per starci, e nell'indirizzo non ci va roba scritta dall'utente. */
+  function applicaPiano(testo){
+    var campo = document.getElementById('c-m');
+    if(!campo || !testo){ return; }
+    campo.value = testo;
+    campo.dispatchEvent(new Event('input', { bubbles:true }));
+    /* il piano e' lungo: allargo il riquadro quanto basta a leggerlo
+       tutto, senza farlo diventare una pagina intera */
+    campo.style.height = 'auto';
+    campo.style.height = Math.min(campo.scrollHeight + 2, 340) + 'px';
+    var scatola = campo.closest('.campo');
+    if(scatola){
+      scatola.classList.remove('precompilato');
+      void scatola.offsetWidth;
+      scatola.classList.add('precompilato');
+      setTimeout(function(){ scatola.classList.remove('precompilato'); }, 1400);
+    }
+  }
+  function riprendiPiano(){
+    var testo = null;
+    try{ testo = sessionStorage.getItem('tmc-piano'); sessionStorage.removeItem('tmc-piano'); }catch(e){}
+    if(testo){ applicaPiano(testo); }
+  }
+
   function applicaAppuntamento(){
     var sp = document.getElementById('c-app');
     if(!sp){ return; }
@@ -287,6 +313,14 @@
         var mira = el.getAttribute('data-vaia');
         var motivo = el.getAttribute('data-motivo');
         var appunt = el.hasAttribute('data-appuntamento');
+        var piano = null;
+        if(el.hasAttribute('data-sim-piano') && window.tmcSimPiano){
+          piano = window.tmcSimPiano();
+          if(piano){
+            motivo = piano.motivo;
+            try{ sessionStorage.setItem('tmc-piano', piano.testo); }catch(e){}
+          }
+        }
         /* Pagina diversa: quello che il pulsante voleva fare viaggia
            nell'indirizzo e viene ripreso all'arrivo. */
         if(MP && el.getAttribute('data-go') !== MP.corrente){
@@ -300,6 +334,7 @@
         var pag = vai(el.getAttribute('data-go'));
         if(mira){ segnalaCard(mira); }
         if(motivo){ applicaMotivo(motivo); }
+        if(piano){ riprendiPiano(); }
         if(appunt){ applicaAppuntamento(); }
         /* il focus va sul titolo della nuova pagina: chi naviga da tastiera
            o con lo screen reader sente dove è arrivato, invece di ripartire da capo */
@@ -1664,7 +1699,7 @@
     { k:'taxi',  et:'Taxi',  col:'#4864EC', per:15000,   giorni:26, un:['mezzo','mezzi'] },
     { k:'ooh',   et:'OOH',   col:'#7D93F7', per:18000,   giorni:30, un:['impianto','impianti'] },
     { k:'radio', et:'Radio locale', col:'#A9B8F7', per:228000, giorni:7, baseSpot:6, un:['spot al giorno','spot al giorno'] },
-    { k:'web',   et:'Web Journalism', col:'#D7DEFB', per:1124000, giorni:0,  un:['articolo','articoli'] }
+    { k:'web',   et:'Stampa', col:'#D7DEFB', per:1124000, giorni:0,  un:['articolo','articoli'] }
   ];
 
   if(document.getElementById('sim-taxi')){
@@ -1839,6 +1874,36 @@
       }
       simFrame = requestAnimationFrame(tick);
     }
+    /* Il piano composto coi cursori, in parole: serve al pulsante
+       "Chiedi il piano esatto", che lo scrive nel modulo al posto tuo.
+       Chiedere di nuovo quello che hai gia' scelto non ha senso. */
+    window.tmcSimPiano = function(){
+      var voci = [], accesi = [], totale = 0;
+      for(var a=0;a<CANALI.length;a++){
+        var c = CANALI[a];
+        var box = document.querySelector('.sim-can[data-can="' + c.k + '"]');
+        if(!box || !box.classList.contains('on')){ continue; }
+        var n = +document.getElementById('sim-' + c.k).value;
+        var dur = box.querySelector('.sim-dur .chip.att');
+        var q = Math.round(n * c.per * (c.giorni || 1) / (c.baseSpot || 1));
+        totale += q; accesi.push(c.k);
+        voci.push('\u2022 ' + c.et + ': ' + n + ' ' + (n === 1 ? c.un[0] : c.un[1]) +
+                  (dur ? ', ' + dur.textContent.trim() : '') +
+                  ' \u2014 circa ' + q.toLocaleString('it-IT') + ' contatti');
+      }
+      if(!voci.length){ return null; }
+      var motivo = accesi.length > 1 ? 'Campagna cross-mediale' :
+                   accesi[0] === 'taxi'  ? 'Pubblicit\u00e0 dinamica' :
+                   accesi[0] === 'ooh'   ? 'Campagna out of home' :
+                   accesi[0] === 'radio' ? 'Campagna radio o TV' :
+                                           'Campagna stampa';
+      return { motivo: motivo, testo:
+        'Ho provato il simulatore e questo \u00e8 il piano che ho messo insieme:\n\n' +
+        voci.join('\n') +
+        '\n\nTotale stimato: circa ' + totale.toLocaleString('it-IT') + ' contatti.\n\n' +
+        'Vorrei il piano esatto su questi numeri.' };
+    };
+
     function calcola(){
       var tot = 0, quote = {}, righe = '';
       for(var a=0;a<CANALI.length;a++){
@@ -1990,6 +2055,7 @@
     if(anc.indexOf('motivo=') === 0){
       var pezzi = anc.slice(7).split('&');
       if(pezzi[0]){ applicaMotivo(decodeURIComponent(pezzi[0])); }
+      riprendiPiano();
       if(anc.indexOf('app=1') !== -1){ applicaAppuntamento(); }
     } else if(anc.indexOf('srv-') === 0){
       segnalaCard(anc.slice(4));

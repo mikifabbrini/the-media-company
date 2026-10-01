@@ -247,6 +247,18 @@
      altrimenti riceverebbe due gestori di clic in conflitto */
   /* Questi tre gesti servono sia al clic, sia all'arrivo su una pagina
      nuova: in multipagina viaggiano nell'indirizzo dopo il cancelletto. */
+  /* "I nostri servizi" sotto la frase iniziale: resta in home e scende
+     ai quattro servizi. Niente cancelletto nell'indirizzo, che il
+     sistema delle pagine leggerebbe come una pagina da aprire. */
+  var scorri = document.querySelectorAll('[data-scorri]');
+  for(var sc=0; sc<scorri.length; sc++){
+    scorri[sc].addEventListener('click', function(ev){
+      var meta = document.getElementById(this.getAttribute('data-scorri'));
+      if(!meta){ return; }
+      ev.preventDefault();
+      meta.scrollIntoView({ block:'start', behavior: poco ? 'auto' : 'smooth' });
+    });
+  }
   function segnalaCard(mira){
     var card = document.getElementById('srv-' + mira);
     if(!card){ return; }
@@ -1373,13 +1385,13 @@
     { t:'Archivio delle campagne taxi', s:'99 campagne e 379 fotografie', go:'campagne-taxi', k:'archivio taxi campagne fotografie clienti raccolta galleria' },
     { t:'OOH & DOOH',       s:'Affissioni, maxi affissioni e spazi digitali',      go:'ooh',      k:'ooh dooh affissioni maxi digitale schermi esterna citta media' },
     { t:'Pubblicità dinamica', s:'Taxi, bus e tram brandizzati',                            go:'taxiadv',  k:'taxi advertising mobilita urbana capillare campagne movimento' },
-    { t:'Campagne cross-mediali', s:'OOH/DOOH, digital e social, radio, stampa e one-to-one',  go:'integrate',k:'cross-mediali cross mediale integrate integrata piano media mix digital social web radio stampa one to one planning buying' },
+    { t:'Campagne cross-mediali', s:'OOH e DOOH, dinamica, radio e TV, stampa, digital, engagement',  go:'integrate',k:'cross-mediali cross mediale integrate integrata piano media mix digital social web radio stampa one to one planning buying engagement guerrilla street marketing flash mob one-to-one' },
     { t:'Campagne Taxi',    s:'15.000 contatti al giorno per mezzo',              go:'taxiadv',  k:'taxi campagne mezzi contatti copertura' },
     { t:'Prova il simulatore', s:'Stima i contatti del tuo piano, canale per canale', go:'simulatore', k:'simulatore stima contatti calcolo copertura numeri prova' },
     { t:'Maxi affissioni',  s:'Il formato più grande della pubblicità esterna',   go:'maxi-affissioni', k:'affissioni maxi manifesti poster impianti telo ponteggio parete dipinta facciata roma milano' },
     { t:'DOOH e maxi LED',  s:'Schermi digitali in stazione, in metro e in città', go:'dooh',     k:'dooh digital out of home led maxi led schermi digitali totem videowall stazioni metro centri commerciali facciata' },
     { t:'Grandi Stazioni e metro', s:'GO TV, maxi LED, domination e MUPI',          go:'stazioni', k:'grandi stazioni metro metropolitana go tv station domination mupi ledwall termini tiburtina milano centrale barberini cadorna napoli banchina tornelli ferroviarie' },
-    { t:'Campagne radio e TV', s:'Spot su emittenti nazionali e locali, TV e piattaforme', go:'radiotv', k:'radio tv televisione spot emittenti nazionali locali radiofonica advertising sky media publitalia mediaset rai cairo netflix canali kids bambini rds radio italia rtl 24 dimensione suono globo rock centro suono retesport radiosei ram power disco radio' },
+    { t:'Campagne radio, TV e stampa', s:'Spot su emittenti nazionali e locali, TV, quotidiani e periodici', go:'radiotv', k:'radio tv televisione spot emittenti nazionali locali radiofonica advertising sky media publitalia mediaset rai cairo netflix canali kids bambini rds radio italia rtl 24 dimensione suono globo rock centro suono retesport radiosei ram power disco radio stampa quotidiani periodici giornali riviste carta stampata' },
     { t:'OOH / DOOH',       s:'Pubblicità esterna statica e digitale',            go:'ooh',      k:'ooh dooh digitale schermi led esterna' },
     { t:'Progetti',         s:'Le campagne portate in strada',                    go:'progetti', k:'progetti lavori portfolio campagne case study foto' },
     { t:'Approfondimenti',  s:'Guide e notizie dalle nostre campagne',            go:'approfondimenti', k:'approfondimenti guide articoli news notizie blog consigli come funziona quanto costa spiegazioni' },
@@ -1942,7 +1954,7 @@
       var motivo = accesi.length > 1 ? 'Campagna cross-mediale' :
                    accesi[0] === 'taxi'  ? 'Pubblicit\u00e0 dinamica' :
                    accesi[0] === 'ooh'   ? 'Campagna out of home' :
-                   accesi[0] === 'radio' ? 'Campagna radio o TV' :
+                   accesi[0] === 'radio' ? 'Campagna radio, TV o stampa' :
                                            'Campagna stampa';
       /* voci = le targhette che si vedono (solo le quantita')
          dati = quello che parte davvero con l'invio, durata compresa */

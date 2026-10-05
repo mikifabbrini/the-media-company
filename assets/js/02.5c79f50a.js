@@ -931,13 +931,16 @@
       /* Sul telefono la tappa è intera: il testo cambia insieme alla
          propria lastra, che raggiunge sempre lo stesso punto visivo. */
       if(mobilePila.matches)progressoPila=scelto;
-      scenaPila.style.setProperty('--pila-sollevamento',(scelto*27*.76*Math.sin(57*Math.PI/180)).toFixed(2)+'px');
+      /* Da telefono le lastre stanno piu' strette: con sette canali la pila
+         usciva in alto dal riquadro e il Barter con la M si tagliava. */
+      var passoPila=mobilePila.matches?17:27,salitaPila=mobilePila.matches?30:46;
+      scenaPila.style.setProperty('--pila-sollevamento',(scelto*passoPila*.76*Math.sin(57*Math.PI/180)).toFixed(2)+'px');
       for(var i=0;i<lastrePila.length;i++){
         var arrivo=limitaPila(progressoPila-i+1,0,1);
         var evidenza=Math.max(0,1-Math.abs(progressoPila-i));
         /* La nuova lastra scende e si posa; quella selezionata resta
            leggermente sollevata, come il livello aperto nel riferimento. */
-        var z=i*27+(1-arrivo)*250+evidenza*46;
+        var z=i*passoPila+(1-arrivo)*250+evidenza*salitaPila;
         lastrePila[i].style.setProperty('--lastra-z',z.toFixed(2)+'px');
         lastrePila[i].style.setProperty('--lastra-opacity',limitaPila(arrivo*1.65,0,1).toFixed(3));
       }
@@ -1125,10 +1128,51 @@
       var n = oohSlide.length;
       oohI = (i + n) % n;
       oohGuidato = Date.now();
-      oohTrack.scrollTo({ left: oohSlide[oohI].offsetLeft, behavior: liscio === false ? 'auto' : 'smooth' });
+      oohOrbita();
       oohSegna();
       oohRiparti();
     }
+    /* Ogni foto prende posto nell'orbita in base alla distanza da quella davanti.
+       La rotazione di lato e' fissa per ogni foto, cosi' non "trema" a ogni giro. */
+    var oohVista = ooh.querySelector('.ooh-car-vista');
+    function oohOrbita(){
+      var n = oohSlide.length, largo = oohVista.clientWidth, telefono = largo < 640;
+      var passo = telefono ? largo * 0.34 : Math.min(largo * 0.2, 250);
+      var quante = telefono ? 1 : 3;
+      for(var j=0;j<n;j++){
+        var d = j - oohI;
+        if(d > n/2){ d -= n; } if(d < -n/2){ d += n; }
+        var a = Math.abs(d), s = oohSlide[j];
+        var vista = a <= quante;
+        s.classList.toggle('vista', vista);
+        s.classList.toggle('davanti', d === 0);
+        s.setAttribute('aria-hidden', d === 0 ? 'false' : 'true');
+        var giroZ = d === 0 ? 0 : (((j * 37) % 9) - 4) * 1.7;
+        var giroY = d === 0 ? 0 : -Math.sign(d) * (14 + a * 6);
+        var x = d * passo * (1 - (a - 1) * 0.12);
+        var z = d === 0 ? 120 : -a * 130;
+        var sc = d === 0 ? 1 : Math.max(.55, .8 - (a - 1) * .08);
+        s.style.transform = 'translate(-50%,-50%) translate3d(' + x.toFixed(1) + 'px,' + (d === 0 ? 0 : (((j * 53) % 7) - 3) * 4) + 'px,' + z + 'px) rotateY(' + giroY + 'deg) rotateZ(' + giroZ.toFixed(1) + 'deg) scale(' + sc.toFixed(3) + ')';
+        s.style.opacity = vista ? (d === 0 ? 1 : Math.max(.2, .5 - (a - 1) * .12)) : 0;
+        s.style.zIndex = 100 - a * 10;
+        s.style.filter = d === 0 ? 'none' : 'saturate(.85)';
+      }
+    }
+    /* clic su una foto di lato: la porta davanti invece di aprirla */
+    oohTrack.addEventListener('click', function(e){
+      var f = e.target.closest('.ooh-slide'); if(!f){ return; }
+      var j = Array.prototype.indexOf.call(oohSlide, f);
+      if(j !== oohI){ e.preventDefault(); e.stopPropagation(); oohVai(j); }
+    }, true);
+    /* trascinare col dito o col mouse: verso sinistra avanti, verso destra indietro */
+    var oohX = null, oohMosso = false;
+    oohVista.addEventListener('pointerdown', function(e){ if(e.target.closest('.ooh-car-btn')){ return; } oohX = e.clientX; oohMosso = false; oohVista.classList.add('trascina'); });
+    window.addEventListener('pointerup', function(e){
+      if(oohX === null){ return; }
+      var dx = e.clientX - oohX; oohX = null; oohVista.classList.remove('trascina');
+      if(Math.abs(dx) > 40){ oohMosso = true; oohVai(oohI + (dx < 0 ? 1 : -1)); }
+    });
+    oohVista.addEventListener('click', function(e){ if(oohMosso){ e.preventDefault(); e.stopPropagation(); oohMosso = false; } }, true);
     var oohFila = document.getElementById('ooh-mini-fila');
     var oohMini = oohFila.querySelectorAll('.ooh-mini');
     function oohSegna(){
@@ -1161,25 +1205,19 @@
     });
     document.getElementById('ooh-car-prec').addEventListener('click', function(){ oohVai(oohI - 1); });
     document.getElementById('ooh-car-succ').addEventListener('click', function(){ oohVai(oohI + 1); });
-    oohTrack.addEventListener('scroll', function(){
-      clearTimeout(oohScroll);
-      oohScroll = setTimeout(function(){
-        if(Date.now() - oohGuidato < 900){ return; }
-        var k = Math.round(oohTrack.scrollLeft / oohTrack.clientWidth);
-        k = Math.max(0, Math.min(oohSlide.length - 1, k));
-        if(k !== oohI){ oohI = k; oohSegna(); oohRiparti(); }
-      }, 120);
-    }, { passive:true });
     oohTrack.addEventListener('keydown', function(e){
       if(e.key === 'ArrowRight'){ e.preventDefault(); oohVai(oohI + 1); }
       if(e.key === 'ArrowLeft'){ e.preventDefault(); oohVai(oohI - 1); }
     });
-    window.addEventListener('resize', function(){ oohTrack.scrollTo({ left: oohSlide[oohI].offsetLeft, behavior:'auto' }); });
+    window.addEventListener('resize', oohOrbita);
+    /* se la pagina era nascosta all'avvio la larghezza era zero: si ricalcola appena compare */
+    if('ResizeObserver' in window){ new ResizeObserver(function(){ oohOrbita(); }).observe(oohVista); }
 
     new IntersectionObserver(function(v){
       var prima = oohVisto; oohVisto = v[0].isIntersecting;
       if(oohVisto && !prima){ oohVai(oohI, false); } else { ooh.classList.toggle('ferma', oohFermo()); }
     }, { threshold:.35 }).observe(ooh);
+    oohOrbita();
     oohSegna();
   }
 

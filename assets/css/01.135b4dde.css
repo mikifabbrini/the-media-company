@@ -386,10 +386,9 @@ body.menu-open #menu{opacity:1;visibility:visible;transform:none;transition-dela
    sotto una fila di miniature per saltare direttamente a una campagna. */
 .ooh-car{max-width:880px;margin:0 auto;}
 /* titolo del carosello: centrato, il titolo su una riga, il testo sotto piu' stretto */
-.ooh-car-testa{margin:0 auto clamp(24px,3vw,38px);text-align:center;}
-.ooh-car-testa .lead{max-width:none;margin:18px auto 0;text-wrap:balance;}
-@media (min-width:1100px){ .ooh-car-testa .lead{white-space:nowrap;} }
-.ooh-car-testa .lead+.lead{margin-top:4px;}
+.ooh-car-testa{margin:0 0 clamp(24px,3vw,38px);text-align:left;}
+/* testo lungo che spiega il modello: a sinistra, largo quanto la pagina, va a capo da solo */
+.ooh-car-testa .lead{max-width:none;margin:18px 0 0;text-wrap:pretty;}
 .ooh-car-vista{position:relative;overflow:hidden;border-radius:var(--r);box-shadow:var(--sh-2);background:var(--bg-2);}
 .ooh-car-track{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;scroll-behavior:smooth;
   scrollbar-width:none;overscroll-behavior-x:contain;outline:none;}
@@ -442,6 +441,42 @@ body.menu-open #menu{opacity:1;visibility:visible;transform:none;transition-dela
   .ooh-mini{flex-basis:64px;height:43px;border-radius:8px;}
 }
 @media (prefers-reduced-motion:reduce){ .ooh-car-track,.ooh-mini-fila{scroll-behavior:auto;} }
+/* ── Carosello OOH a orbita (5/10/2026, sul modello di florame.ai) ──
+   Le foto stanno in cerchio: quella davanti e' grande e piena, le altre
+   piu' piccole, ruotate e trasparenti. Ogni foto tiene il suo formato:
+   l'altezza e' fissa, la larghezza la decide la foto. */
+.ooh-car{max-width:none;}
+.ooh-car .ooh-car-vista{overflow:visible;background:none;box-shadow:none;border-radius:0;
+  height:clamp(300px,36vw,500px);perspective:1500px;perspective-origin:50% 45%;
+  clip-path:inset(-60px -100vw);touch-action:pan-y;cursor:grab;}
+.ooh-car .ooh-car-vista.trascina{cursor:grabbing;}
+.ooh-car .ooh-car-track{display:block;position:relative;height:100%;overflow:visible;
+  scroll-snap-type:none;transform-style:preserve-3d;}
+.ooh-car .ooh-slide{position:absolute;left:50%;top:50%;margin:0;
+  height:clamp(230px,28vw,400px);width:auto;aspect-ratio:auto;flex:none;
+  border-radius:18px;overflow:hidden;background:#E9EEF8;box-shadow:0 18px 44px rgba(15,27,61,.22);
+  transform:translate(-50%,-50%) scale(.6);opacity:0;pointer-events:none;
+  backface-visibility:hidden;will-change:transform,opacity;
+  transition:transform .95s cubic-bezier(.16,1,.3,1),opacity .6s ease,filter .6s ease;}
+.ooh-car .ooh-slide::before{display:none;}
+.ooh-car .ooh-slide img{height:100%;width:auto;max-width:none;object-fit:cover;-webkit-user-drag:none;user-select:none;}
+.ooh-car .ooh-slide.vista{pointer-events:auto;cursor:pointer;}
+.ooh-car .ooh-slide .ooh-slide-eti{opacity:0;transition:opacity .4s ease;}
+.ooh-car .ooh-slide.davanti .ooh-slide-eti{opacity:1;}
+.ooh-car .ooh-car-btn{opacity:1;background:#fff;box-shadow:var(--sh-2);}
+.ooh-car .ooh-car-prec{left:max(4px,calc(50% - min(46vw,640px)));}
+.ooh-car .ooh-car-succ{right:max(4px,calc(50% - min(46vw,640px)));}
+.ooh-car .ooh-car-conta{left:50%;bottom:-6px;transform:translateX(-50%);background:rgba(15,27,61,.72);}
+.ooh-car .ooh-car-prog{left:50%;right:auto;width:min(260px,50%);bottom:-18px;transform:translateX(-50%);
+  border-radius:3px;overflow:hidden;background:rgba(15,27,61,.12);}
+.ooh-car .ooh-mini-fila{margin-top:34px;}
+@media (max-width:640px){
+  .ooh-car .ooh-car-vista{height:clamp(240px,78vw,340px);}
+  .ooh-car .ooh-slide{height:clamp(160px,46vw,230px);max-width:78vw;}
+  .ooh-car .ooh-slide img{max-width:78vw;object-fit:cover;}
+}
+@media (prefers-reduced-motion:reduce){ .ooh-car .ooh-slide{transition:none;} }
+
 .hero-g{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);
   gap:clamp(32px,5vw,72px);align-items:center;}
 
@@ -563,6 +598,12 @@ body.menu-open #menu{opacity:1;visibility:visible;transform:none;transition-dela
 .taxi-intro .lead{max-width:none;margin-top:18px;}
 .taxi-intro .lead+.lead{margin-top:4px;}
 .taxi-intro+.taxi-impatto{margin-top:clamp(28px,3.4vw,44px);}
+/* ordine del 5/10: spiegazione, titolo "Taxi advertising", numeri, poi il testo sui taxi */
+.taxi-def{margin-top:clamp(28px,3.4vw,46px);}
+.taxi-def .lead{max-width:none;}
+.taxi-titolo{margin-top:clamp(40px,5vw,72px);}
+.taxi-titolo+.taxi-impatto{margin-top:clamp(18px,2.2vw,28px);}
+.taxi-impatto+.taxi-intro{margin-top:clamp(24px,3vw,40px);}
 .taxi-impatto .numeri>div{position:relative;min-width:0;}
 .taxi-impatto .numeri>div+div{border-left:1px solid #D4DEF2;padding-left:clamp(20px,3vw,44px);}
 .taxi-impatto .numeri b{color:var(--ink);font-size:clamp(38px,5vw,62px);letter-spacing:-.055em;}

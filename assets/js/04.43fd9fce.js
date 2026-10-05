@@ -120,15 +120,17 @@ async function createStage(canvas){[logo,mark]=await Promise.all([image(localAss
  add(1,billboard(),-.46,0,-.17,1.02,-.15,0);add(1,led(),1.03,.0,.5,1.06,-.16,1);
  add(2,taxi.clone(true),0,.02,0,1.19,-.36,0);
  add(3,tv(),.38,.16,-.23,1.12,-.11,0);add(3,microphone(),-1.05,.0,.35,1.04,.12,1);add(3,newspaper(),.90,.02,.72,.87,-.15,2);add(3,onAir(),-.6,.0,.92,.87,-.1,3);
- const frames=[{y:1.17,h:3.37},{y:1.18,h:3.24},{y:.7,h:2.7},{y:.99,h:3.07}];let chosen=0,w=0,h=0;const rotation={drag:0};
+ const frames=[{y:1.17,h:3.37},{y:1.18,h:3.24},{y:.7,h:2.7},{y:.99,h:3.07}];
+/* Ordine voluto da Michele (5/10): cross-mediali, dinamica, OOH e DOOH, radio TV e stampa. Si scambiano le scene 2 e 3, non si ridisegnano. */
+[groups[1],groups[2]]=[groups[2],groups[1]];[items[1],items[2]]=[items[2],items[1]];[frames[1],frames[2]]=[frames[2],frames[1]];let chosen=0,w=0,h=0;const rotation={drag:0};
  function resize(){const rect=canvas.getBoundingClientRect();if(w!==rect.width||h!==rect.height){w=rect.width;h=rect.height;renderer.setSize(w,h,false)}const frame=frames[chosen],half=frame.h/2,aspect=w/h;camera.left=-half*aspect;camera.right=half*aspect;camera.top=half;camera.bottom=-half;camera.lookAt(0,frame.y,0);camera.updateProjectionMatrix()}
- function draw(i,time=0,staticPose=false){chosen=i;resize();groups.forEach((g,k)=>g.visible=k===i);const root=groups[i];const amplitude=i===2?.42:.24;root.rotation.y=rotation.drag+(staticPose?-.05:Math.sin(time*.9)*amplitude);items[i].forEach((p,k)=>{p.rotation.y=p.userData.yaw+(staticPose?0:Math.sin(time*1.05+k*.7)*.085);p.position.y=p.userData.baseY+(staticPose?0:Math.sin(time*.9+k)*.018);p.children[0].traverse(o=>o.userData.animate?.(time))});renderer.render(world,camera)}
+ function draw(i,time=0,staticPose=false){chosen=i;resize();groups.forEach((g,k)=>g.visible=k===i);const root=groups[i];const amplitude=i===1?.42:.24;root.rotation.y=rotation.drag+(staticPose?-.05:Math.sin(time*.9)*amplitude);items[i].forEach((p,k)=>{p.rotation.y=p.userData.yaw+(staticPose?0:Math.sin(time*1.05+k*.7)*.085);p.position.y=p.userData.baseY+(staticPose?0:Math.sin(time*.9+k)*.018);p.children[0].traverse(o=>o.userData.animate?.(time))});renderer.render(world,camera)}
  function thumbnails(){const saved=renderer.getSize(new T.Vector2()),oldW=canvas.style.width,oldH=canvas.style.height;const result=[];for(let i=0;i<4;i++){draw(i,0,true);result.push(canvas.toDataURL('image/jpeg',.87))}return result}
  return {draw,rotation,thumbnails,dispose(){renderer.dispose();environment.dispose()}};
 }
 
-const routeIds=['integrate','ooh','taxiadv','radiotv'];
-const services=[['Campagne cross-mediali','/campagne-cross-mediali/'],['OOH e DOOH','/ooh-dooh/'],['Pubblicità dinamica','/pubblicita-dinamica/'],['Campagne radio, TV e stampa','/campagne-radio-tv/']];
+const routeIds=['integrate','taxiadv','ooh','radiotv'];
+const services=[['Campagne cross-mediali','/campagne-cross-mediali/'],['Pubblicità dinamica','/pubblicita-dinamica/'],['OOH e DOOH','/ooh-dooh/'],['Campagne radio, TV e stampa','/campagne-radio-tv/']];
 const box=document.querySelector('.tmcs'),canvas=box.querySelector('canvas'),link=box.querySelector('.tmcs-link'),media=matchMedia('(prefers-reduced-motion: reduce)'),loading=box.querySelector('.tmcs-loading');
 let stage,current=0,paused=media.matches,visible=false,focused=false,timer=0,raf=0,time=0,last=0,drawn=0;
 function show(i){current=i;box.querySelector('h2').textContent=services[i][0];link.setAttribute('data-go',routeIds[i]);link.href=window.TMC_PAGINE?new URL(services[i][1].slice(1),document.baseURI).href:'#'+routeIds[i];link.setAttribute('aria-label','Scopri '+services[i][0]);if(stage){stage.draw(current,time);if(!media.matches)canvas.animate([{opacity:.25},{opacity:1}],{duration:350,easing:'ease-out'})}schedule()}

@@ -1097,6 +1097,15 @@
       filmBtn.setAttribute('aria-pressed', filmFermo ? 'true' : 'false');
       filmBtn.setAttribute('aria-label', filmFermo ? 'Riproduci il video' : 'Metti in pausa il video');
     }
+    /* audio: parte sempre muto (i browser avviano da soli solo i video muti),
+       si accende solo con un clic sul pulsante */
+    var filmAudio = document.getElementById('ooh-film-a');
+    filmAudio.addEventListener('click', function(){
+      film.muted = !film.muted;
+      filmAudio.setAttribute('aria-pressed', film.muted ? 'false' : 'true');
+      filmAudio.setAttribute('aria-label', film.muted ? "Attiva l'audio" : "Togli l'audio");
+      if(!film.muted && filmFermo){ filmFermo = false; filmStato(); filmAvvia(); }
+    });
     filmBtn.addEventListener('click', function(){
       filmFermo = !filmFermo;
       if(!filmFermo&&film.error){film.load();}

@@ -380,6 +380,34 @@ body.menu-open #menu{opacity:1;visibility:visible;transform:none;transition-dela
 .ooh-film-b .ooh-i-play{fill:currentColor;stroke-width:1.2;display:none;}
 .ooh-film-b[aria-pressed="true"] .ooh-i-play{display:block;}
 .ooh-film-b[aria-pressed="true"] .ooh-i-pausa{display:none;}
+.ooh-film-a{right:66px;}  /* volume: accanto alla pausa */
+.ooh-film-a .ooh-i-audio{display:none;}
+.ooh-film-a[aria-pressed="true"] .ooh-i-audio{display:block;}
+.ooh-film-a[aria-pressed="true"] .ooh-i-muto{display:none;}
+.ooh-film-a[aria-pressed="true"]{background:var(--blu);color:#fff;border-color:var(--blu);}
+
+/* didascalia del video OOH: in sovrimpressione in alto su una sfumatura scura;
+   sul telefono il video e' basso, quindi la didascalia va sotto, nello stesso riquadro scuro */
+.ooh-caso{position:absolute;z-index:2;top:0;left:0;right:0;display:flex;align-items:flex-start;justify-content:space-between;
+  gap:14px 28px;padding:clamp(20px,2.4vw,34px) clamp(20px,2.6vw,38px) clamp(70px,9vw,140px);pointer-events:none;
+  background:linear-gradient(180deg,rgba(6,14,38,.82) 0%,rgba(6,14,38,.55) 45%,rgba(6,14,38,0) 100%);color:#fff;}
+.ooh-caso-testo{flex:1 1 auto;min-width:0;max-width:640px;text-shadow:0 1px 14px rgba(0,0,0,.35);}
+.ooh-caso-testo .occhiello{margin-bottom:8px;color:#A9B8F7;}
+.ooh-caso h2{font-size:clamp(20px,2.1vw,30px);line-height:1.2;letter-spacing:-.025em;font-weight:700;color:#fff;margin:0;}
+.ooh-caso p{margin:8px 0 0;font-size:clamp(14px,1.1vw,16px);line-height:1.55;color:rgba(255,255,255,.86);max-width:52ch;}
+.ooh-caso-citta{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end;margin:4px 0 0;padding:0;list-style:none;flex:0 0 auto;}
+.ooh-caso-citta li{display:flex;flex-direction:column;align-items:center;justify-content:center;min-width:92px;
+  padding:8px 13px;border-radius:14px;font-weight:700;font-size:13.5px;line-height:1.2;color:#fff;
+  background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.24);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);}
+.ooh-caso-citta li span{font-size:11.5px;font-weight:600;letter-spacing:.08em;color:rgba(255,255,255,.72);margin-top:3px;}
+@media (max-width:900px){ .ooh-caso{flex-direction:column;} .ooh-caso-citta{justify-content:flex-start;margin:0;} }
+@media (max-width:640px){
+  .ooh-caso{position:static;padding:16px 16px 18px;background:#0B1433;gap:14px;}
+  .ooh-caso-testo{text-shadow:none;}
+  .ooh-caso-citta{width:100%;} .ooh-caso-citta li{flex:1 1 0;min-width:0;padding:9px 6px;font-size:13px;}
+  .ooh-film-b{top:12px;bottom:auto;right:12px;}  /* in basso c'e' la didascalia */
+  .ooh-film-a{right:62px;}
+}
 
 /* carosello delle campagne: piu' raccolto del video sopra, centrato.
    Frecce sulla foto, contatore e barra del tempo dentro la foto,

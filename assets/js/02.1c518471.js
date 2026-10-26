@@ -1094,6 +1094,7 @@
       if(document.hidden){ filmAttesa(false); film.pause(); } else { filmAvvia(); }
     });
     function filmStato(){
+      filmBox.classList.toggle('fermo', filmFermo);
       filmBtn.setAttribute('aria-pressed', filmFermo ? 'true' : 'false');
       filmBtn.setAttribute('aria-label', filmFermo ? 'Riproduci il video' : 'Metti in pausa il video');
     }
@@ -1113,6 +1114,29 @@
       filmStato();
     });
     filmStato();
+
+    /* scritte e pulsanti a scomparsa, come su YouTube */
+    var filmMostraT = null, filmVisto = false, filmNascosti = false;
+    function filmMostra(ms){
+      filmBox.classList.add('mostra');
+      clearTimeout(filmMostraT);
+      filmMostraT = setTimeout(function(){ filmBox.classList.remove('mostra'); }, ms || 3000);
+    }
+    /* la prima volta che il video entra nello schermo restano visibili qualche secondo */
+    new IntersectionObserver(function(voci){
+      if(voci[0].intersectionRatio >= .35 && !filmVisto){ filmVisto = true; filmMostra(3000); }
+    }, { threshold:[0, .35] }).observe(film);
+    /* in piu': appena il video parte per la prima volta */
+    film.addEventListener('playing', function(){ if(!filmVisto){ filmVisto = true; filmMostra(3000); } });
+    /* col dito: il primo tocco mostra soltanto, non preme il pulsante che era nascosto */
+    filmBox.addEventListener('pointerdown', function(e){
+      if(e.pointerType === 'mouse'){ return; }
+      filmNascosti = !filmBox.classList.contains('mostra') && !filmBox.classList.contains('fermo');
+      filmMostra(3500);
+    });
+    filmBox.addEventListener('click', function(e){
+      if(filmNascosti){ e.preventDefault(); e.stopPropagation(); filmNascosti = false; }
+    }, true);
   }
 
   /* ── carosello campagne OOH ───────────────────────────────

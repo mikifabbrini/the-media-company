@@ -409,6 +409,24 @@ body.menu-open #menu{opacity:1;visibility:visible;transform:none;transition-dela
   .ooh-film-a{right:62px;}
 }
 
+/* Video OOH come su YouTube (6/10/2026): didascalia, citta' e pulsanti
+   si vedono solo passando sopra col mouse, toccando il video o con la
+   tastiera; altrimenti resta il video pulito. All'apertura restano
+   visibili qualche secondo, cosi' si capisce che ci sono. */
+.ooh-film .ooh-caso,.ooh-film .ooh-film-b{opacity:0;transition:opacity .35s ease;}
+.ooh-film .ooh-film-b{pointer-events:none;}
+.ooh-film.mostra .ooh-caso,.ooh-film.mostra .ooh-film-b,
+.ooh-film.fermo .ooh-caso,.ooh-film.fermo .ooh-film-b,
+.ooh-film:focus-within .ooh-caso,.ooh-film:focus-within .ooh-film-b{opacity:1;}
+.ooh-film.mostra .ooh-film-b,.ooh-film.fermo .ooh-film-b,.ooh-film:focus-within .ooh-film-b{pointer-events:auto;}
+@media (hover:hover){
+  .ooh-film:hover .ooh-caso,.ooh-film:hover .ooh-film-b{opacity:1;}
+  .ooh-film:hover .ooh-film-b{pointer-events:auto;}
+}
+/* sul telefono la didascalia sta sotto il video e non lo copre: resta sempre visibile */
+@media (max-width:640px){ .ooh-film .ooh-caso{opacity:1;} }
+@media (prefers-reduced-motion:reduce){ .ooh-film .ooh-caso,.ooh-film .ooh-film-b{transition:none;} }
+
 /* carosello delle campagne: piu' raccolto del video sopra, centrato.
    Frecce sulla foto, contatore e barra del tempo dentro la foto,
    sotto una fila di miniature per saltare direttamente a una campagna. */

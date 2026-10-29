@@ -14,7 +14,7 @@
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; media-src 'self' data: blob:; font-src 'self' data:; connect-src 'self' https://formsubmit.co; object-src 'none'; base-uri 'self'; form-action 'self' https://formsubmit.co">
 <script src="assets/js/01.cd9eba43.js"></script>
 <link rel="preload" href="img/fonts/onest-variable.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="assets/css/01.4648a5a3.css">
+<link rel="stylesheet" href="assets/css/01.9817d763.css">
 <meta name="description" content="Spot su radio nazionali e locali, campagne TV sui grandi editori e sulle piattaforme, uscite su quotidiani e periodici: pianificate per pubblico e zona.">
 <link rel="canonical" href="https://www.themediacompany.it/campagne-radio-tv/">
 
@@ -92,9 +92,11 @@
 </div>
 
 <header class="hdr">
+  <div class="vs-gruppo"><div class="wrap"><a href="" data-go="home">← Vai a The Media Company</a><span>L'agenzia viaggi di The Media Company</span></div></div>
   <div class="wrap hdr-in">
     <a class="mark" href="" data-go="home" aria-label="The Media Company, vai alla home">
       <img src="img/logo-tmc-header.png" alt="The Media Company" width="719" height="180">
+    <span class="mark-riga" aria-hidden="true"></span><img class="mark-tv colore" src="img/brand/travel/tmc-travel-colore-stretto.svg" alt="TMC Travel" width="495" height="134" loading="lazy" decoding="async"><img class="mark-tv bianco" src="img/brand/travel/tmc-travel-bianco-stretto.svg" alt="" width="495" height="134" loading="lazy" decoding="async">
     </a>
 
     <nav class="nav" aria-label="Navigazione principale">
@@ -120,9 +122,12 @@
           <li><a class="voce-extra" href="simulatore/" data-go="simulatore">Prova il simulatore</a></li>
         </ul>
       </div>
-      <a href="tmc-travel/" data-go="travel">TMC Travel</a>
       <a href="progetti/" data-go="progetti">Progetti</a>
       <a href="approfondimenti/" data-go="approfondimenti">Approfondimenti</a>
+      <a class="nav-travel" href="tmc-travel/" data-go="travel">TMC Travel</a>
+    </nav>
+    <nav class="nav nav-tv" aria-label="Menu TMC Travel">
+      <a href="#tv-club">Come funziona</a><a href="#tmc-travel-catalogo">Offerte</a><a href="#tmc-travel-voli">Voli</a>
     </nav>
 
     <div class="hdr-r">
@@ -131,6 +136,7 @@
         <span class="cerca-t">Cerca</span>
       </button>
       <a class="b b--pri" href="contatti/" data-go="contattaci" style="min-height:46px;padding:0 22px;font-size:14px;letter-spacing:.04em">CONTATTACI</a>
+      <button class="vs-accedi" type="button" data-member-access data-member-login>Accedi</button><button class="b b--pri vs-iscriviti" type="button" data-member-access style="min-height:46px;padding:0 22px;font-size:14px">Iscriviti</button>
       <button class="burger" id="burger" aria-label="Apri il menu" aria-expanded="false" aria-controls="menu"><span aria-hidden="true"></span></button>
     </div>
   </div>
@@ -138,6 +144,12 @@
 </header>
 
 <nav id="menu" aria-label="Menu" aria-hidden="true">
+  <a class="menu-tv" href="#tv-club">Come funziona</a>
+  <a class="menu-tv" href="#tmc-travel-catalogo">Offerte</a>
+  <a class="menu-tv" href="#tmc-travel-voli">Voli</a>
+  <a class="menu-tv" href="tmc-travel/" data-member-access data-member-login>Accedi</a>
+  <a class="menu-tv" href="tmc-travel/" data-member-access>Iscriviti</a>
+  <a class="menu-tv menu-tv-torna" href="" data-go="home">← Vai a The Media Company</a>
   <p class="gruppo-eti">I nostri servizi</p>
   <a class="sotto-voce" href="campagne-cross-mediali/" data-go="integrate">Campagne cross-mediali</a>
   <a class="sotto-voce" href="pubblicita-dinamica/" data-go="taxiadv">Pubblicità dinamica</a>
@@ -147,9 +159,9 @@
   <a class="sotto-voce voce-figlia" href="grandi-stazioni-metro/" data-go="stazioni">Grandi Stazioni e metro</a>
   <a class="sotto-voce" href="campagne-radio-tv/" data-go="radiotv">Campagne radio, TV e stampa</a>
   <a class="sotto-voce voce-extra" href="simulatore/" data-go="simulatore">Prova il simulatore</a>
-  <a href="tmc-travel/" data-go="travel">TMC Travel</a>
   <a href="progetti/" data-go="progetti">Progetti</a>
   <a href="approfondimenti/" data-go="approfondimenti">Approfondimenti</a>
+  <a class="menu-travel" href="tmc-travel/" data-go="travel">TMC Travel</a>
   <a href="contatti/" data-go="contattaci">Contattaci</a>
 </nav>
 
@@ -459,7 +471,7 @@
   </div>
 </footer>
 
-<script src="assets/js/02.446f8ce8.js"></script>
+<script src="assets/js/02.dfedc916.js"></script>
 
 <!-- Le foto stanno in fondo di proposito: sono il 93% del peso della pagina.
      In cima al foglio di stile avrebbero bloccato il primo disegno finche
@@ -471,6 +483,21 @@
 <script src="assets/js/03.8b4709ff.js"></script>
 
 <script src="assets/js/04.43fd9fce.js"></script>
+
+<!-- ═══════════ GSAP E LENIS (29/10/2026) ═══════════
+     Deciso con Michele: Lenis (scorrimento morbido) su tutto il sito,
+     GSAP solo nella pagina Progetti (card che salgono a gruppi e CTA che
+     entra a tappe). Le altre pagine tengono la comparsa .rv di sempre.
+     I file stanno in img/lib/ (GSAP 3.12.5, Lenis 1.1.13). Se non si
+     caricano, o se chi visita ha chiesto meno movimento, il sito resta
+     com'era: niente si nasconde. -->
+<link rel="stylesheet" href="assets/css/03.f0e054af.css">
+<script src="img/lib/gsap.min.js"></script>
+<script src="img/lib/ScrollTrigger.min.js"></script>
+<script src="img/lib/lenis.min.js"></script>
+<script src="assets/js/05.212c97c9.js"></script>
+
+<script src="assets/js/06.5373c580.js"></script>
 
 </body>
 </html>

@@ -281,12 +281,99 @@
     void card.offsetWidth;
     card.classList.add('segnalata');
   }
+  /* ── modulo a due passi ─────────────────────────────────
+     "A che punto sei?" apre la domanda giusta: come preferisci
+     conoscerci, che campagna, oppure altro. Il pulsante "Un incontro
+     in sede" accende la spunta dell'appuntamento e il calendario. */
+  var PLACEHOLDER_MSG = {
+    conoscere: 'Di cosa si occupa la tua azienda e cosa vorresti sapere di noi.',
+    campagna:  'L’obiettivo, la città, il periodo… raccontaci di cosa hai bisogno.',
+    altro:     'Scrivici la tua domanda.'
+  };
+  /* chi arriva dal pulsante del barter trova un suggerimento suo nel
+     messaggio (29/10/2026). Non e' una voce della tendina: Michele lo vuole
+     solo come suggerimento. Vale finche' non si cambia risposta. */
+  var CAMBIO_MERCE = 'Cambio merce';
+  var daBarter = false;
+  function suggerimentoMsg(punto){
+    if(daBarter && punto === 'campagna'){
+      return 'Scrivici cosa ti serve e la tua proposta di cambio merce.';
+    }
+    return PLACEHOLDER_MSG[punto] || PLACEHOLDER_MSG.campagna;
+  }
+  function puntoScelto(){
+    var b = document.querySelector('.punto-sc[aria-pressed="true"]');
+    return b ? b.getAttribute('data-punto-sc') : '';
+  }
+  function scegliPunto(punto){
+    var bottoni = document.querySelectorAll('.punto-sc');
+    for(var i=0;i<bottoni.length;i++){
+      bottoni[i].setAttribute('aria-pressed', bottoni[i].getAttribute('data-punto-sc') === punto ? 'true' : 'false');
+    }
+    var pannelli = document.querySelectorAll('[data-punto-se]');
+    for(var j=0;j<pannelli.length;j++){
+      pannelli[j].hidden = pannelli[j].getAttribute('data-punto-se') !== punto;
+    }
+    var msg = document.getElementById('c-m');
+    var lab = document.getElementById('lab-m');
+    if(msg){ msg.placeholder = suggerimentoMsg(punto); }
+    if(lab){ lab.textContent = punto === 'conoscere' ? 'Messaggio (facoltativo)' : 'Messaggio'; }
+  }
+  /* quello che parte con l'invio, in parole: "Vorrei conoscervi · Una telefonata" */
+  window.tmcMotivoScelto = function(){
+    var punto = puntoScelto();
+    if(punto === 'conoscere'){
+      var pil = document.querySelector('.punto-pil[aria-pressed="true"]');
+      return 'Vorrei conoscervi' + (pil ? ' · ' + pil.textContent.trim() : '');
+    }
+    if(punto === 'campagna'){ return document.getElementById('c-i').value; }
+    if(punto === 'altro'){ return document.getElementById('c-i2').value; }
+    return 'Non indicato';
+  };
+  window.tmcPuntoAzzera = function(){
+    daBarter = false;
+    scegliPunto('');
+    var pil = document.querySelectorAll('.punto-pil');
+    for(var i=0;i<pil.length;i++){ pil[i].setAttribute('aria-pressed','false'); }
+  };
+  (function(){
+    var bottoni = document.querySelectorAll('.punto-sc');
+    for(var i=0;i<bottoni.length;i++){
+      bottoni[i].addEventListener('click', function(){
+        if(this.getAttribute('data-punto-sc') !== 'campagna'){ daBarter = false; }
+        scegliPunto(this.getAttribute('data-punto-sc'));
+      });
+    }
+    var pil = document.querySelectorAll('.punto-pil');
+    for(var j=0;j<pil.length;j++){
+      pil[j].addEventListener('click', function(){
+        for(var k=0;k<pil.length;k++){ pil[k].setAttribute('aria-pressed', pil[k] === this ? 'true' : 'false'); }
+        var sp = document.getElementById('c-app');
+        if(!sp){ return; }
+        var sede = this.hasAttribute('data-sede');
+        if(sp.checked !== sede){
+          sp.checked = sede;
+          if(window.tmcAppuntamento){ window.tmcAppuntamento(sede); }
+        }
+      });
+    }
+  })();
+
   function applicaMotivo(motivo){
-    var sceltaMotivo = document.getElementById('c-i');
+    /* "Vorrei conoscervi" e le voci di "Altro" hanno il loro passo;
+       tutto il resto e' un tipo di campagna */
+    daBarter = motivo === CAMBIO_MERCE;
+    var punto = motivo === 'Vorrei conoscervi' ? 'conoscere' :
+                ['Informazioni generali','TMC Travel','Altro'].indexOf(motivo) !== -1 ? 'altro' : 'campagna';
+    scegliPunto(punto);
+    var sceltaMotivo = punto === 'conoscere' ? document.querySelector('.punto-sc[aria-pressed="true"]') :
+                       document.getElementById(punto === 'altro' ? 'c-i2' : 'c-i');
     if(!sceltaMotivo){ return; }
-    sceltaMotivo.value = motivo;
-    sceltaMotivo.dispatchEvent(new Event('change', { bubbles:true }));
-    var campoMotivo = sceltaMotivo.closest('.campo');
+    if(sceltaMotivo.tagName === 'SELECT' && !daBarter){
+      sceltaMotivo.value = motivo;
+      sceltaMotivo.dispatchEvent(new Event('change', { bubbles:true }));
+    }
+    var campoMotivo = document.getElementById('w-punto');
     if(campoMotivo){
       campoMotivo.classList.remove('precompilato');
       void campoMotivo.offsetWidth;
@@ -1372,7 +1459,9 @@
       segna('w-e','c-e', /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(mail));
       segna('w-a','c-a', true);
       if(!cal.hidden){ segna('w-d','cal-griglia', !!campoData.value); }
-      segna('w-m','c-m', areaMsg.value.trim().length > 4);
+      /* chi vuole solo conoscerci non deve per forza scrivere qualcosa */
+      var msgFacoltativo = document.querySelector('.punto-sc[data-punto-sc="conoscere"][aria-pressed="true"]');
+      segna('w-m','c-m', msgFacoltativo ? true : areaMsg.value.trim().length > 4);
       segna('w-p','c-p', document.getElementById('c-p').checked);
       return problemi;
     }
@@ -1402,13 +1491,13 @@
       }
       var appuntamento = document.getElementById('c-app').checked;
       var dati = {
-        _subject: 'Nuovo contatto dal sito · ' + val('c-i'),
+        _subject: 'Nuovo contatto dal sito · ' + window.tmcMotivoScelto(),
         _template: 'table',
         _replyto: val('c-e'),
         nome: val('c-n'), azienda: val('c-a'), email: val('c-e'), telefono: val('c-t') || '—',
-        richiesta: val('c-i'),
+        richiesta: window.tmcMotivoScelto(),
         appuntamento_in_sede: appuntamento ? 'Sì · ' + (calScelta.textContent.replace('Appuntamento richiesto per il ','') || campoData.value) : 'No',
-        messaggio: val('c-m'),
+        messaggio: val('c-m') || '—',
         informativa_privacy: 'Letta · versione 18 settembre 2026',
         pagina: location.protocol === 'file:' ? '#contattaci' : location.origin + location.pathname + '#contattaci'
       };
@@ -1426,6 +1515,7 @@
           if(!res.ok || (res.j.success !== true && res.j.success !== 'true')){ throw new Error('non confermato'); }
           mostraEsito('Grazie! Abbiamo ricevuto la tua richiesta: ti rispondiamo entro 48 ore.', true);
           modulo.reset();
+          if(window.tmcPuntoAzzera){ window.tmcPuntoAzzera(); }
           /* mandato: non ha piu' senso tenere in giro i suoi dati */
           if(window.tmcScordaModulo){ window.tmcScordaModulo(); }
           var pianoVia = document.getElementById('c-piano');
@@ -2043,8 +2133,7 @@
       var motivo = accesi.length > 1 ? 'Campagna cross-mediale' :
                    accesi[0] === 'taxi'  ? 'Pubblicit\u00e0 dinamica' :
                    accesi[0] === 'ooh'   ? 'Campagna out of home' :
-                   accesi[0] === 'radio' ? 'Campagna radio, TV o stampa' :
-                                           'Campagna stampa';
+                                           'Campagna radio, TV o stampa';
       /* voci = le targhette che si vedono (solo le quantita')
          dati = quello che parte davvero con l'invio, durata compresa */
       return { motivo: motivo, voci: voci, dati: righe.join(' | ') };

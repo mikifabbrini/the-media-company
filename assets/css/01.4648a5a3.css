@@ -349,7 +349,7 @@ body.menu-open #menu{opacity:1;visibility:visible;transform:none;transition-dela
   margin-top:clamp(20px,2.2vw,30px);}
 
 /* hero secondario delle pagine interne */
-.hero--testo{padding:clamp(44px,6vw,88px) 0 clamp(20px,2.6vw,36px);}
+.hero--testo{padding:clamp(26px,3.2vw,48px) 0 clamp(20px,2.6vw,36px);}
 /* titolo e sottotitolo di pagina su una riga sola, quando lo schermo lo permette */
 @media (min-width:1100px){ .titolo-riga{max-width:none!important;white-space:nowrap;} }
 /* video OOH: stesso trattamento delle foto grandi delle pagine servizi
@@ -1515,6 +1515,14 @@ body.caso-aperto{overflow:hidden;}
 .caso-dati dt{font-size:10.5px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;
   color:var(--ink-3);}
 .caso-dati dd{margin:5px 0 0;font-size:14px;font-weight:700;line-height:1.35;color:var(--ink);}
+/* link dalla scheda a un punto preciso di un'altra pagina (es. il video Cuba nella pagina OOH) */
+.caso-link{justify-self:start;display:inline-flex;align-items:center;gap:8px;padding:11px 18px;border-radius:999px;
+  background:var(--blu-tenue);color:var(--blu);font-size:15px;font-weight:750;text-decoration:none;transition:background .2s,color .2s;}
+.caso-link:hover,.caso-link:focus-visible{background:var(--blu);color:#fff;}
+#video-cuba{scroll-margin-top:96px;}
+.caso-info:has(.caso-link){row-gap:22px;}
+.caso-info:has(.caso-link)>.caso-dati{grid-column:2;grid-row:1 / span 2;}
+@media (max-width:820px){ .caso-info:has(.caso-link)>.caso-dati{grid-column:auto;grid-row:auto;} }
 @media (max-width:820px){
   .caso-testa{align-items:flex-start;flex-direction:column;}
   .caso-info{grid-template-columns:minmax(0,1fr);}

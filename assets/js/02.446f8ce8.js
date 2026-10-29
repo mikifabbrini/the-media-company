@@ -259,6 +259,20 @@
       meta.scrollIntoView({ block:'start', behavior: poco ? 'auto' : 'smooth' });
     });
   }
+  /* Scende a un elemento della pagina appena aperta. Se si arriva da un'altra
+     pagina, foto e caratteri che si caricano spostano ancora il contenuto:
+     la posizione si ricorregge per un secondo e mezzo, finche' chi guarda
+     non scorre da solo. */
+  function scendiA(idPunto, arrivo){
+    var meta = document.getElementById(idPunto);
+    if(!meta){ return; }
+    function scendi(){ meta.scrollIntoView({ block:'start', behavior: (poco || arrivo) ? 'instant' : 'smooth' }); }
+    if(!arrivo){ setTimeout(scendi, 60); return; }
+    var fermo = false;
+    function ferma(){ fermo = true; }
+    ['wheel','touchstart','keydown'].forEach(function(t){ window.addEventListener(t, ferma, { once:true, passive:true }); });
+    [80, 400, 900, 1500].forEach(function(ms){ setTimeout(function(){ if(!fermo){ scendi(); } }, ms); });
+  }
   function segnalaCard(mira){
     var card = document.getElementById('srv-' + mira);
     if(!card){ return; }
@@ -379,14 +393,18 @@
            nell'indirizzo e viene ripreso all'arrivo. */
         if(MP && el.getAttribute('data-go') !== MP.corrente){
           var coda = mira ? 'srv-' + mira : '';
+          if(el.getAttribute('data-punto')){ coda = 'punto-' + el.getAttribute('data-punto'); }
           if(motivo || appunt){
             coda = 'motivo=' + encodeURIComponent(motivo || '') + (appunt ? '&app=1' : '');
           }
           location.href = urlPagina(el.getAttribute('data-go'), coda);
           return;
         }
+        var finestra = el.closest('dialog');
+        if(finestra && finestra.open){ finestra.close(); }
         var pag = vai(el.getAttribute('data-go'));
         if(mira){ segnalaCard(mira); }
+        if(el.getAttribute('data-punto')){ scendiA(el.getAttribute('data-punto')); }
         if(motivo){ applicaMotivo(motivo); }
         if(piano){ applicaPiano(piano); }
         if(appunt){ applicaAppuntamento(); }
@@ -2247,6 +2265,8 @@
       if(anc.indexOf('app=1') !== -1){ applicaAppuntamento(); }
     } else if(anc.indexOf('srv-') === 0){
       segnalaCard(anc.slice(4));
+    } else if(anc.indexOf('punto-') === 0){
+      scendiA(anc.slice(6), true);
     } else if(anc){
       var apri = document.getElementById(anc);
       if(apri && apri.tagName === 'DIALOG'){ apriCaso(anc); }
